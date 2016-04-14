@@ -1,0 +1,27 @@
+<h1>Listing deposits_products</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Cantidad</th>
+      <th>Precio</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @deposits_products.each do |deposits_product| %>
+      <tr>
+        <td><%= deposits_product.cantidad %></td>
+        <td><%= deposits_product.precio %></td>
+        <td><%= link_to 'Show', deposits_product %></td>
+        <td><%= link_to 'Edit', edit_deposits_product_path(deposits_product) %></td>
+        <td><%= link_to 'Destroy', deposits_product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Deposits product', new_deposits_product_path %>

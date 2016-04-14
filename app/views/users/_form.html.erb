@@ -1,0 +1,69 @@
+<p> <%=notice%></p>
+<p> <%=alert%></p>
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :cedula %>*<br>
+    <%= f.text_field :cedula, type:"number"%>
+  </div>
+
+  <%if current_user%>
+    <%if session[:type_user] == "SimpleUser"%>
+      <%if @editing%>
+        <div class="field">
+          <label for="password_old">Antiguo password</label><br>
+          <input id="password_old" name="password_old" type="password">
+        </div>
+      <%end%>
+    <%end%>
+  <%end%>
+
+  <div class="field">
+    <%= f.label :password %>*<br>
+    <%= f.password_field :password %>
+  </div>
+  <div class="field">
+    <label for="password_confirmation">Confirma el password</label>*<br>
+    <input id="password_confirmation" name="password_confirmation" type="password">
+  </div>
+  <%if current_user%>
+    <%if session[:type_user]=="Administrador"%>
+      <div class="field">
+        <%= f.label :type_id, "Tipo de usuario" %>*<br>
+        <select id="type_id" name="user[type_id]" onchange="javascript: onChangeType();">
+        <% @types.each do |t| %>
+          <option value=<%="#{t.id}"%> ><%=t.nombre%></option>
+        <% end %>
+        </select>
+      </div>
+    <%end%>
+  <%end%>
+ 
+  <%if current_user%>
+    <%if @editing%>
+      <div class="actions">
+          <%= f.submit "Editar Usuario", class: "btn btn-info"%>
+      </div>
+    <%else%>
+      <div class="actions">
+        <%= f.submit "Crear Usuario", class: "btn btn-info"%>
+      </div>
+    <%end%>
+  <%else%>
+    <div class="actions">
+      <%= f.submit "Registrarme!", class: "btn btn-info" %>
+    </div>
+  <%end%>
+
+<% end %>

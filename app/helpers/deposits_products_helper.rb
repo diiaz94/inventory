@@ -1,0 +1,2 @@
+module DepositsProductsHelper
+end

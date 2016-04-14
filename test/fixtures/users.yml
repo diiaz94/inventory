@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cedula: MyString
+  password: MyString
+  password_confirmation: MyString
+
+two:
+  cedula: MyString
+  password: MyString
+  password_confirmation: MyString
