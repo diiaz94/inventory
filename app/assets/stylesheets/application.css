@@ -13,3 +13,38 @@
  *= require_tree .
  *= require_self
  */
+
+
+input[type=number].cedula::-webkit-outer-spin-button,
+
+input[type=number].cedula::-webkit-inner-spin-button {
+
+    -webkit-appearance: none;
+
+    margin: 0;
+
+}
+
+@media (max-width: 800px) {
+  section.content {
+    padding: 0!important;
+  }
+}
+
+tr.link{
+	cursor: pointer!important;
+}
+tr.link:hover{
+	background:rgb(60, 141, 188)!important; 
+	color: white!important;
+}
+
+a.btn{
+	color:white!important;
+}
+
+
+select.select2{
+	width: 	100%!important;
+}
+

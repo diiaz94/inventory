@@ -1,6 +1,8 @@
 <p> <%=notice%></p>
 <p> <%=alert%></p>
-<%= form_for(@user) do |f| %>
+
+
+<%= form_for(setup_user(@user)) do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -12,58 +14,124 @@
       </ul>
     </div>
   <% end %>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Datos Personales</h3>
+    </div><!-- /.box-header -->
 
-  <div class="field">
-    <%= f.label :cedula %>*<br>
-    <%= f.text_field :cedula, type:"number"%>
-  </div>
-
-  <%if current_user%>
-    <%if session[:type_user] == "SimpleUser"%>
-      <%if @editing%>
-        <div class="field">
-          <label for="password_old">Antiguo password</label><br>
-          <input id="password_old" name="password_old" type="password">
+    <div class="box-body">
+      
+      <%= f.fields_for :profile do |field| %>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :cedula %>*<br>
+              <%= f.text_field :cedula, type:"number",class:"form-control cedula" %>
+             </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= field.label :sexo %>*<br>
+              <%=radio_button("user[profile_attributes]", "sexo", "true") %> Masculino 
+              <%=radio_button("user[profile_attributes]", "sexo", "false") %> Femenino
+            </div>
+          </div>        
         </div>
-      <%end%>
-    <%end%>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= field.label :primer_nombre %>*<br>
+              <%= field.text_field :primer_nombre,class:"form-control" %>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <div class="form-group">
+                <%= field.label :segundo_nombre %><br>
+                <%= field.text_field :segundo_nombre,class:"form-control"  %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= field.label :primer_apellido %>*<br>
+              <%= field.text_field :primer_apellido,class:"form-control" %>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <div class="form-group">
+                <%= field.label :segundo_apellido %><br>
+                <%= field.text_field :segundo_apellido,class:"form-control"  %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+            <%= field.label :email %><br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <%= field.email_field :email,class:"form-control", placeholder: "Email"%>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= field.label :celular %><br>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-phone"></i>
+                </div>
+                <%= field.text_field :celular,class:"form-control", "data-inputmask" => '"mask": "(9999) 999-9999"'  %>
+              </div><!-- /.input group -->
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+  <%if !@user.persisted?%>
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Contraseña de ingreso</h3>
+      </div><!-- /.box-header -->
+      <div class="box-body">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :password, "Contraseña"%>*<br>
+              <%= f.password_field :password,class:"form-control"  %>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <label for="password_confirmation">Confirma tu Contraseña</label>*<br>
+              <input id="password_confirmation" name="password_confirmation" type="password" class="form-control" >
+             </div>
+          </div>
+        </div> 
+      </div>
+    </div><!-- /.box -->
   <%end%>
-
-  <div class="field">
-    <%= f.label :password %>*<br>
-    <%= f.password_field :password %>
-  </div>
-  <div class="field">
-    <label for="password_confirmation">Confirma el password</label>*<br>
-    <input id="password_confirmation" name="password_confirmation" type="password">
-  </div>
-  <%if current_user%>
-    <%if session[:type_user]=="Administrador"%>
-      <div class="field">
-        <%= f.label :type_id, "Tipo de usuario" %>*<br>
-        <select id="type_id" name="user[type_id]" onchange="javascript: onChangeType();">
-        <% @types.each do |t| %>
-          <option value=<%="#{t.id}"%> ><%=t.nombre%></option>
-        <% end %>
-        </select>
-      </div>
-    <%end%>
-  <%end%>
- 
-  <%if current_user%>
-    <%if @editing%>
-      <div class="actions">
-          <%= f.submit "Editar Usuario", class: "btn btn-info"%>
-      </div>
-    <%else%>
-      <div class="actions">
-        <%= f.submit "Crear Usuario", class: "btn btn-info"%>
-      </div>
-    <%end%>
-  <%else%>
-    <div class="actions">
-      <%= f.submit "Registrarme!", class: "btn btn-info" %>
+  
+    <div class="box-footer">
+      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
+      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
     </div>
-  <%end%>
 
 <% end %>
+
+ <script>
+      $(function () {
+        $("#user_profile_attributes_celular").inputmask();
+          $('input[type="radio"]').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+          $('input[type="radio"]').first().parent().addClass("checked")
+      });
+</script>

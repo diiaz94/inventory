@@ -9,7 +9,7 @@ class CreateProfiles < ActiveRecord::Migration
       t.string :email
       t.string :celular
       t.string :slug
-      
+      t.belongs_to :user, index:true
       t.timestamps
     end
   end

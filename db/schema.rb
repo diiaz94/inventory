@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20160413213249) do
   create_table "categories", force: true do |t|
     t.string   "nombre"
     t.text     "descripcion"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -73,21 +74,22 @@ ActiveRecord::Schema.define(version: 20160413213249) do
     t.string   "email"
     t.string   "celular"
     t.string   "slug"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "cedula",           null: false
     t.string   "crypted_password"
     t.string   "salt"
     t.string   "slug"
-    t.integer  "profile_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "users", ["cedula"], name: "index_users_on_cedula", unique: true, using: :btree
-  add_index "users", ["profile_id"], name: "index_users_on_profile_id", using: :btree
 
 end
