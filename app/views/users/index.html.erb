@@ -1,5 +1,3 @@
-<p> <%=notice%></p>
-<p> <%=alert%></p>
        <!-- Main content -->
         <section class="content">
           <div class="row">
@@ -38,7 +36,7 @@
                                 </div>
                                 <div class="modal-body">
                                   <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-xs-12">
                                       <div class="box box-solid">
                                         <div class="box-header with-border">
                                           <i class="fa fa-text-width"></i>
@@ -61,11 +59,9 @@
                                       </div><!-- /.box -->
                                     </div><!-- ./col -->
                                   </div><!-- /.row -->
-
-                                
                                 </div>
                                 <div class="modal-footer">
-                                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
                                   
                                   <button data-url=<%=users_path%> data-id=<%=user.id%> type="button" class="btn btn-danger delete-record">Eliminar</button>
                                   <button type="button" class="btn btn-primary" aria-label="Left Align" onclick="window.location.href='<%=edit_user_path(user)%>'">

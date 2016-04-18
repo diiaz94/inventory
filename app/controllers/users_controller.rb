@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :validate_fields, only: [:create, :update]
   # GET /users_url
   # GET /users.json
   def index
@@ -127,8 +126,8 @@ class UsersController < ApplicationController
       end  
       
       if cedula.strip == ""
-          redirect_to(:back,alert: "Lo sentimos, la cedula no puede estar en blanco.")
-          return
+
+          render "new",alert: "Lo sentimos, la cedula no puede estar en blanco."
       else    
         if pnombre.strip == ""
           redirect_to(:back,alert: "Lo sentimos, el primer nombre no puede estar en blanco.")

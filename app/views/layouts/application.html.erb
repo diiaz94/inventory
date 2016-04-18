@@ -239,8 +239,12 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><%= link_to 'Ver Usuarios', users_path%></li>
-                <li><%= link_to 'Crear Usuarios', new_user_path%></li>
+                <li>
+                <a href="<%=users_path%>"><i class="fa fa-circle-o"></i> Ver Usuarios</a>
+                </li>
+                <li>
+                <a href="<%=new_user_path%>"><i class="fa fa-circle-o"></i> Agregar Usuarios</a>
+                </li>
               </ul>
             </li>
             <li class="treeview">
@@ -249,8 +253,12 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<%=products_path%>"><i class="fa fa-circle-o"></i> Ver Productos</a></li>
-                <li><a href="<%=new_product_path%>"><i class="fa fa-circle-o"></i> Agregar Productos</a></li>
+                <li>
+                <a href="<%=products_path%>"><i class="fa fa-circle-o"></i> Ver Productos</a>
+                </li>
+                <li>
+                <a href="<%=new_product_path%>"><i class="fa fa-circle-o"></i> Agregar Productos</a>
+                </li>
                 <li>
                   <a href="#"><i class="fa fa-circle-o"></i> Categorias <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
@@ -397,7 +405,51 @@
          Both of these plugins are recommended to enhance the
          user experience. Slimscroll is required when using the
          fixed layout. -->
-  </body>
+
+<script type="text/javascript">
+var  alertmsj = "<%=alert%>"
+var  noticemsj = "<%=notice%>"
+</script>
+<div class="example-modal">
+  <div class="modal fade modal-success">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Información</h4>
+        </div>
+        <div class="modal-body">
+          <p id="msjtxt"></p> 
+        </div>
+        <div class="modal-footer">
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div><!-- /.example-modal -->  
+<div class="example-modal">
+  <div class="modal fade modal-danger">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Información</h4>
+        </div>
+        <div class="modal-body">
+          <p id="msjtxt"></p> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div><!-- /.example-modal -->  
+
+
+
+</body>
 
 </html>
 

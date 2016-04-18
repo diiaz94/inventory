@@ -1,19 +1,11 @@
-<p> <%=notice%></p>
-<p> <%=alert%></p>
-
-
 <%= form_for(setup_user(@user)) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <script type="text/javascript">
+var  alertmsj;
+  <% @user.errors.each do |atributo, mensaje| %>
+      alertmjs=+"<li><%=mensaje%></li>"
+<% end %>
+validarMensajes();
+</script>
   <div class="box box-primary">
     <div class="box-header with-border">
       <h3 class="box-title">Datos Personales</h3>

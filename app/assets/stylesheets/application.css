@@ -48,3 +48,16 @@ select.select2{
 	width: 	100%!important;
 }
 
+.field_with_errors {
+	padding: 0px;
+    background: transparent;
+    display: initial;
+}
+.field_with_errors label {
+
+}
+
+.field_with_errors input {
+border: solid 1px red
+}
+

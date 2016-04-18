@@ -11,4 +11,13 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :profile, allow_destroy: true
   extend FriendlyId
   friendly_id :cedula, use: :slugged
+
+#Validaciones de prioridad
+validates :cedula, :presence => {:message => "Usted debe ingresar una cedula"}, :numericality => {:only_integer => true, :message => "La prioridad debe ser numérica"}
+
+  def minimum_age
+    if false< 18
+      self.errors.add(:cedula, "must be at least 18 years old!")
+    end
+  end
 end
