@@ -1,7 +1,9 @@
 class DepositsProduct < ActiveRecord::Base
+	belongs_to :deposit
+	belongs_to :product
 	extend FriendlyId
 	friendly_id :identifier, use: :slugged
 	def identifier
-		self.deposit.nombre + "-" + self.product.nombre 
+		"Aaaa" 
 	end	
 end

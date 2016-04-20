@@ -20,18 +20,44 @@ $( document ).ready(function() {
 			  });
 		}
 	});
+  	$('.cedula').unbind();
+  	$('.cedula').bind('keyup', function(){
+		if(this.value.length>parseInt($(this).data("maxlength"))){
+	    	this.value = this.value.substring(0,$(this).data("maxlength"))
+	    }
+	});
+	$('.cedula').bind('keypress', function(){
+		if(this.value.length>parseInt($(this).data("maxlength"))-1){
+	    	this.value = this.value.substring(0,$(this).data("maxlength"))
+	    }
+	});
 validarMensajes();
 
 });
 
 function validarMensajes(){
-	if(alertmsj!=undefined && alertmsj.trim()!=""){
-		$(".modal-danger").find("#msjtxt").text(alertmsj);
+	if(typeof(alertmsj)!="undefined" && alertmsj.trim()!=""){
+		$(".modal-danger").find("#msjtxt").html(alertmsj);
 		$(".modal-danger").modal("show");
 	}
-	if(noticemsj!=undefined && noticemsj.trim()!=""){
-		$(".modal-success").find("#msjtxt").text(noticemsj);
+	if(typeof(noticemsj)!="undefined" && noticemsj.trim()!=""){
+		$(".modal-success").find("#msjtxt").html(noticemsj);
 		$(".modal-success").modal("show");
 		setTimeout(function(){ $(".modal-success").modal("hide")}, 1500);
+	}
+}
+
+
+function validarErrores(array){
+
+	if(typeof(array)!="undefined"){
+		if(array.length){
+			var obj = $("<ul><ul>")
+			for (var i = 0; i <array.length; i++) {
+				obj.append("<li>"+array[i].mensaje+"</li>")
+			}
+			alertmsj=obj.html();
+			validarMensajes();
+		}
 	}
 }

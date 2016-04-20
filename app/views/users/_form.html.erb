@@ -1,10 +1,14 @@
 <%= form_for(setup_user(@user)) do |f| %>
+
+
   <script type="text/javascript">
-var  alertmsj;
+   var errorsArray=[] ;
   <% @user.errors.each do |atributo, mensaje| %>
-      alertmjs=+"<li><%=mensaje%></li>"
-<% end %>
-validarMensajes();
+      errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
+  <% end %>
+  $( document ).ready(function() {
+    validarErrores(errorsArray);
+  });
 </script>
   <div class="box box-primary">
     <div class="box-header with-border">
@@ -18,14 +22,18 @@ validarMensajes();
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
               <%= f.label :cedula %>*<br>
-              <%= f.text_field :cedula, type:"number",class:"form-control cedula" %>
+              <%= f.text_field :cedula, type:"number",class:"form-control cedula",required: true,data:{
+                maxlength: "11"
+                } %>
              </div>
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
               <%= field.label :sexo %>*<br>
-              <%=radio_button("user[profile_attributes]", "sexo", "true") %> Masculino 
-              <%=radio_button("user[profile_attributes]", "sexo", "false") %> Femenino
+              <%= field.radio_button:sexo,'true', :checked => true %>
+              Masculino              
+              <%= field.radio_button:sexo,'false', :checked => false %>
+              Femenino
             </div>
           </div>        
         </div>
@@ -101,8 +109,8 @@ validarMensajes();
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
-              <label for="password_confirmation">Confirma tu Contraseña</label>*<br>
-              <input id="password_confirmation" name="password_confirmation" type="password" class="form-control" >
+               <%= f.label :password_confirmation, "Confirmar contraseña" %><br />
+               <%= f.password_field :password_confirmation,class:"form-control" %>
              </div>
           </div>
         </div> 

@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   authenticates_with_sorcery!
-  
-  has_one :profile
+  attr_accessor  :password, :password_confirmation
+  has_one :profile,dependent: :destroy
   #enum role: [:admin, :owner, :seller]
   ##after_initialize :set_default_role, :if => :new_record?
 
@@ -13,11 +13,15 @@ class User < ActiveRecord::Base
   friendly_id :cedula, use: :slugged
 
 #Validaciones de prioridad
-validates :cedula, :presence => {:message => "Usted debe ingresar una cedula"}, :numericality => {:only_integer => true, :message => "La prioridad debe ser numérica"}
+validates :cedula, :presence => {:message => "El campo cédula no puede estar vacío"}, :numericality => {:only_integer => true, :message => "El campo cédula debe ser numérico"}
+validates :cedula, :uniqueness => {:message => "Ya existe un usuario cone esta cédula"}
+validates :cedula, length: { minimum: 5, maximun: 11 , message:"El campo cédula debe contener entre 5 y 11 dígitos"}
+validates :password, length: {:if => :password_required?, minimum: 8 , message:"El campo contraseña debe contener al menos 8 dígitos"}
+validates :password, :presence =>  { :if => :password_required?, :message => "El campo contraseña no puede estar vacío"}
+validates :password, :confirmation =>  { :if => :password_required?, :message => "Las contraseñas no coinciden"}
+validates :password_confirmation, :presence =>  { :if => :password_required?, :message => "El campo confirmar contraseña no puede estar vacío"}
 
-  def minimum_age
-    if false< 18
-      self.errors.add(:cedula, "must be at least 18 years old!")
-    end
+  def password_required?
+    new_record?
   end
 end

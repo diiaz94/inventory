@@ -13,16 +13,18 @@
                     <thead>
                       <tr>
                         <th>Nombre</th>
+                        <th>Marca</th>
                         <th>Categoria</th>
-                        <th>Descripción</th>
+                        <th class="hidden-xs">Descripción</th>
                       </tr>
                     </thead>
                     <tbody>
                     <% @products.each_with_index do |product,index| %>
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-product-"+index.to_s%>>
                         <td><%= product.nombre %></td>
-                        <td><%= product.category.nombre %></td>
-                        <td><%= product.descripcion %></td>
+                        <td><%= product.marca %></td>
+                        <td><%= product.categoria %></td>
+                        <td class="hidden-xs"><%= product.descripcion %></td>
                       </tr>
                         <div class="example-modal">
                           <div class="modal fade" id=<%="modal-product-"+index.to_s%>>
@@ -44,8 +46,10 @@
                                           <dl>
                                             <dt>Nombre:</dt>
                                             <dd><%=product.nombre%></dd>
+                                            <dt>Marca:</dt>
+                                            <dd><%=product.marca%></dd>
                                             <dt>Categoria:</dt>
-                                            <dd><%=product.category.nombre%></dd>
+                                            <dd><%=product.categoria%></dd>
                                             <dt>Descripcion:</dt>
                                             <dd><%=product.descripcion%></dd>
                                                                                 
@@ -72,8 +76,9 @@
                     <tfoot>
                       <tr>
                         <th>Nombre</th>
+                        <th>Marca</th>
                         <th>Categoría</th>
-                        <th>Descripción</th>
+                        <th class="hidden-xs">Descripción</th>
                       </tr>
                     </tfoot>
                   </table>

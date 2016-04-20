@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
+  resources :brands
+
+  resources :units
+
   get 'welcome/index'
 
-  resources :deposits_products
+  #resources :deposits_products
 
   resources :products
 
@@ -14,6 +18,10 @@ Rails.application.routes.draw do
   resources :profiles
 
   get 'sessions/new'
+
+  post 'deposits/:id/products' => 'deposits_products#create'
+  get 'deposits/:id/products' => 'deposits_products#index', as: :deposits_products
+  get 'deposits/:id/new' => 'deposits_products#new', as: :new_deposits_product
 
   resources :users
 

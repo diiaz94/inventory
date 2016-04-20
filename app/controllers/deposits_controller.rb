@@ -1,5 +1,5 @@
 class DepositsController < ApplicationController
-  before_action :set_deposit, only: [:show, :edit, :update, :destroy]
+  before_action :set_deposit, only: [:show, :edit, :update, :destroy, :products]
 
   # GET /deposits
   # GET /deposits.json
@@ -28,7 +28,7 @@ class DepositsController < ApplicationController
 
     respond_to do |format|
       if @deposit.save
-        format.html { redirect_to @deposit, notice: 'Deposit was successfully created.' }
+        format.html { redirect_to deposits_path, notice: 'Depósito creado exitosamente.' }
         format.json { render :show, status: :created, location: @deposit }
       else
         format.html { render :new }
@@ -41,8 +41,9 @@ class DepositsController < ApplicationController
   # PATCH/PUT /deposits/1.json
   def update
     respond_to do |format|
+      @deposit.slug=nil
       if @deposit.update(deposit_params)
-        format.html { redirect_to @deposit, notice: 'Deposit was successfully updated.' }
+        format.html { redirect_to deposits_path, notice: 'Depósito actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @deposit }
       else
         format.html { render :edit }
@@ -60,15 +61,14 @@ class DepositsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_deposit
-      @deposit = Deposit.find(params[:id])
+      @deposit = Deposit.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deposit_params
-      params.require(:deposit).permit(:nombre, :descripcion)
+      params.require(:deposit).permit(:nombre, :descripcion,:commerce_id)
     end
 end

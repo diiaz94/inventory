@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+ # before_action :validate_password, only:[:create]
   # GET /users_url
   # GET /users.json
   def index
@@ -18,16 +19,18 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    puts "++++"+@user.crypted_password
   end
 
   # POST /users
   # POST /users.json
   def create
     @user = User.new(user_params)
-    
+        puts "SE VA A GUARDAR++++++"    
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_path, notice: 'Se ha registrado exitosamente.' }
+        puts "SE GUARDO++++++"
+        format.html { redirect_to users_path, notice: 'Usuario creado exitosamente.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -40,8 +43,9 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
+      @user.slug=nil
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to users_path, notice: 'Usuario actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -65,18 +69,10 @@ class UsersController < ApplicationController
     def set_user
       @user = User.friendly.find(params[:id])
     end
-    def validate_fields
-      cedula = params[:user][:cedula]
+    def validate_password
       pass = params[:user][:password]
       passC = params[:password_confirmation]
-    
-      if cedula.strip ==""
-        redirect_to(:back,alert: "El campo cedula no puede estar vacio")
-      else
-        if cedula.strip.length<0 || cedula.strip.length >11
-          redirect_to(:back,alert: "Verifique la longitud del campo cedula")
-        else  
-          if pass and pass.strip ==""
+           if pass and pass.strip ==""
             redirect_to(:back,alert: "El campo password no puede estar vacio")
           else
             if pass and !(/^(?=.*[A-Z]).{1,}$/.match(pass.strip))
@@ -91,8 +87,7 @@ class UsersController < ApplicationController
               end  
             end
           end  
-        end
-      end  
+         
     end
 
     def validate_fields_profile
@@ -174,7 +169,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:cedula, :password, :password_confirmation, profile_attributes: [:id,:primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :sexo, :email, :celular])
+      params.require(:user).permit(:cedula, :password, :password_confirmation, profile_attributes: [:id,:primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :sexo, :email, :celular, :_destroy])
     end
 
 end

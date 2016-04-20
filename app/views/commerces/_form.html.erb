@@ -1,25 +1,62 @@
+
 <%= form_for(@commerce) do |f| %>
-  <% if @commerce.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@commerce.errors.count, "error") %> prohibited this commerce from being saved:</h2>
 
-      <ul>
-      <% @commerce.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
+  <script type="text/javascript">
+   var errorsArray=[] ;
+  <% @commerce.errors.each do |atributo, mensaje| %>
+      errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
   <% end %>
+  $( document ).ready(function() {
+    validarErrores(errorsArray);
+  });
+</script>
 
-  <div class="field">
-    <%= f.label :nombre %><br>
-    <%= f.text_field :nombre %>
-  </div>
-  <div class="field">
-    <%= f.label :descripcion %><br>
-    <%= f.text_area :descripcion %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Datos del Comercio</h3>
+    </div><!-- /.box-header -->
+
+    <div class="box-body">
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :nombre %>*<br>
+              <%= f.text_field :nombre,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :profile_id, "Dueño" %>*<br>
+            <%= f.select :profile_id, 
+            options_for_select(Profile.all.collect {|p| [p.complete_name, p['id'] ] },( @commerce.profile ? @commerce.profile_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div>      
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :descripcion, "Descripción" %><br>
+              <%= f.text_area :descripcion ,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+  
+    <div class="box-footer">
+      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
+      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+    </div>
 <% end %>
+
+
+
+<script>
+      $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+      });
+</script>

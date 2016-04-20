@@ -28,7 +28,7 @@ class CommercesController < ApplicationController
 
     respond_to do |format|
       if @commerce.save
-        format.html { redirect_to @commerce, notice: 'Commerce was successfully created.' }
+        format.html { redirect_to commerces_path, notice: 'Comercio creado exitosamente.' }
         format.json { render :show, status: :created, location: @commerce }
       else
         format.html { render :new }
@@ -41,8 +41,9 @@ class CommercesController < ApplicationController
   # PATCH/PUT /commerces/1.json
   def update
     respond_to do |format|
+      @commerce.slug=nil
       if @commerce.update(commerce_params)
-        format.html { redirect_to @commerce, notice: 'Commerce was successfully updated.' }
+        format.html { redirect_to commerces_path, notice: 'Comercio actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @commerce }
       else
         format.html { render :edit }
@@ -64,11 +65,11 @@ class CommercesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_commerce
-      @commerce = Commerce.find(params[:id])
+      @commerce = Commerce.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def commerce_params
-      params.require(:commerce).permit(:nombre, :descripcion)
+      params.require(:commerce).permit(:nombre, :descripcion,:profile_id)
     end
 end

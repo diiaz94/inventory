@@ -2,6 +2,11 @@ class Profile < ActiveRecord::Base
 	belongs_to :user
 	has_many :commerces
 
+	validates :sexo, :presence => {:message => "Debe elegir un sexo"}
+	validates :primer_nombre, :presence => {:message => "El campo primer nombre no puede estar vacío"}
+	validates :primer_apellido, :presence => {:message => "El campo primer apellido no puede estar vacío"}
+
+
 	extend FriendlyId
 	friendly_id :primer_nombre, use: :slugged
 	def identifier

@@ -1,10 +1,10 @@
 class DepositsProductsController < ApplicationController
   before_action :set_deposits_product, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_deposit, except: []
   # GET /deposits_products
   # GET /deposits_products.json
   def index
-    @deposits_products = DepositsProduct.all
+    @deposits_products = params[:id] ? DepositsProduct.where(deposit_id:@deposit.id): DepositsProduct.all
   end
 
   # GET /deposits_products/1
@@ -25,10 +25,10 @@ class DepositsProductsController < ApplicationController
   # POST /deposits_products.json
   def create
     @deposits_product = DepositsProduct.new(deposits_product_params)
-
+    @deposits_product.deposit = @deposit
     respond_to do |format|
       if @deposits_product.save
-        format.html { redirect_to @deposits_product, notice: 'Deposits product was successfully created.' }
+        format.html { redirect_to deposits_products_path(@deposit), notice: 'Deposits product was successfully created.' }
         format.json { render :show, status: :created, location: @deposits_product }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class DepositsProductsController < ApplicationController
   def update
     respond_to do |format|
       if @deposits_product.update(deposits_product_params)
-        format.html { redirect_to @deposits_product, notice: 'Deposits product was successfully updated.' }
+        format.html { redirect_to deposits_products_path(@deposit), notice: 'Deposits product was successfully updated.' }
         format.json { render :show, status: :ok, location: @deposits_product }
       else
         format.html { render :edit }
@@ -66,9 +66,12 @@ class DepositsProductsController < ApplicationController
     def set_deposits_product
       @deposits_product = DepositsProduct.find(params[:id])
     end
+    def set_deposit
+      @deposit = Deposit.friendly.find(params[:id])
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deposits_product_params
-      params.require(:deposits_product).permit(:cantidad, :precio)
+      params.require(:deposits_product).permit(:cantidad, :precio, :product_id)
     end
 end

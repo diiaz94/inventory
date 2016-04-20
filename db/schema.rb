@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413213249) do
+ActiveRecord::Schema.define(version: 20160419230743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "brands", force: true do |t|
+    t.string   "nombre"
+    t.text     "descripcion"
+    t.string   "slug"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "categories", force: true do |t|
     t.string   "nombre"
@@ -39,9 +47,12 @@ ActiveRecord::Schema.define(version: 20160413213249) do
     t.string   "nombre"
     t.text     "descripcion"
     t.string   "slug"
+    t.integer  "commerce_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "deposits", ["commerce_id"], name: "index_deposits_on_commerce_id", using: :btree
 
   create_table "deposits_products", force: true do |t|
     t.integer  "cantidad"
@@ -60,10 +71,15 @@ ActiveRecord::Schema.define(version: 20160413213249) do
     t.string   "nombre"
     t.text     "descripcion"
     t.integer  "category_id"
+    t.integer  "unit_id"
+    t.integer  "brand_id"
     t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "products", ["brand_id"], name: "index_products_on_brand_id", using: :btree
+  add_index "products", ["unit_id"], name: "index_products_on_unit_id", using: :btree
 
   create_table "profiles", force: true do |t|
     t.string   "primer_nombre"
@@ -80,6 +96,15 @@ ActiveRecord::Schema.define(version: 20160413213249) do
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
+
+  create_table "units", force: true do |t|
+    t.string   "nombre"
+    t.string   "abv"
+    t.text     "descripcion"
+    t.string   "slug"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "cedula",           null: false
