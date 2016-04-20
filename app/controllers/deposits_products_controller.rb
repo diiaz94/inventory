@@ -4,7 +4,7 @@ class DepositsProductsController < ApplicationController
   # GET /deposits_products
   # GET /deposits_products.json
   def index
-    @deposits_products = params[:id] ? DepositsProduct.where(deposit_id:@deposit.id): DepositsProduct.all
+    @deposits_products = params[:deposit_id] ? DepositsProduct.where(deposit_id:@deposit.id): DepositsProduct.all
   end
 
   # GET /deposits_products/1
@@ -24,8 +24,8 @@ class DepositsProductsController < ApplicationController
   # POST /deposits_products
   # POST /deposits_products.json
   def create
+    puts deposits_product_params.to_s + "*********"
     @deposits_product = DepositsProduct.new(deposits_product_params)
-    @deposits_product.deposit = @deposit
     respond_to do |format|
       if @deposits_product.save
         format.html { redirect_to deposits_products_path(@deposit), notice: 'Deposits product was successfully created.' }
@@ -64,14 +64,14 @@ class DepositsProductsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_deposits_product
-      @deposits_product = DepositsProduct.find(params[:id])
+      @deposits_product = DepositsProduct.friendly.find(params[:id])
     end
     def set_deposit
-      @deposit = Deposit.friendly.find(params[:id])
+      @deposit = Deposit.friendly.find(params[:deposit_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deposits_product_params
-      params.require(:deposits_product).permit(:cantidad, :precio, :product_id)
+      params.require(:deposits_product).permit(:cantidad, :precio, :product_id).merge(deposit_id: @deposit.id.to_s)
     end
 end
