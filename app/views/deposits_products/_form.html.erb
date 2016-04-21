@@ -1,5 +1,5 @@
 
-<%= form_for(@deposits_product,{:url => deposits_product_path(@deposit.slug,@deposits_product)}) do |f| %>
+<%= form_for(@deposits_product,{:url => (@deposits_product.new_record? ? deposits_products_path : deposits_product_path(@deposit.slug,@deposits_product) )}) do |f| %>
 
   <script type="text/javascript">
    var errorsArray=[] ;

@@ -28,7 +28,7 @@ class DepositsProductsController < ApplicationController
     @deposits_product = DepositsProduct.new(deposits_product_params)
     respond_to do |format|
       if @deposits_product.save
-        format.html { redirect_to deposits_products_path(@deposit), notice: 'Deposits product was successfully created.' }
+        format.html { redirect_to deposits_products_path(@deposit), notice: 'El producto '+@deposits_product.product.nombre+' se agregó al depósito '+@deposit.nombre+' exitosamente.' }
         format.json { render :show, status: :created, location: @deposits_product }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class DepositsProductsController < ApplicationController
   def update
     respond_to do |format|
       if @deposits_product.update(deposits_product_params)
-        format.html { redirect_to deposits_products_path(@deposit), notice: 'Deposits product was successfully updated.' }
+        format.html { redirect_to deposits_products_path(@deposit), notice: 'El producto '+@deposits_product.product.nombre+' se actualizó en el depósito '+@deposit.nombre+' exitosamente.'}
         format.json { render :show, status: :ok, location: @deposits_product }
       else
         format.html { render :edit }

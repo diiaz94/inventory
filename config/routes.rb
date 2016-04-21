@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   get 'deposits/:deposit_id/products/:id/edit' => 'deposits_products#edit', as: :edit_deposits_product
   get 'deposits/:deposit_id/products/:id' => 'deposits_products#show', as: :deposits_product
   patch 'deposits/:deposit_id/products/:id' => 'deposits_products#update' 
-  put 'deposits/:deposit_id/products/:id' => 'deposits_products#update'
+  put 'deposits/:deposit_id/products/:id' => 'deposits_products#update' 
   
   resources :users
 

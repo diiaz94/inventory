@@ -1,5 +1,6 @@
 class Product < ActiveRecord::Base
-	has_and_belongs_to_many :deposits
+	has_many :deposits_products
+  has_many :deposits, through: :deposits_products
 	belongs_to :category
 	belongs_to :unit
 	belongs_to :brand
