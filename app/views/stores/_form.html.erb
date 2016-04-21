@@ -1,8 +1,8 @@
-<%= form_for(@category) do |f| %>
+<%= form_for(@store) do |f| %>
 
   <script type="text/javascript">
    var errorsArray=[] ;
-  <% @category.errors.each do |atributo, mensaje| %>
+  <% @store.errors.each do |atributo, mensaje| %>
       errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
   <% end %>
   $( document ).ready(function() {
@@ -12,7 +12,7 @@
 
   <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title">Datos de la Categoría</h3>
+      <h3 class="box-title">Datos de la Tienda</h3>
     </div><!-- /.box-header -->
 
     <div class="box-body">
@@ -27,8 +27,8 @@
       <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
-              <%= f.label :descripcion, "Descripción" %><br>
-              <%= f.text_area :descripcion ,class:"form-control" %>
+              <%= f.label :direccion, "Dirección" %><br>
+              <%= f.text_area :direccion ,class:"form-control" %>
             </div>
         </div>
       </div>
@@ -41,3 +41,4 @@
       <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
     </div>
 <% end %>
+
