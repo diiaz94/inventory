@@ -1,9 +1,12 @@
 class Product < ActiveRecord::Base
-	has_many :deposits_products
-  has_many :deposits, through: :deposits_products
 	belongs_to :category
 	belongs_to :unit
 	belongs_to :brand
+  has_many :loads
+  has_many :deposits, through: :loads
+  has_many :downloads
+  has_many :stores, through: :downloads
+
   extend FriendlyId
   friendly_id :nombre, use: :slugged
 

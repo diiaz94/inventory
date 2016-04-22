@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Cantidad:</strong>
+  <%= @download.cantidad %>
+</p>
+
+<p>
+  <strong>Precio:</strong>
+  <%= @download.precio %>
+</p>
+
+<%= link_to 'Edit', edit_download_path(@download) %> |
+<%= link_to 'Back', downloads_path %>

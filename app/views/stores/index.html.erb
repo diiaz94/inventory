@@ -13,6 +13,7 @@
                     <thead>
                       <tr>
                         <th>Nombre</th>
+                        <th>Comercio</th>
                         <th>Dirección</th>
                       </tr>
                     </thead>
@@ -20,6 +21,7 @@
                     <% @stores.each_with_index do |store,index| %>
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-store-"+index.to_s%>>
                         <td><%= store.nombre %></td>
+                        <td><%= store.commerce.nombre %></td>
                         <td><%= store.direccion %></td>
                       </tr>
                         <div class="example-modal">
@@ -42,10 +44,14 @@
                                           <dl>
                                             <dt>Nombre:</dt>
                                             <dd><%=store.nombre%></dd>
+                                            <dt>Comercio:</dt>
+                                            <dd><%=store.commerce.nombre%></dd>
                                             <dt>Dirección:</dt>
                                             <dd><%=store.direccion%></dd>
                                                                               
                                           </dl>
+                                          <%= link_to 'Ver Productos', products_of_store_path(store), class:"visible-xs btn btn-block btn-warning btn-sm" %>
+                                          <%= link_to 'Ver Productos', products_of_store_path(store), class:"hidden-xs btn btn-warning btn-sm" %>
                                        </div><!-- /.box-body -->
                                       </div><!-- /.box -->
                                     </div><!-- ./col -->
@@ -68,6 +74,7 @@
                     <tfoot>
                       <tr>
                         <th>Nombre</th>
+                        <th>Comercio</th>
                         <th>Descripción</th>
                       </tr>
                     </tfoot>

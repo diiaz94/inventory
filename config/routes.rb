@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :downloads
+
+  resources :loads
+
   resources :stores
 
   resources :brands
@@ -21,14 +25,27 @@ Rails.application.routes.draw do
 
   get 'sessions/new'
 
-  get 'deposits/:deposit_id/products' => 'deposits_products#index', as: :deposits_products
-  post 'deposits/:deposit_id/products' => 'deposits_products#create'
-  get 'deposits/:deposit_id/new' => 'deposits_products#new', as: :new_deposits_product
-  get 'deposits/:deposit_id/products/:id/edit' => 'deposits_products#edit', as: :edit_deposits_product
-  get 'deposits/:deposit_id/products/:id' => 'deposits_products#show', as: :deposits_product
-  patch 'deposits/:deposit_id/products/:id' => 'deposits_products#update' 
-  put 'deposits/:deposit_id/products/:id' => 'deposits_products#update' 
+  get 'deposits/:deposit_id/products' => 'loads#products_of_deposit', as: :products_of_deposit
+  get 'deposits/:deposit_id/products/new' => 'loads#new_product_of_deposit', as: :new_product_of_deposit
+  get 'deposits/:deposit_id/products/:id' => 'loads#show', as: :product_of_deposit 
+  post 'deposits/:deposit_id/products' => 'loads#create_product_of_deposit'
+  get 'deposits/:deposit_id/products/:id/edit' => 'loads#edit_product_of_deposit', as: :edit_product_of_deposit
+  patch 'deposits/:deposit_id/products/:id' => 'loads#update_product_of_deposit' 
+  put 'deposits/:deposit_id/products/:id' => 'loads#update_product_of_deposit' 
+
+  get 'stores/:store_id/products' => 'downloads#products_of_store', as: :products_of_store
+  get 'stores/:store_id/products/new' => 'downloads#new_product_of_store', as: :new_product_of_store
+  get 'stores/:store_id/products/:id' => 'downloads#show', as: :product_of_store 
+  post 'stores/:store_id/products' => 'downloads#create_product_of_store'
+  get 'stores/:store_id/products/:id/edit' => 'downloads#edit_product_of_store', as: :edit_product_of_store
+  patch 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
+  put 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
   
+  
+# post 'deposits/:deposit_id/products' => 'deposits_products#create'
+#  get 'deposits/:deposit_id/new' => 'deposits_products#new', as: :new_deposits_product
+#  get 'deposits/:deposit_id/products/:id/edit' => 'deposits_products#edit', as: :edit_deposits_product
+ # get 'deposits/:deposit_id/products/:id' => 'deposits_products#show', as: :deposits_product
   resources :users
 
   # The priority is based upon order of creation: first created -> highest priority.

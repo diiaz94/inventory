@@ -1,8 +1,10 @@
 
-<%= form_for(@deposit) do |f| %>
+<%= form_for(@load,{:url => (@load.new_record? ? products_of_deposit_path : product_of_deposit_path(@deposit.slug,@load) )}) do |f| %>
+
+
   <script type="text/javascript">
    var errorsArray=[] ;
-  <% @deposit.errors.each do |atributo, mensaje| %>
+  <% @load.errors.each do |atributo, mensaje| %>
       errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
   <% end %>
   $( document ).ready(function() {
@@ -12,35 +14,36 @@
 
   <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title">Datos del Depósito</h3>
+      <h3 class="box-title">Datos de la carga</h3>
     </div><!-- /.box-header -->
-
+    
     <div class="box-body">
-      <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-              <%= f.label :nombre %>*<br>
-              <%= f.text_field :nombre,class:"form-control" %>
-            </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <%= f.label :commerce_id, "Comercio asociado" %>*<br>
-            <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:nombre,:id),( @deposit.commerce ? @deposit.commerce_id : "" )),{},{class:"form-control select2"}%>
+            <%= f.label :product_id, "Producto" %>*<br>
+            <%= f.select :product_id, 
+            options_for_select(Product.all.collect {|p| [p.nombre_marca, p['id'] ] },( @load.product_id ? @load.product_id : "" )),{},{class:"form-control select2"}%>
           </div>
         </div>
-      </div>      
+      </div> 
+      
       <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
-              <%= f.label :descripcion %><br>
-              <%= f.text_area :descripcion ,class:"form-control" %>
+              <%= f.label :cantidad, "Cantidad" %><br>
+              <%= f.number_field :cantidad ,class:"form-control" %>
             </div>
         </div>
       </div>
-
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :precio, "Precio" %><br>
+              <%= f.text_field :precio ,class:"form-control" %>
+            </div>
+        </div>
+      </div>
     </div><!-- /.box-body -->
   </div><!-- /.box -->
   
@@ -49,6 +52,8 @@
       <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
     </div>
 <% end %>
+
+
 
 <script>
       $(function () {

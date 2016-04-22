@@ -25,6 +25,14 @@
         </div>
       </div>
       <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :commerce_id, "Comercio asociado" %>*<br>
+            <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:nombre,:id),( @store.commerce ? @store.commerce_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div>
+      <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
               <%= f.label :direccion, "Dirección" %><br>
@@ -42,3 +50,10 @@
     </div>
 <% end %>
 
+
+<script>
+      $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+      });
+</script>
