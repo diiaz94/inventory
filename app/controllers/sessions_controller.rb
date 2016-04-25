@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 		else
 			@user = User.new
 		end
-		render "new", layout: "blank"
+		
 	end
 	def create
 		if @user = login(params[:cedula],params[:password])
