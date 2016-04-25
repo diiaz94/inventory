@@ -22,8 +22,10 @@ Rails.application.routes.draw do
   resources :commerces
 
   resources :profiles
+  resources :sessions
 
-  get 'sessions/new'
+  get 'login' => 'sessions#new', as: :login
+  get 'logout' => 'sessions#destroy', as: :logout
 
   get 'deposits/:deposit_id/products' => 'loads#products_of_deposit', as: :products_of_deposit
   get 'deposits/:deposit_id/products/new' => 'loads#new_product_of_deposit', as: :new_product_of_deposit

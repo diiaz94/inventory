@@ -1,5 +1,5 @@
 class DownloadsController < ApplicationController
-  before_action :set_download, only: [:show, :edit, :update, :destroy]
+  before_action :set_download, only: [:show, :edit, :update, :destroy, :edit_product_of_store ,:update_product_of_store]
   before_action :set_store, only: [ :create_product_of_store,:update_product_of_store,:products_of_store,:new_product_of_store,:edit_product_of_store]
 
   # GET /downloads
@@ -63,7 +63,7 @@ class DownloadsController < ApplicationController
   end
 
   def create_product_of_store
-    @download = Load.new(download_params)
+    @download = Download.new(download_params)
     respond_to do |format|
       if @download.save
         format.html { redirect_to products_of_store_path(@store), notice: 'Se agregó el producto a la tienda exitosamente.' }
@@ -90,19 +90,18 @@ class DownloadsController < ApplicationController
   end
   def new_product_of_store
     @download = Download.new(store_id: @store.id)
-    @download.store_id = @store.id
-    deposits =  @store.commerce.deposits
-    puts "*********"
-    puts deposits.to_json
-    @products = []
-    deposits.each_index{|index|
-      p =deposits[index].products
-      p.each_index{|index|
-        @products << p[index]
-      }
-    }
+    puts "**********"
+    puts "DOWNLOAD"
+    puts @download.to_json
+    @deposits =  @store.commerce.deposits.length>0 ? @store.commerce.deposits : []
+    @products = (@deposits.length > 0 and @deposits.first.products.length>0) ? @deposits.first.products : []
+    puts "**********"
+    puts @products.to_json
   end
   def edit_product_of_store
+    @deposits =  @store.commerce.deposits.length>0 ? @store.commerce.deposits : []
+    @products = (@deposits.length > 0 and @deposits.first.products.length>0) ? @deposits.first.products : []
+
   end
 
 
@@ -117,6 +116,6 @@ class DownloadsController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def download_params
-      params.require(:download).permit(:cantidad, :precio,:deposit_id).merge(store_id: @store.id.to_s)
+      params.require(:download).permit(:cantidad, :precio,:deposit_id,:product_id).merge(store_id: @store.id.to_s)
     end
 end

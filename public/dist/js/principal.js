@@ -61,3 +61,30 @@ function validarErrores(array){
 		}
 	}
 }
+
+var products = [];
+function fill_products_for_store(){
+
+$.ajax("/deposits/"+this.value+"/products.json").done(
+	function(data){
+		$("select.select2#download_product_id").html("");
+
+		$.each(data,function( index, obj ) {
+	 			$("select.select2#download_product_id").append(
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+" - "+obj.precio+" Bs.</option>"
+	 			) 
+		});
+		products = data;	
+		$("select.select2#download_product_id").select2();
+        $("select.select2#download_product_id").trigger("change");
+	});
+}
+
+function calculate_price(){
+debugger
+var product = products[$($(this).find("option:selected")).data("index")]
+var precio_base = typeof(product)!==undefined ? product.precio : products[0].precio
+$("#download_precio").val(precio_base+(precio_base*0.30))
+
+
+}

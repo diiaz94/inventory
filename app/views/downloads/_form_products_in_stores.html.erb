@@ -21,9 +21,18 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
+            <%= f.label :deposit_id, "Deposito origen" %>*<br>
+            <%= f.select :deposit_id, 
+            options_for_select(@deposits.collect {|p| [p.nombre, p['id'] ] },( @download.deposit_id ? @download.deposit_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div> 
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
             <%= f.label :product_id, "Producto" %>*<br>
             <%= f.select :product_id, 
-            options_for_select(@products.collect {|p| [p.nombre_marca, p['id'] ] },( @download.product_id ? @download.product_id : "" )),{},{class:"form-control select2"}%>
+            options_for_select(@products.collect {|p| [p.nombre_marca , p['id'] ] },( @download.product_id ? @download.product_id : "" )),{},{class:"form-control select2"}%>
           </div>
         </div>
       </div> 
@@ -59,5 +68,11 @@
       $(function () {
         //Initialize Select2 Elements
         $(".select2").select2();
+        <%if @download.new_record?%>
+        $("select.select2#download_product_id").change(calculate_price);
+        <%end%>
+
+        $("select.select2#download_deposit_id").change(fill_products_for_store);
+        $("select.select2#download_deposit_id").trigger("change");
       });
 </script>

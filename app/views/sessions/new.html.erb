@@ -1,2 +1,35 @@
-<h1>Sessions#new</h1>
-<p>Find me in app/views/sessions/new.html.erb</p>
+    <div class="login-box">
+      <div class="login-logo">
+		<b>Control de Inventario</b>
+      </div><!-- /.login-logo -->
+      <div class="login-box-body">
+        <p class="login-box-msg">Ingresa tus datos para iniciar sesión </p>
+        <%= form_tag sessions_path,class: "content-center", method: :post do %>
+       
+          <div class="form-group has-feedback">
+            <input type="number" class="form-control cedula" placeholder="Cedula" name="cedula">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" placeholder="Password" name="password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+          <div class="row">
+            <div class="col-xs-8">
+              
+            </div><!-- /.col -->
+            <div class="col-xs-4">
+              <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
+            </div><!-- /.col -->
+          </div>
+        <% end %>
+
+
+        <a href="#">I forgot my password</a><br>
+        <a href="#" class="text-center">Register a new membership</a>
+
+      </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+<script type="text/javascript">
+
+</script>
