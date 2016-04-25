@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   authenticates_with_sorcery!
   attr_accessor  :password, :password_confirmation
-  has_one :profile,dependent: :destroy
+  has_one :profile, dependent: :destroy
+  belongs_to :role
   accepts_nested_attributes_for :profile, allow_destroy: true
   extend FriendlyId
   friendly_id :cedula, use: :slugged

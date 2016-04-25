@@ -320,12 +320,14 @@
                 </li>
               </ul>
             </li>
-            <li>
-              <a href="<%=logout_path%>">
-                <i class="fa fa-link"></i> 
-                <span>Salir</span>
-              </a>
-            </li>
+            <%if !current_user%>
+              <li>
+                <a href="<%=logout_path%>">
+                  <i class="fa fa-link"></i> 
+                  <span>Salir</span>
+                </a>
+              </li>
+              <%end%>
           </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->

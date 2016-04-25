@@ -1,0 +1,2 @@
+<h2>Registra el usuario Administrador</h2>
+<%= render 'users/form', :@user => User.new(role_id: Role.where(nombre: "Admin")[0].id) %>	

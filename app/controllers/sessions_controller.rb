@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
 			redirect_back_or_to(root_path,notice:"Usted ya esta logeado con la cedula " + current_user.cedula)
 		else
 			@user = User.new
+			render "new" , layout: "blank"
 		end
 		
 	end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160422050555) do
+ActiveRecord::Schema.define(version: 20160425211527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,19 +54,6 @@ ActiveRecord::Schema.define(version: 20160422050555) do
 
   add_index "deposits", ["commerce_id"], name: "index_deposits_on_commerce_id", using: :btree
 
-  create_table "deposits_products", force: true do |t|
-    t.integer  "cantidad"
-    t.float    "precio"
-    t.integer  "deposit_id"
-    t.integer  "product_id"
-    t.string   "slug"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "deposits_products", ["deposit_id"], name: "index_deposits_products_on_deposit_id", using: :btree
-  add_index "deposits_products", ["product_id"], name: "index_deposits_products_on_product_id", using: :btree
-
   create_table "downloads", force: true do |t|
     t.integer  "cantidad"
     t.float    "precio"
@@ -86,7 +73,6 @@ ActiveRecord::Schema.define(version: 20160422050555) do
     t.integer  "cantidad"
     t.float    "precio"
     t.integer  "deposit_id"
-    t.integer  "store_id"
     t.integer  "product_id"
     t.string   "slug"
     t.datetime "created_at"
@@ -95,7 +81,6 @@ ActiveRecord::Schema.define(version: 20160422050555) do
 
   add_index "loads", ["deposit_id"], name: "index_loads_on_deposit_id", using: :btree
   add_index "loads", ["product_id"], name: "index_loads_on_product_id", using: :btree
-  add_index "loads", ["store_id"], name: "index_loads_on_store_id", using: :btree
 
   create_table "products", force: true do |t|
     t.string   "nombre"
@@ -127,6 +112,13 @@ ActiveRecord::Schema.define(version: 20160422050555) do
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
+  create_table "roles", force: true do |t|
+    t.string   "nombre"
+    t.text     "descripcion"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "stores", force: true do |t|
     t.string   "nombre"
     t.text     "direccion"
@@ -152,6 +144,7 @@ ActiveRecord::Schema.define(version: 20160422050555) do
     t.string   "crypted_password"
     t.string   "salt"
     t.string   "slug"
+    t.integer  "role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
