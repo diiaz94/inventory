@@ -16,6 +16,9 @@
                         <th>Nombre</th>
                         <th class="hidden-xs">Email</th>
                         <th>Celular</th>
+                        <%if current_user.admin?%>
+                          <th class="hidden-xs">Rol</th>
+                        <%end%>
                       </tr>
                     </thead>
                     <tbody>
@@ -25,6 +28,9 @@
                           <td><%= user.profile.primer_nombre %> <%= user.profile.primer_apellido%></td>
                           <td class="hidden-xs"><%= user.profile.email %></td>
                           <td><%= user.profile.celular %></td>
+                          <%if current_user.admin?%>
+                            <td class="hidden-xs"><%= user.role.nombre%></td>
+                          <%end%>
                         </tr>
                         <div class="example-modal">
                           <div class="modal fade" id=<%="modal-user-"+index.to_s%>>
@@ -53,7 +59,11 @@
                                             <dt>Email:</dt>
                                             <dd><%=user.profile.email%></dd>
                                             <dt>Teléfono celular:</dt>
-                                            <dd><%=user.profile.celular%></dd>                                    
+                                            <dd><%=user.profile.celular%></dd> 
+                                            <%if current_user.admin?%>
+                                              <dt>Rol:</dt>
+                                              <dd><%=user.role.nombre%></dd> 
+                                            <%end%>                                   
                                           </dl>
                                        </div><!-- /.box-body -->
                                       </div><!-- /.box -->
@@ -81,6 +91,9 @@
                         <th>Nombre</th>
                         <th class="hidden-xs">Email</th>
                         <th>Celular</th>
+                        <%if current_user.admin?%>
+                          <th class="hidden-xs">Rol</th>
+                        <%end%>
                       </tr>
                     </tfoot>
                   </table>

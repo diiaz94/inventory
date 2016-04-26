@@ -113,7 +113,17 @@
                <%= f.password_field :password_confirmation,class:"form-control" %>
              </div>
           </div>
-        </div> 
+        </div>
+        <%if current_user.admin?%>
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <div class="form-group">
+                <%= f.label :role_id, "Rol del usuario" %>*<br>
+              <%= f.select :role_id, options_for_select(Role.all.pluck(:nombre,:id),( @user.role ? @user.role_id : "" )),{},{class:"form-control select2"}%>
+              </div>
+            </div>
+          </div>
+        <%end%>
       </div>
     </div><!-- /.box -->
   <%end%>
@@ -133,5 +143,6 @@
           radioClass: 'iradio_minimal-blue'
         });
           $('input[type="radio"]').first().parent().addClass("checked")
+          $(".select2").select2();
       });
 </script>

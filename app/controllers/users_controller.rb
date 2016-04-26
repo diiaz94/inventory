@@ -4,7 +4,14 @@ class UsersController < ApplicationController
   # GET /users_url
   # GET /users.json
   def index
-    @users = User.all
+    if current_user.admin?
+      @users = User.all
+    end
+    if current_user.owner?
+      @users = []
+      @users.push(current_user)
+    end
+
   end
 
   # GET /users/1
@@ -26,10 +33,8 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-        puts "SE VA A GUARDAR++++++"    
     respond_to do |format|
       if @user.save
-        puts "SE GUARDO++++++"
         format.html { redirect_to users_path, notice: 'Usuario creado exitosamente.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -169,7 +174,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:cedula, :password, :password_confirmation, profile_attributes: [:id,:primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :sexo, :email, :celular, :_destroy])
+      params.require(:user).permit(:cedula, :password, :password_confirmation, :role_id, profile_attributes: [:id,:primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :sexo, :email, :celular, :_destroy])
     end
 
 end

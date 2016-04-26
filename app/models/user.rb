@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :cedula, use: :slugged
 
-  enum role: [:admin, :owner, :seller]
  # after_initialize :set_default_role, :if => :new_record?
 
   #def set_default_role
@@ -25,4 +24,18 @@ validates :password_confirmation, :presence =>  { :if => :password_required?, :m
   def password_required?
     new_record?
   end
+
+  def admin?
+    self.role.nombre=="Admin"
+  end
+
+  def owner?
+    self.role.nombre=="Owner"
+  end
+
+  def seller?
+    self.role.nombre=="Seller"
+  end
 end
+
+
