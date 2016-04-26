@@ -1,32 +1,48 @@
 class WelcomeController < ApplicationController
   def index
-  	if User.all.count==0
-  		@create_user_admin=true
-  		@user = User.new
-  		render "register_admin" , layout: "blank"
+
+  	if User.all.length > 0
+  		@notUsers = false;
   	else
-  		if !current_user
-  			redirect_to(login_path)
-  		end
+  		@notUsers = true;
+  		puts "not User************"
+  		redirect_to admin_user_path
+
   	end
+
+  end
+
+  def admin_user
+  	@user = User.new
+    if !@notUsers
+      puts "EPAAAA***************"
+      render "register_user", layout: "blank"
+    else
+      redirect_to root_path
+    end
   end
 
   def create_admin_user
   	@user = User.new(user_params)
-	roles=Role.where(nombre: "Admin")
-	if roles.length>0
-		@user.role_id =  roles[0].id
-		if @user.save
-			redirect_to login_path
-	    else
-	    	render "register_admin" , layout: "blank",alert: "Lo sentimos, no se ha podido crear el usuario Administrador."
-	    	return
-	    end
-	else
-	    render "register_admin" , layout: "blank" ,alert: "Lo sentimos, no se ha podido crear el usuario Administrador."
-		return
-	end
+   
+      roles=Role.where(nombre: "Admin")
+    if roles.length>0
+    	@user.role_id =  roles[0].id
+    	if @user.save
+    	 	 redirect_to login_path
+        else
+        	render "register_user", layout: "blank"
+        return
+        end
+    else
+    	redirect_to(:back,alert: "Lo sentimos, no se ha podido crear el usuario Administrador.")
+    	#render "register_user", layout: "blank", alert: "Lo sentimos, no se ha podido crear el usuario Administrador."
+        return
+    end
+ 
+
   end
+
 
   	private
 	  # Never trust parameters from the scary internet, only allow the white list through.

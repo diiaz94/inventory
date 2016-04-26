@@ -45,7 +45,12 @@ Rails.application.routes.draw do
   patch 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
   put 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
   
+
+
   post 'create_admin_user' => 'welcome#create_admin_user', as: :create_admin_user
+  get 'admin_user' => 'welcome#admin_user', as: :admin_user
+  
+
 # post 'deposits/:deposit_id/products' => 'deposits_products#create'
 #  get 'deposits/:deposit_id/new' => 'deposits_products#new', as: :new_deposits_product
 #  get 'deposits/:deposit_id/products/:id/edit' => 'deposits_products#edit', as: :edit_deposits_product

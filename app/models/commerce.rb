@@ -1,5 +1,5 @@
 class Commerce < ActiveRecord::Base
- 	belongs_to :profile
+ 	belongs_to :user
   	has_many :deposits
   	has_many :stores
   	extend FriendlyId

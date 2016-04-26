@@ -20,7 +20,7 @@
                     <tbody>
                     <% @commerces.each_with_index do |commerce,index| %>
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-commerce-"+index.to_s%>>
-                        <td><%= commerce.profile.short_name %></td>
+                        <td><%= commerce.user.profile.short_name %></td>
                         <td><%= commerce.nombre %></td>
                         <td><%= commerce.descripcion %></td>
                       </tr>
@@ -43,7 +43,7 @@
                                         <div class="box-body">
                                           <dl>
                                             <dt>Dueño:</dt>
-                                            <dd><%=commerce.profile.complete_name%></dd>
+                                            <dd><%=commerce.user.profile.complete_name%></dd>
                                             <dt>Nombre:</dt>
                                             <dd><%=commerce.nombre%></dd>
                                             <dt>Descripcion:</dt>

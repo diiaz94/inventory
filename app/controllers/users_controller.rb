@@ -10,6 +10,10 @@ class UsersController < ApplicationController
     if current_user.owner?
       @users = []
       @users.push(current_user)
+      @commerces = current_user.commerces
+      @commerces.each do |commerce|
+         
+      end
     end
 
   end

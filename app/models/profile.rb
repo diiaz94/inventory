@@ -1,7 +1,5 @@
 class Profile < ActiveRecord::Base
 	belongs_to :user
-	has_many :commerces
-
 	validates :primer_nombre, :presence => {:message => "El campo primer nombre no puede estar vacío"}
 	validates :primer_apellido, :presence => {:message => "El campo primer apellido no puede estar vacío"}
 

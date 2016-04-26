@@ -1,5 +1,5 @@
 <h2>Registra el usuario Administrador</h2>
-<%= form_for(setup_user(@user),url: {action: "create_admin_user"} ) do |f| %>
+<%= form_for(setup_user(@user),url: {action: "create_admin_user"}  ) do |f| %>
 
 
   <script type="text/javascript">
@@ -145,5 +145,10 @@
         });
           $('input[type="radio"]').first().parent().addClass("checked")
           $(".select2").select2();
+          
+          alertmsj = "<%=alert%>"
+          validarMensajes();
+
+
       });
 </script>

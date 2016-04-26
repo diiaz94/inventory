@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   authenticates_with_sorcery!
   attr_accessor  :password, :password_confirmation
+  has_many :commerces
   has_one :profile, dependent: :destroy
   belongs_to :role
   accepts_nested_attributes_for :profile, allow_destroy: true
