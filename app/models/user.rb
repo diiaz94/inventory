@@ -37,6 +37,23 @@ validates :password_confirmation, :presence =>  { :if => :password_required?, :m
   def seller?
     self.role.nombre=="Seller"
   end
+
+  def role_name
+    puts "role******"
+    if self.admin?
+      return "Administrador"
+     
+    end
+    if self.owner? and self.commerces.count>0
+      count = self.commerces.count
+      return "- Propietari"+(self.profile.sexo ? "" : "a")+" de "+count.to_s+" Comercio"+(count>1 ? "s" : "")
+     
+    end
+    if self.seller?
+      return "Vendedor"+(self.profile.sexo ? "" : "a")+"en la tienda "+self.seller.store.nombre 
+     
+    end
+  end
 end
 
 

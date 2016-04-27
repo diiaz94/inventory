@@ -1,29 +1,62 @@
 <%= form_for(@seller) do |f| %>
-  <% if @seller.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@seller.errors.count, "error") %> prohibited this seller from being saved:</h2>
 
-      <ul>
-      <% @seller.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
+  <script type="text/javascript">
+   var errorsArray=[] ;
+  <% @seller.errors.each do |atributo, mensaje| %>
+      errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
   <% end %>
+  $( document ).ready(function() {
+    validarErrores(errorsArray);
+  });
+</script>
 
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.text_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :commerce_id %><br>
-    <%= f.text_field :commerce_id %>
-  </div>
-  <div class="field">
-    <%= f.label :store_id %><br>
-    <%= f.text_field :store_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Datos de la Tienda</h3>
+    </div><!-- /.box-header -->
+
+    <div class="box-body">
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :user_id, "Comercio asociado" %>*<br>
+            <%= f.select :user_id, options_for_select(User.all.pluck(:cedula,:id),( @seller.user ? @seller.user_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :commerce_id, "Comercio asociado" %>*<br>
+            <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:nombre,:id),( @seller.commerce ? @seller.commerce_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :store_id, "Comercio asociado" %>*<br>
+            <%= f.select :store_id, options_for_select(Store.all.pluck(:nombre,:id),( @seller.store ? @seller.store_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div>
+
+
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+  
+    <div class="box-footer">
+      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
+      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+    </div>
 <% end %>
+
+
+<script>
+      $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+      });
+</script>
+

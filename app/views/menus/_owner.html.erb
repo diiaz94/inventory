@@ -65,6 +65,27 @@
                           </ul>
                         </li>                        
 
+                        <li class="treeview">
+                          <a href="#">
+                            <i class="fa fa-link"></i> 
+                            <span>Vendedores</span> 
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </a>
+                          <ul class="treeview-menu">
+                            <%if commerce.sellers.count>0%>
+                              <%commerce.sellers.each do |seller|%>
+                                <li>
+                                <a href="<%=seller_path(seller)%>"><i class="fa fa-circle-o"></i> <%=seller.user.profile.short_name%></a>
+                              </li> 
+                              <%end%> 
+                            <%else%>
+                              <li>
+                                <a href="<%=new_seller_path%>"><i class="fa fa-circle-o"></i> Agregar Vendedor</a>
+                              </li>                            
+                            <%end%>
+                          </ul>
+                        </li>                        
+
                       </ul>
                     </li>
 

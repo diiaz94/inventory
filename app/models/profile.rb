@@ -14,6 +14,7 @@ class Profile < ActiveRecord::Base
 		self.primer_nombre + " "+ self.primer_apellido
 	end
 	def complete_name
+		puts "complete******"
 		self.primer_nombre + " "+ self.segundo_nombre + " "+ self.primer_apellido + " "+ self.segundo_apellido
 	end
 

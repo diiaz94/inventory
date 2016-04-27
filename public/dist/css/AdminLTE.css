@@ -75,6 +75,16 @@ body {
   .main-footer {
     margin-left: 0;
   }
+
+  .btn-info {
+  background-color: #00c0ef!important;
+  border-color: #00acd6!important;
+}
+.btn-info:hover,
+.btn-info:active,
+.btn-info.hover {
+  background-color: #00acd6;
+}
 }
 @media (min-width: 768px) {
   .sidebar-collapse .content-wrapper,
