@@ -1,4 +1,40 @@
-<p id="notice"><%= notice %></p>
+<section class="content">
+ <%= render 'deposits/deposits_table' %>
+ <%= render 'stores/stores_table' %>
+
+
+</section><!-- /.content -->
+
+
+ <script>
+      $(function () {
+        $("#deposits_table").DataTable({
+          "language": {
+            "url": "/plugins/datatables/dataTables.spanish.lang"
+          },
+          "columnDefs": [ {
+          "targets": 'no-sort',
+          "orderable": false,
+          "searchable": false
+          } ],
+          stateSave: true
+        });
+        $("#stores_table").DataTable({
+          "language": {
+            "url": "/plugins/datatables/dataTables.spanish.lang"
+          },
+          "columnDefs": [ {
+          "targets": 'no-sort',
+          "orderable": false,
+          "searchable": false
+          } ],
+          stateSave: true
+        });
+      });
+</script>
+
+
+
 
 <p>
   <strong>Nombre:</strong>
@@ -12,3 +48,6 @@
 
 <%= link_to 'Edit', edit_commerce_path(@commerce) %> |
 <%= link_to 'Back', commerces_path %>
+
+
+

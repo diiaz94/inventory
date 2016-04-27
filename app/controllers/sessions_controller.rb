@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+skip_before_action :require_login, except: [:destroy]
 	def new
 		if current_user
 			redirect_back_or_to(root_path,notice:"Usted ya esta logeado con la cedula " + current_user.cedula)

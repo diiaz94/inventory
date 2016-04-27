@@ -25,15 +25,17 @@
             </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-          <div class="form-group">
-            <%= f.label :profile_id, "Dueño" %>*<br>
-            <%= f.select :profile_id, 
-            options_for_select(Profile.all.collect {|p| [p.complete_name, p['id'] ] },( @commerce.profile ? @commerce.profile_id : "" )),{},{class:"form-control select2"}%>
+      <%if current_user.admin?%>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :user_id, "Dueño" %>*<br>
+              <%= f.select :user_id, 
+              options_for_select(User.all.collect {|p| [p.profile.complete_name, p['id'] ] },( @commerce.user ? @commerce.user_id : "" )),{},{class:"form-control select2"}%>
+            </div>
           </div>
         </div>
-      </div>      
+      <%end%>      
       <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">

@@ -1,0 +1,110 @@
+            </li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-link"></i> 
+                <span>Mis Comercios</span> 
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                
+               
+                <%if current_user.commerces.count>0%>
+                  <li>
+                    <a href="<%=commerces_path%>"><i class="fa fa-circle-o"></i> Ver Todos</a>
+                  </li>   
+                  <%current_user.commerces.each do |commerce|%>
+                    <li class="treeview">
+                      <a href="#">
+                        <i class="fa fa-link"></i> 
+                        <span><%=commerce.nombre%></span> 
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </a>
+                      <ul class="treeview-menu">
+                        <li>
+                          <a href="<%=commerce_path(commerce)%>"><i class="fa fa-circle-o"></i> Ver Comercio</a>
+                        </li> 
+                        <li class="treeview">
+                          <a href="#">
+                            <i class="fa fa-link"></i> 
+                            <span>Depósitos</span> 
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </a>
+                          <ul class="treeview-menu">
+                            <%if commerce.deposits.count>0%>
+                              <%commerce.deposits.each do |deposit|%>
+                                <li>
+                                <a href="<%=deposit_path(deposit)%>"><i class="fa fa-circle-o"></i> <%=deposit.nombre%></a>
+                              </li> 
+                              <%end%> 
+
+                            <%else%>
+                              <li>
+                                <a href="<%=new_deposit_path%>"><i class="fa fa-circle-o"></i> Agregar Deposito</a>
+                              </li>                            
+                            <%end%>
+                          </ul>
+                        </li>                        
+                        <li class="treeview">
+                          <a href="#">
+                            <i class="fa fa-link"></i> 
+                            <span>Tiendas</span> 
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </a>
+                          <ul class="treeview-menu">
+                            <%if commerce.stores.count>0%>
+                              <%commerce.stores.each do |store|%>
+                                <li>
+                                <a href="<%=store_path(store)%>"><i class="fa fa-circle-o"></i> <%=store.nombre%></a>
+                              </li> 
+                              <%end%> 
+                            <%else%>
+                              <li>
+                                <a href="<%=new_store_path%>"><i class="fa fa-circle-o"></i> Agregar Tienda</a>
+                              </li>                            
+                            <%end%>
+                          </ul>
+                        </li>                        
+
+                      </ul>
+                    </li>
+
+                  <%end%>   
+                <%else%>
+                  <li>
+                    <a href="<%=new_commerce_path%>"><i class="fa fa-circle-o"></i> Agregar Comercio</a>
+                  </li>
+                <%end%>
+              </ul>
+            </li>
+
+
+
+
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-share"></i> <span>Productos</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li>
+                <a href="<%=products_path%>"><i class="fa fa-circle-o"></i> Ver Productos</a>
+                </li>
+                <li>
+                <a href="<%=new_product_path%>"><i class="fa fa-circle-o"></i> Agregar Productos</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-circle-o"></i> Categorias <i class="fa fa-angle-left pull-right"></i></a>
+                  <ul class="treeview-menu">
+                    <li><a href="<%=categories_path%>"><i class="fa fa-circle-o"></i> Ver Categorias</a></li>
+                    <li><a href="<%=new_category_path%>"><i class="fa fa-circle-o"></i> Agregar Categoria</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-circle-o"></i> Marcas <i class="fa fa-angle-left pull-right"></i></a>
+                  <ul class="treeview-menu">
+                    <li><a href="<%=brands_path%>"><i class="fa fa-circle-o"></i> Ver Marcas</a></li>
+                    <li><a href="<%=new_brand_path%>"><i class="fa fa-circle-o"></i> Agregar Marca</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>

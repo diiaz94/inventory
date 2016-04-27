@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425211527) do
+ActiveRecord::Schema.define(version: 20160427031347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,19 @@ ActiveRecord::Schema.define(version: 20160425211527) do
   end
 
   add_index "deposits", ["commerce_id"], name: "index_deposits_on_commerce_id", using: :btree
+
+  create_table "deposits_products", force: true do |t|
+    t.integer  "cantidad"
+    t.float    "precio"
+    t.integer  "deposit_id"
+    t.integer  "product_id"
+    t.string   "slug"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deposits_products", ["deposit_id"], name: "index_deposits_products_on_deposit_id", using: :btree
+  add_index "deposits_products", ["product_id"], name: "index_deposits_products_on_product_id", using: :btree
 
   create_table "downloads", force: true do |t|
     t.integer  "cantidad"
@@ -118,6 +131,18 @@ ActiveRecord::Schema.define(version: 20160425211527) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "sellers", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "commerce_id"
+    t.integer  "store_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sellers", ["commerce_id"], name: "index_sellers_on_commerce_id", using: :btree
+  add_index "sellers", ["store_id"], name: "index_sellers_on_store_id", using: :btree
+  add_index "sellers", ["user_id"], name: "index_sellers_on_user_id", using: :btree
 
   create_table "stores", force: true do |t|
     t.string   "nombre"

@@ -1,6 +1,7 @@
 class CommercesController < ApplicationController
   before_action :set_commerce, only: [:show, :edit, :update, :destroy]
-
+  before_action :verify_owner_role, only: [:create,:update]
+  
   # GET /commerces
   # GET /commerces.json
   def index
@@ -10,6 +11,8 @@ class CommercesController < ApplicationController
   # GET /commerces/1
   # GET /commerces/1.json
   def show
+    @deposits = @commerce.deposits
+    @stores = @commerce.stores
   end
 
   # GET /commerces/new
@@ -67,9 +70,13 @@ class CommercesController < ApplicationController
     def set_commerce
       @commerce = Commerce.friendly.find(params[:id])
     end
-
+    def verify_owner_role
+      if current_user.owner?
+        params[:commerce][:user_id]=current_user.id
+      end
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def commerce_params
-      params.require(:commerce).permit(:nombre, :descripcion,:profile_id)
+      params.require(:commerce).permit(:nombre, :descripcion,:user_id)
     end
 end

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :sellers
+
   resources :roles
 
   resources :downloads
