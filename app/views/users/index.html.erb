@@ -29,7 +29,7 @@
                           <td class="hidden-xs"><%= user.profile.email %></td>
                           <td><%= user.profile.celular %></td>
                           <%if current_user.admin?%>
-                            <td class="hidden-xs"><%= user.role.nombre%></td>
+                            <td class="hidden-xs"><%= user.role_name%></td>
                           <%end%>
                         </tr>
                         <div class="example-modal">
@@ -62,7 +62,7 @@
                                             <dd><%=user.profile.celular%></dd> 
                                             <%if current_user.admin?%>
                                               <dt>Rol:</dt>
-                                              <dd><%=user.role.nombre%></dd> 
+                                              <dd><%=user.role_name%></dd> 
                                             <%end%>                                   
                                           </dl>
                                        </div><!-- /.box-body -->
@@ -124,7 +124,15 @@
 
 <br>
 
-<%= link_to 'Nuevo  usuario', new_user_path ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
-<%= link_to 'Nuevo  usuario', new_user_path ,class:"hidden-xs btn btn-primary "%>
 
 
+<div class="row">
+    <div class="col-xs-1"> </div>
+    <div class="col-xs-10"> 
+        <%= link_to 'Nuevo  usuario', new_user_path ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
+        <%= link_to 'Nuevo  usuario', new_user_path ,class:"hidden-xs btn btn-primary "%>
+
+    </div>
+    <div class="col-xs-1"> </div>
+
+</div>  

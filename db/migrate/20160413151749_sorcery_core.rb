@@ -5,7 +5,8 @@ class SorceryCore < ActiveRecord::Migration
       t.string :crypted_password
       t.string :salt
       t.string :slug
-      t.belongs_to :role 
+      t.belongs_to :role, index: true
+      t.belongs_to :seller, index: true  
       t.timestamps
     end
 

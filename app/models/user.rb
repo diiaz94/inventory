@@ -4,15 +4,11 @@ class User < ActiveRecord::Base
   has_many :commerces
   has_one :profile, dependent: :destroy
   belongs_to :role
+  belongs_to :seller
   accepts_nested_attributes_for :profile, allow_destroy: true
   extend FriendlyId
   friendly_id :cedula, use: :slugged
 
- # after_initialize :set_default_role, :if => :new_record?
-
-  #def set_default_role
-  #    self.role ||= :seller
-  #end
 #Validaciones
 validates :cedula, :presence => {:message => "El campo cédula no puede estar vacío"}, :numericality => {:only_integer => true, :message => "El campo cédula debe ser numérico"}
 validates :cedula, :uniqueness => {:message => "Ya existe un usuario cone esta cédula"}
@@ -40,18 +36,19 @@ validates :password_confirmation, :presence =>  { :if => :password_required?, :m
 
   def role_name
     puts "role******"
+
+    if !self.role_id?
+      return "S/R"
+    end
     if self.admin?
       return "Administrador"
-     
     end
     if self.owner? and self.commerces.count>0
       count = self.commerces.count
-      return "- Propietari"+(self.profile.sexo ? "" : "a")+" de "+count.to_s+" Comercio"+(count>1 ? "s" : "")
-     
+      return "Propietari"+(self.profile.sexo==true ? "": "a")+" de "+count.to_s+" Comercio"+(count>1 ? "s" : "")
     end
     if self.seller?
-      return "Vendedor"+(self.profile.sexo ? "" : "a")+"en la tienda "+self.seller.store.nombre 
-     
+      return "Vendedor"+(self.profile.sexo ? "" : "a")+" en la tienda "+self.seller.store.nombre 
     end
   end
 end

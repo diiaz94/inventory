@@ -1,4 +1,6 @@
-<%= form_for(@seller) do |f| %>
+<%= form_for(setup_seller(@seller)) do |seller_field| %>
+  <%= seller_field.fields_for :user do |user_field| %>
+      <%= user_field.fields_for :profile, @seller.user.profile  do |profile_field| %>
 
   <script type="text/javascript">
    var errorsArray=[] ;
@@ -9,35 +11,140 @@
     validarErrores(errorsArray);
   });
 </script>
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Datos Personales</h3>
+    </div><!-- /.box-header -->
 
+    <div class="box-body">
+      
+        <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+              <%= user_field.label :cedula %>*<br>
+              <%= user_field.text_field :cedula, type:"number",class:"form-control cedula",required: true,data:{
+                maxlength: "11"
+                } %>
+             </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= profile_field.label :sexo %>*<br>
+              <%= profile_field.radio_button:sexo,'true', :checked => true %>
+              Masculino              
+              <%= profile_field.radio_button:sexo,'false', :checked => false %>
+              Femenino
+            </div>
+          </div>        
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= profile_field.label :primer_nombre %>*<br>
+              <%= profile_field.text_field :primer_nombre,class:"form-control" %>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <div class="form-group">
+                <%= profile_field.label :segundo_nombre %><br>
+                <%= profile_field.text_field :segundo_nombre,class:"form-control"  %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= profile_field.label :primer_apellido %>*<br>
+              <%= profile_field.text_field :primer_apellido,class:"form-control" %>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <div class="form-group">
+                <%= profile_field.label :segundo_apellido %><br>
+                <%= profile_field.text_field :segundo_apellido,class:"form-control"  %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+            <%= profile_field.label :email %><br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <%= profile_field.email_field :email,class:"form-control", placeholder: "Email"%>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= profile_field.label :celular %><br>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-phone"></i>
+                </div>
+                <%= profile_field.text_field :celular,class:"form-control", "data-inputmask" => '"mask": "(9999) 999-9999"'  %>
+              </div><!-- /.input group -->
+            </div>
+          </div>
+        </div>
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+  <%if !@seller.user.persisted?%>
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Contraseña de ingreso</h3>
+      </div><!-- /.box-header -->
+      <div class="box-body">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= user_field.label :password, "Contraseña"%>*<br>
+              <%= user_field.password_field :password,class:"form-control"  %>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+               <%= user_field.label :password_confirmation, "Confirmar contraseña" %><br />
+               <%= user_field.password_field :password_confirmation,class:"form-control" %>
+             </div>
+          </div>
+        </div>
+        <%if current_user.admin?%>
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <div class="form-group">
+                <%= user_field.label :role_id, "Rol del usuario" %>*<br>
+              <%= user_field.select :role_id, options_for_select(Role.all.pluck(:nombre,:id),( @seller.user.role ? @seller.user.role_id : "" )),{},{class:"form-control select2"}%>
+              </div>
+            </div>
+          </div>
+        <%end%>
+      </div>
+    </div><!-- /.box -->
+  <%end%>
   <div class="box box-primary">
     <div class="box-header with-border">
       <h3 class="box-title">Datos de la Tienda</h3>
     </div><!-- /.box-header -->
 
     <div class="box-body">
-
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <%= f.label :user_id, "Comercio asociado" %>*<br>
-            <%= f.select :user_id, options_for_select(User.all.pluck(:cedula,:id),( @seller.user ? @seller.user_id : "" )),{},{class:"form-control select2"}%>
+            <%= seller_field.label :commerce_id, "Comercio asociado" %>*<br>
+            <%= seller_field.select :commerce_id, options_for_select(Commerce.all.pluck(:nombre,:id),( @seller.commerce ? @seller.commerce_id : "" )),{},{class:"form-control select2"}%>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <%= f.label :commerce_id, "Comercio asociado" %>*<br>
-            <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:nombre,:id),( @seller.commerce ? @seller.commerce_id : "" )),{},{class:"form-control select2"}%>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-          <div class="form-group">
-            <%= f.label :store_id, "Comercio asociado" %>*<br>
-            <%= f.select :store_id, options_for_select(Store.all.pluck(:nombre,:id),( @seller.store ? @seller.store_id : "" )),{},{class:"form-control select2"}%>
+            <%= seller_field.label :store_id, "Tienda asignada" %>*<br>
+            <%= seller_field.select :store_id, options_for_select(Store.all.pluck(:nombre,:id),( @seller.store ? @seller.store_id : "" )),{},{class:"form-control select2"}%>
           </div>
         </div>
       </div>
@@ -45,18 +152,29 @@
 
     </div><!-- /.box-body -->
   </div><!-- /.box -->
+
+
+
   
     <div class="box-footer">
-      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
-      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+      <%= seller_field.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
+      <%= seller_field.submit "Guardar", class: "hidden-xs btn btn-primary" %>
     </div>
-<% end %>
+
+    <% end %><!-- /profile_form-->
+  <%end%><!-- /user_form-->
+<%end%><!-- /seller_field _form-->
 
 
 <script>
       $(function () {
         //Initialize Select2 Elements
-        $(".select2").select2();
+          $("#seller_user_attributes_profile_attributes_celular").inputmask();
+          $('input[type="radio"]').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+          $('input[type="radio"]').first().parent().addClass("checked")
+          $(".select2").select2();
       });
 </script>
-

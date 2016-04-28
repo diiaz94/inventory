@@ -1,4 +1,5 @@
 class WelcomeController < ApplicationController
+ skip_before_action :require_login, except: [:index]
   def index
 
   	if User.all.length > 0

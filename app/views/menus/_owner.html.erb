@@ -33,15 +33,14 @@
                             <%if commerce.deposits.count>0%>
                               <%commerce.deposits.each do |deposit|%>
                                 <li>
-                                <a href="<%=deposit_path(deposit)%>"><i class="fa fa-circle-o"></i> <%=deposit.nombre%></a>
+                                <a href="<%=products_of_deposit_path(deposit)%>"><i class="fa fa-circle-o"></i> <%=deposit.nombre%></a>
                               </li> 
                               <%end%> 
 
-                            <%else%>
-                              <li>
-                                <a href="<%=new_deposit_path%>"><i class="fa fa-circle-o"></i> Agregar Deposito</a>
-                              </li>                            
                             <%end%>
+                            <li>
+                              <a href="<%=new_deposit_path%>"><i class="fa fa-plus-square"></i> Agregar Deposito</a>
+                            </li>                            
                           </ul>
                         </li>                        
                         <li class="treeview">
@@ -54,14 +53,13 @@
                             <%if commerce.stores.count>0%>
                               <%commerce.stores.each do |store|%>
                                 <li>
-                                <a href="<%=store_path(store)%>"><i class="fa fa-circle-o"></i> <%=store.nombre%></a>
+                                <a href="<%=products_of_store_path(store)%>"><i class="fa fa-circle-o"></i> <%=store.nombre%></a>
                               </li> 
                               <%end%> 
-                            <%else%>
-                              <li>
-                                <a href="<%=new_store_path%>"><i class="fa fa-circle-o"></i> Agregar Tienda</a>
-                              </li>                            
                             <%end%>
+                            <li>
+                              <a href="<%=new_store_path%>"><i class="fa fa-plus-square"></i> Agregar Tienda</a>
+                            </li>  
                           </ul>
                         </li>                        
 
@@ -78,11 +76,10 @@
                                 <a href="<%=seller_path(seller)%>"><i class="fa fa-circle-o"></i> <%=seller.user.profile.short_name%></a>
                               </li> 
                               <%end%> 
-                            <%else%>
-                              <li>
-                                <a href="<%=new_seller_path%>"><i class="fa fa-circle-o"></i> Agregar Vendedor</a>
-                              </li>                            
                             <%end%>
+                            <li>
+                              <a href="<%=new_seller_path%>"><i class="fa fa-plus-square"></i> Agregar Vendedor</a>
+                            </li>
                           </ul>
                         </li>                        
 
@@ -92,7 +89,7 @@
                   <%end%>   
                 <%else%>
                   <li>
-                    <a href="<%=new_commerce_path%>"><i class="fa fa-circle-o"></i> Agregar Comercio</a>
+                    <a href="<%=new_commerce_path%>"><i class="fa fa-plus-square"></i> Agregar Comercio</a>
                   </li>
                 <%end%>
               </ul>
