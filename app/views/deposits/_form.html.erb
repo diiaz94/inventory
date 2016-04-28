@@ -14,8 +14,24 @@
     <div class="box-header with-border">
       <h3 class="box-title">Datos del Depósito</h3>
     </div><!-- /.box-header -->
-
     <div class="box-body">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :commerce_id, "Comercio asociado" %><br>
+
+            <%if current_user.admin?%>
+              <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:nombre,:id),( @deposit.commerce ? @deposit.commerce_id : "" )),{},{class:"form-control select2"}%>
+            <%end%>
+
+            <%if @commerce!=nil %>
+              <%=@commerce.nombre%>
+              <%= f.text_field :commerce_id,class:"form-control",type: "hidden" %>
+            <%end%>
+
+          </div>
+        </div>
+      </div>
       <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
@@ -24,14 +40,7 @@
             </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-          <div class="form-group">
-            <%= f.label :commerce_id, "Comercio asociado" %>*<br>
-            <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:nombre,:id),( @deposit.commerce ? @deposit.commerce_id : "" )),{},{class:"form-control select2"}%>
-          </div>
-        </div>
-      </div>      
+ 
       <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
@@ -44,10 +53,10 @@
     </div><!-- /.box-body -->
   </div><!-- /.box -->
   
-    <div class="box-footer">
-      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
-      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
-    </div>
+  <div class="box-footer">
+    <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
+    <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+  </div>
 <% end %>
 
 <script>

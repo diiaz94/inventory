@@ -1,16 +1,8 @@
 class WelcomeController < ApplicationController
- skip_before_action :require_login, except: [:index]
+  skip_before_action :require_login,  except: [:index]
+
   def index
-
-  	if User.all.length > 0
-  		@notUsers = false;
-  	else
-  		@notUsers = true;
-  		puts "not User************"
-  		redirect_to admin_user_path
-
-  	end
-
+  	
   end
 
   def admin_user
@@ -46,6 +38,7 @@ class WelcomeController < ApplicationController
 
 
   	private
+    
 	  # Never trust parameters from the scary internet, only allow the white list through.
 	def user_params
 	  params.require(:user).permit(:cedula, :password, :password_confirmation,profile_attributes: [:id,:primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :sexo, :email, :celular, :_destroy])

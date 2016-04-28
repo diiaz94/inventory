@@ -1,5 +1,6 @@
 class StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
+  before_action :set_commerce, only:[:new_store_of_commerce]
 
   # GET /stores
   # GET /stores.json
@@ -16,7 +17,13 @@ class StoresController < ApplicationController
   def new
     @store = Store.new
   end
-
+  # GET /commerce/:commerce_id/deposits/new
+  def new_store_of_commerce
+    @commerce = get_commerce(params[:commerce_id])
+    @deposit = Deposit.new
+    @deposit.commerce_id = @commerce.id
+    render "new"
+  end
   # GET /stores/1/edit
   def edit
   end
@@ -66,7 +73,14 @@ class StoresController < ApplicationController
     def set_store
       @store = Store.friendly.find(params[:id])
     end
-
+    def set_commerce
+      if(params[:commerce_id])
+        puts "******1**"
+        @commerce = Commerce.friendly.find(params[:commerce_id])
+        puts @commerce.to_json
+        puts "******FIN**"
+      end
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
       params.require(:store).permit(:nombre, :direccion, :commerce_id)

@@ -17,19 +17,27 @@
 
     <div class="box-body">
       <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :commerce_id, "Comercio asociado" %><br>
+
+            <%if current_user.admin?%>
+              <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:nombre,:id),( @store.commerce ? @store.store_id : "" )),{},{class:"form-control select2"}%>
+            <%end%>
+
+            <%if @commerce!=nil %>
+              <%=@commerce.nombre%>
+              <%= f.text_field :commerce_id,class:"form-control",type: "hidden" %>
+            <%end%>
+          </div>
+        </div>
+      </div>
+      <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
               <%= f.label :nombre %>*<br>
               <%= f.text_field :nombre,class:"form-control" %>
             </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-          <div class="form-group">
-            <%= f.label :commerce_id, "Comercio asociado" %>*<br>
-            <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:nombre,:id),( @store.commerce ? @store.commerce_id : "" )),{},{class:"form-control select2"}%>
-          </div>
         </div>
       </div>
       <div class="row">

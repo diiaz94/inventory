@@ -45,7 +45,7 @@ validates :password_confirmation, :presence =>  { :if => :password_required?, :m
     end
     if self.owner? and self.commerces.count>0
       count = self.commerces.count
-      return "Propietari"+(self.profile.sexo==true ? "": "a")+" de "+count.to_s+" Comercio"+(count>1 ? "s" : "")
+      return "Propietari"+(self.profile.sexo==true ? "o": "a")+" de "+count.to_s+" Comercio"+(count>1 ? "s" : "")
     end
     if self.seller?
       return "Vendedor"+(self.profile.sexo ? "" : "a")+" en la tienda "+self.seller.store.nombre 

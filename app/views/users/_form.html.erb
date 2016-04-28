@@ -30,9 +30,9 @@
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
               <%= field.label :sexo %>*<br>
-              <%= field.radio_button:sexo,'true', :checked => true %>
+              <%= field.radio_button:sexo,'true', :checked => (@user.profile.sexo==nil ? true : @user.profile.sexo ) %>
               Masculino              
-              <%= field.radio_button:sexo,'false', :checked => false %>
+              <%= field.radio_button:sexo,'false', :checked => (@user.profile.sexo==nil ? false : !@user.profile.sexo )  %>
               Femenino
             </div>
           </div>        
@@ -142,7 +142,7 @@
           checkboxClass: 'icheckbox_minimal-blue',
           radioClass: 'iradio_minimal-blue'
         });
-          $('input[type="radio"]').first().parent().addClass("checked")
+          //$('input[type="radio"]').first().parent().addClass("checked")
           $(".select2").select2();
       });
 </script>

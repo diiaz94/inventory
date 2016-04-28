@@ -16,6 +16,13 @@ class DepositsController < ApplicationController
   def new
     @deposit = Deposit.new
   end
+  # GET /commerce/:commerce_id/deposits/new
+  def new_deposit_of_commerce
+    @commerce = get_commerce(params[:commerce_id])
+    @deposit = Deposit.new
+    @deposit.commerce_id = @commerce.id
+    render "new"
+  end
 
   # GET /deposits/1/edit
   def edit

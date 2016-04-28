@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
 skip_before_action :require_login, except: [:destroy]
+before_action :validate_users, only: [:new]
+
 	def new
 		if current_user
 			redirect_back_or_to(root_path,notice:"Usted ya esta logeado con la cedula " + current_user.cedula)
@@ -37,17 +39,11 @@ skip_before_action :require_login, except: [:destroy]
 		logout
 		redirect_to(login_path,notice: "Ha cerrado sesion correctamente.");
 	end
-	def culminate_login
-		if params[:opcion]=="1"
-			session[:type_user] = "Administrador";
-		end
-		if params[:opcion]=="2"
-			session[:type_user] = "Miembro";
-		end
-		if params[:opcion]=="3"
-			session[:type_user] = "SimpleUser";
-		end
-		puts "**************" + session[:type_user]
-		redirect_back_or_to(root_path,notice:"Inicio de sesion exitoso.")
-	end
+	private 
+	def validate_users
+      if User.all.length == 0
+        puts "not User************"
+        redirect_to(admin_user_path,notice:"Debes crear el usuario administrador")
+      end
+    end
 end

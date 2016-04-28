@@ -8,15 +8,7 @@ class UsersController < ApplicationController
     if current_user.admin?
       @users = User.all
     end
-    if current_user.owner?
-      @users = []
-      @users.push(current_user)
-      @commerces = current_user.commerces
-      @commerces.each do |commerce|
-         
-      end
-    end
-
+  
   end
 
   # GET /users/1
@@ -55,7 +47,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       @user.slug=nil
       if @user.update(user_params)
-        format.html { redirect_to users_path, notice: 'Usuario actualizado exitosamente.' }
+        ruta = @user==current_user ? root_path : users_path
+        format.html { redirect_to ruta, notice: 'Usuario actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -73,7 +66,10 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+ def my_profile
+    @user = current_user
+    render 'edit'
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

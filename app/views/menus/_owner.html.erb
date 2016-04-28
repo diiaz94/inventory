@@ -39,7 +39,7 @@
 
                             <%end%>
                             <li>
-                              <a href="<%=new_deposit_path%>"><i class="fa fa-plus-square"></i> Agregar Deposito</a>
+                              <a href="<%=new_deposit_of_commerce_path(commerce)%>"><i class="fa fa-plus-square"></i> Agregar Deposito</a>
                             </li>                            
                           </ul>
                         </li>                        
@@ -87,11 +87,10 @@
                     </li>
 
                   <%end%>   
-                <%else%>
-                  <li>
-                    <a href="<%=new_commerce_path%>"><i class="fa fa-plus-square"></i> Agregar Comercio</a>
-                  </li>
                 <%end%>
+                <li>
+                  <a href="<%=new_commerce_path%>"><i class="fa fa-plus-square"></i> Agregar Comercio</a>
+                </li>
               </ul>
             </li>
 
