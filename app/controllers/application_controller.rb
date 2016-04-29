@@ -15,13 +15,13 @@ class ApplicationController < ActionController::Base
 	end
 
 	def get_commerce(id)
+	        puts "+++++get_commerce+++++"+id.to_s
 		if(id)
 	        @commerce = Commerce.friendly.find(params[:commerce_id])
-	        
 	        if current_user.admin? or(current_user.owner? and current_user.commerces.find(@commerce.id))
 	        	return @commerce
 	        else
-	        	redirect_to login_path, alert: "No tienes acceso  a esta sección"
+	        	redirect_to root_path, alert: "No tienes acceso a esta sección"
 	        end
       	end
 	end

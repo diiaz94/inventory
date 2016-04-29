@@ -26,7 +26,7 @@ class DownloadsController < ApplicationController
   # POST /downloads.json
   def create
     @download = Download.new(download_params)
-
+    
     respond_to do |format|
       if @download.save
         format.html { redirect_to @download, notice: 'Download was successfully created.' }

@@ -12,7 +12,7 @@ $( document ).ready(function() {
 			})
 			  .done(function( msg ) {
 			  	alert("Registro eliminado exitosamente.");
-			    window.location.href = url;
+			    location.reload();
 			  })
 			  .fail(function( msg ){
 			  	debugger;
@@ -71,7 +71,7 @@ function fill_products_for_store(){
 $.ajax("/deposits/"+this.value+"/products.json").done(
 	function(data){
 		$("select.select2#download_product_id").html("");
-
+		debugger
 		$.each(data,function( index, obj ) {
 	 			$("select.select2#download_product_id").append(
 	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+" - "+obj.precio+" Bs.</option>"

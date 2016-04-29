@@ -21,8 +21,8 @@
 </script>
 <br>
 
-<%= link_to 'Nuevo  depósito', new_deposit_path ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
-<%= link_to 'Nuevo  depósito', new_deposit_path ,class:"hidden-xs btn btn-primary "%>
+<%= link_to 'Nuevo  depósito', current_user.admin? ? new_deposit_path : new_deposit_of_commerce_path(@commerce) ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
+<%= link_to 'Nuevo  depósito', current_user.admin? ? new_deposit_path : new_deposit_of_commerce_path(@commerce) ,class:"hidden-xs btn btn-primary "%>
 
 
 

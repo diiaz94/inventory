@@ -21,6 +21,6 @@
 </script>
 <br>
 
-<%= link_to 'Nueva  Tienda', new_store_path ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
-<%= link_to 'Nueva  Tienda', new_store_path ,class:"hidden-xs btn btn-primary "%>
+<%= link_to 'Nueva  Tienda', current_user.admin? ? new_store_path : new_store_of_commerce_path(@commerce)  ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
+<%= link_to 'Nueva  Tienda', current_user.admin? ? new_store_path : new_store_of_commerce_path(@commerce)  ,class:"hidden-xs btn btn-primary "%>
 

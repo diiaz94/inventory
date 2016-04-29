@@ -52,7 +52,18 @@ Rails.application.routes.draw do
   post 'create_admin_user' => 'welcome#create_admin_user', as: :create_admin_user
   get 'admin_user' => 'welcome#admin_user', as: :admin_user
   
-  get 'commerce/:commerce_id/deposits/new' => 'deposits#new_deposit_of_commerce', as: :new_deposit_of_commerce
+
+  get 'commerce/:commerce_id/deposits/new' => 'deposits#new', as: :new_deposit_of_commerce
+  get 'commerce/:commerce_id/deposits/:id/edit' => 'deposits#edit', as: :edit_deposit_of_commerce
+  get 'commerce/:commerce_id/deposits' => 'deposits#index', as: :deposits_of_commerce
+  
+  get 'commerce/:commerce_id/stores/new' => 'stores#new', as: :new_store_of_commerce
+  get 'commerce/:commerce_id/stores/:id/edit' => 'stores#edit', as: :edit_store_of_commerce
+  get 'commerce/:commerce_id/stores' => 'stores#index', as: :stores_of_commerce
+  
+  get 'commerce/:commerce_id/seller/new' => 'sellers#new', as: :new_seller_of_commerce
+  get 'commerce/:commerce_id/seller/:id/edit' => 'sellers#edit', as: :edit_seller_of_commerce
+  get 'commerce/:commerce_id/sellers' => 'sellers#index', as: :sellers_of_commerce
 
   get 'my_profile' => 'users#my_profile', as: :my_profile
 # post 'deposits/:deposit_id/products' => 'deposits_products#create'

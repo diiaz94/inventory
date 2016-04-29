@@ -5,7 +5,12 @@ class CommercesController < ApplicationController
   # GET /commerces
   # GET /commerces.json
   def index
-    @commerces = Commerce.all
+    if current_user.admin?
+      @commerces = Commerce.all
+    end
+    if current_user.owner?
+      @commerces = current_user.commerces
+    end
   end
 
   # GET /commerces/1

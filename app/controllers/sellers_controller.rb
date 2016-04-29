@@ -5,7 +5,12 @@ class SellersController < ApplicationController
   # GET /sellers
   # GET /sellers.json
   def index
-    @sellers = Seller.all
+    if current_user.admin?
+      @sellers = Seller.all
+    end
+    if current_user.owner?
+     @sellers=current_user.commerces.friendly.find(get_commerce(params[:commerce_id])).sellers
+    end
   end
 
   # GET /sellers/1
@@ -15,11 +20,22 @@ class SellersController < ApplicationController
 
   # GET /sellers/new
   def new
-    @seller = Seller.new
+    if current_user.admin?
+      @seller = Seller.new
+    end
+    if current_user.owner?
+        @commerce = get_commerce(params[:commerce_id])
+        @seller = Seller.new
+        @seller.commerce_id = @commerce.id
+    end
   end
+  # GET /commerce/:commerce_id/sellers/new
 
   # GET /sellers/1/edit
   def edit
+    if current_user.owner?
+      @commerce = get_commerce(params[:commerce_id])
+    end
   end
 
   # POST /sellers
@@ -29,11 +45,9 @@ class SellersController < ApplicationController
 
     respond_to do |format|
       if @seller.save
-        format.html { redirect_to @seller, notice: 'Seller was successfully created.' }
+        ruta = current_user.admin? ? sellers_path : sellers_of_commerce_path(@seller.commerce.slug)
+        format.html { redirect_to ruta, notice: 'Seller was successfully created.' }
         format.json { render :show, status: :created, location: @seller }
-            puts "*****SELLER******"
-    puts @seller.to_json
-    puts "***********"
       else
         format.html { render :new }
         format.json { render json: @seller.errors, status: :unprocessable_entity }
@@ -46,7 +60,8 @@ class SellersController < ApplicationController
   def update
     respond_to do |format|
       if @seller.update(seller_params)
-        format.html { redirect_to @seller, notice: 'Seller was successfully updated.' }
+        ruta = current_user.admin? ? sellers_path : sellers_of_commerce_path(@seller.commerce.slug)
+        format.html { redirect_to ruta, notice: 'Seller was successfully updated.' }
         format.json { render :show, status: :ok, location: @seller }
       else
         format.html { render :edit }

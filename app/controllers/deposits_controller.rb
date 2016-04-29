@@ -4,8 +4,14 @@ class DepositsController < ApplicationController
   # GET /deposits
   # GET /deposits.json
   def index
-    @deposits = Deposit.all
+    if current_user.admin?
+      @deposits = Deposit.all
+    end
+    if current_user.owner?
+      @deposits=current_user.commerces.friendly.find(get_commerce(params[:commerce_id])).deposits
+    end
   end
+
 
   # GET /deposits/1
   # GET /deposits/1.json
@@ -14,18 +20,23 @@ class DepositsController < ApplicationController
 
   # GET /deposits/new
   def new
-    @deposit = Deposit.new
+    if current_user.admin?
+      @deposit = Deposit.new
+    end
+    if current_user.owner?
+      @commerce = get_commerce(params[:commerce_id])
+      @deposit = Deposit.new
+      @deposit.commerce_id = @commerce.id
+    end
+    
   end
   # GET /commerce/:commerce_id/deposits/new
-  def new_deposit_of_commerce
-    @commerce = get_commerce(params[:commerce_id])
-    @deposit = Deposit.new
-    @deposit.commerce_id = @commerce.id
-    render "new"
-  end
 
   # GET /deposits/1/edit
   def edit
+    if current_user.owner?
+      @commerce = get_commerce(params[:commerce_id])
+    end
   end
 
   # POST /deposits
@@ -35,7 +46,8 @@ class DepositsController < ApplicationController
 
     respond_to do |format|
       if @deposit.save
-        format.html { redirect_to deposits_path, notice: 'Depósito creado exitosamente.' }
+        ruta = current_user.admin? ? deposits_path : deposits_of_commerce_path(@deposit.commerce.slug)
+        format.html { redirect_to ruta, notice: 'Depósito creado exitosamente.' }
         format.json { render :show, status: :created, location: @deposit }
       else
         format.html { render :new }
@@ -50,7 +62,8 @@ class DepositsController < ApplicationController
     respond_to do |format|
       @deposit.slug=nil
       if @deposit.update(deposit_params)
-        format.html { redirect_to deposits_path, notice: 'Depósito actualizado exitosamente.' }
+        ruta = current_user.admin? ? deposits_path : deposits_of_commerce_path(@deposit.commerce.slug)
+        format.html { redirect_to ruta, notice: 'Depósito actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @deposit }
       else
         format.html { render :edit }

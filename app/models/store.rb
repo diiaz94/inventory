@@ -6,4 +6,8 @@ class Store < ActiveRecord::Base
   	has_many :sellers
 	extend FriendlyId
   	friendly_id :nombre, use: :slugged
+
+  	def nombre_comercio
+  		self.commerce	 ? self.commerce.nombre : "S/C"
+ 	end
 end
