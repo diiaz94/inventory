@@ -21,6 +21,15 @@
 </script>
 <br>
 
+
+<div class="row">
+    <div class="col-xs-1 col-sm-0"> </div>
+    <div class="col-xs-10 col-sm-12"> 
+
 <%= link_to 'Nuevo  Vendedor', current_user.admin? ? new_seller_path : new_seller_of_commerce_path(@commerce) ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
 <%= link_to 'Nuevo  Vendedor', current_user.admin? ? new_seller_path : new_seller_of_commerce_path(@commerce) ,class:"hidden-xs btn btn-primary "%>
+    </div>
+    <div class="col-xs-1 col-sm-0"> </div>
+
+</div> 
 

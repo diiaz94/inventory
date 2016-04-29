@@ -26,7 +26,7 @@ class DownloadsController < ApplicationController
   # POST /downloads.json
   def create
     @download = Download.new(download_params)
-    
+
     respond_to do |format|
       if @download.save
         format.html { redirect_to @download, notice: 'Download was successfully created.' }
@@ -64,6 +64,28 @@ class DownloadsController < ApplicationController
 
   def create_product_of_store
     @download = Download.new(download_params)
+    loads = @download.deposit.loads.where(product_id: @download.product_id)
+    if loads.sum(:cantidad)<@download.cantidad
+      redirect_to :back, alert: 'Error.'
+      return
+    else
+      cantidad_cargada=@download.cantidad
+      loads.order(:created_at).each do |load|
+        if cantidad_cargada==0 and load.cantidad!=0
+          break;
+        else
+          if load.cantidad>=cantidad_cargada
+            load.cantidad=load.cantidad-cantidad_cargada
+            load.save
+            break;
+          else
+            cantidad_cargada=cantidad_cargada-load.cantidad
+            load.cantidad=0
+            load.save
+          end  
+        end
+      end
+    end
     respond_to do |format|
       if @download.save
         format.html { redirect_to products_of_store_path(@store), notice: 'Se agregó el producto a la tienda exitosamente.' }

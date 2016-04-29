@@ -71,7 +71,6 @@ function fill_products_for_store(){
 $.ajax("/deposits/"+this.value+"/products.json").done(
 	function(data){
 		$("select.select2#download_product_id").html("");
-		debugger
 		$.each(data,function( index, obj ) {
 	 			$("select.select2#download_product_id").append(
 	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+" - "+obj.precio+" Bs.</option>"
@@ -84,10 +83,58 @@ $.ajax("/deposits/"+this.value+"/products.json").done(
 }
 
 function calculate_price(){
-debugger
 var product = products[$($(this).find("option:selected")).data("index")]
 var precio_base = typeof(product)!==undefined ? product.precio : products[0].precio
+$("label[for='download_cantidad'").text("Cantidad (Quedan "+product.cantidad+" en depósito)")
 $("#download_precio").val(precio_base+(precio_base*0.30))
 
 
+}
+
+function graficoTortaInit(products_of_deposits,products_of_stores){
+
+
+	 var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+        var pieChart = new Chart(pieChartCanvas);
+        var PieData = [
+          {
+            value: products_of_deposits,
+            color: "#3c8dbc",
+            highlight: "#3c8dbc",
+            label: "Productos en Deposito"
+          },
+          {
+            value: products_of_stores,
+            color: "#00c0ef",
+            highlight: "#00c0ef",
+            label: "Productos en Tienda"
+          }
+        ];
+        var pieOptions = {
+          //Boolean - Whether we should show a stroke on each segment
+          segmentShowStroke: true,
+          //String - The colour of each segment stroke
+          segmentStrokeColor: "#fff",
+          //Number - The width of each segment stroke
+          segmentStrokeWidth: 2,
+          //Number - The percentage of the chart that we cut out of the middle
+          percentageInnerCutout: 50, // This is 0 for Pie charts
+          //Number - Amount of animation steps
+          animationSteps: 100,
+          //String - Animation easing effect
+          animationEasing: "easeOutBounce",
+          //Boolean - Whether we animate the rotation of the Doughnut
+          animateRotate: true,
+          //Boolean - Whether we animate scaling the Doughnut from the centre
+          animateScale: false,
+          //Boolean - whether to make the chart responsive to window resizing
+          responsive: true,
+          // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+          maintainAspectRatio: true,
+          //String - A legend template
+          legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+        };
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        pieChart.Doughnut(PieData, pieOptions);
 }
