@@ -3,8 +3,10 @@ class WelcomeController < ApplicationController
 
   def index
 
-    @products_of_deposits =current_user.commerces.first.deposits.first.loads.sum(:cantidad)
-    @products_of_stores =current_user.commerces.first.stores.first.downloads.sum(:cantidad)
+    if current_user.owner?
+      @products_of_deposits =current_user.commerces.first.deposits.first.loads.sum(:cantidad)
+      @products_of_stores =current_user.commerces.first.stores.first.downloads.sum(:cantidad)
+    end 
     
   end
 

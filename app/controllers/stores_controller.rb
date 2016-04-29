@@ -47,7 +47,8 @@ class StoresController < ApplicationController
     respond_to do |format|
       if @store.save
         ruta = current_user.admin? ? stores_path : stores_of_commerce_path(@store.commerce.slug)
-        format.html { redirect_to stores_path, notice: 'Tienda creada exitosamente.' }
+        puts"RUTA****"+ruta+"******"
+        format.html { redirect_to ruta, notice: 'Tienda creada exitosamente.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
