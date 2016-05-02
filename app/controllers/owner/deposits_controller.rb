@@ -67,19 +67,14 @@ class Owner::DepositsController < ApplicationController
   def products
     @products_grouped = @deposit.loads.group_by {|load| load.product_id}
     @products = []
-    puts "¨**************"
-    puts @products_grouped.to_json 
     @products_grouped.each do |attr_name, attr_value|
       @product = Load.new(product_id: Product.find(attr_name).id, cantidad: Load.where(id: attr_value.map(&:id)).sum(:cantidad))
       @products.push(@product)
     end
-    puts "¨**************"
-    puts @products.to_json
   end
 
   def new_product
-    @load = Load.new(deposit_id: @deposit.id)
-    @load.deposit_id = @deposit.id
+    @load = Load.new
   end
 
   def add_product
@@ -98,7 +93,7 @@ class Owner::DepositsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_deposit
-      @deposit = Deposit.friendly.find(params[:deposit_id] ? params[:deposit_id] : params[:id])
+      @deposit = @commerce.deposits.friendly.find(params[:deposit_id] ? params[:deposit_id] : params[:id])
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def deposit_params
