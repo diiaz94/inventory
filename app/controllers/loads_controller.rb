@@ -88,8 +88,12 @@ class LoadsController < ApplicationController
     end
   end  
   def products_of_deposit
+    @products_grouped = @deposit.loads.group_by {|load| load.product_id}
     @loads = @deposit.loads
-  end
+    puts @products_grouped.count   
+    puts @products_grouped.to_json
+    puts "******************"
+   end
   def new_product_of_deposit
     @load = Load.new(deposit_id: @deposit.id)
     @load.deposit_id = @deposit.id

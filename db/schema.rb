@@ -54,6 +54,19 @@ ActiveRecord::Schema.define(version: 20160427031347) do
 
   add_index "deposits", ["commerce_id"], name: "index_deposits_on_commerce_id", using: :btree
 
+  create_table "deposits_products", force: true do |t|
+    t.integer  "cantidad"
+    t.float    "precio"
+    t.integer  "deposit_id"
+    t.integer  "product_id"
+    t.string   "slug"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deposits_products", ["deposit_id"], name: "index_deposits_products_on_deposit_id", using: :btree
+  add_index "deposits_products", ["product_id"], name: "index_deposits_products_on_product_id", using: :btree
+
   create_table "downloads", force: true do |t|
     t.integer  "cantidad"
     t.float    "precio"
@@ -115,6 +128,7 @@ ActiveRecord::Schema.define(version: 20160427031347) do
   create_table "roles", force: true do |t|
     t.string   "nombre"
     t.text     "descripcion"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -122,6 +136,7 @@ ActiveRecord::Schema.define(version: 20160427031347) do
   create_table "sellers", force: true do |t|
     t.integer  "commerce_id"
     t.integer  "store_id"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

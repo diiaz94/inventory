@@ -138,3 +138,45 @@ function graficoTortaInit(products_of_deposits,products_of_stores){
         // You can switch between pie and douhnut using the method below.
         pieChart.Doughnut(PieData, pieOptions);
 }
+
+
+function fill_deposits_for_commerce(){
+
+$.ajax("/owner/commerces/"+this.value+"/deposits.json").done(
+	function(data){
+		$("select.select2#load_deposit_id").html("");
+		$.each(data,function( index, obj ) {
+	 			$("select.select2#load_deposit_id").append(
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
+	 			) 
+		});
+		$("select.select2#load_deposit_id").select2();
+        //$("select.select2#load_deposit_id").trigger("change");
+	}).error(
+		function(data){
+			debugger
+			alert(data)
+		}
+	);
+}
+
+
+function fill_products_for_deposit(){
+
+$.ajax("/owner/commerces/"+$("select.select2#comercio").val()+"/deposits/"+this.value+"/products.json").done(
+	function(data){
+		$("select.select2#load_product_id").html("");
+		$.each(data,function( index, obj ) {
+	 			$("select.select2#load_product_id").append(
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+"</option>"
+	 			) 
+		});
+		$("select.select2#load_product_id").select2();
+       // $("select.select2#download_product_id").trigger("change");
+	}).error(
+		function(data){
+			debugger
+			alert(data)
+		}
+	);
+}

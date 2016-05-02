@@ -69,7 +69,7 @@
         //Initialize Select2 Elements
         $(".select2").select2();
         <%if @download.new_record?%>
-        $("select.select2#download_product_id").change(calculate_price);
+          $("select.select2#download_product_id").change(calculate_price);
         <%end%>
 
         $("select.select2#download_deposit_id").change(fill_products_for_store);

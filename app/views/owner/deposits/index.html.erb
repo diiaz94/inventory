@@ -1,0 +1,21 @@
+       <!-- Main content -->
+        <section class="content">
+          <%= render 'deposits_table' %>
+        </section><!-- /.content -->
+
+
+<br>
+
+
+<div class="row">
+    <div class="col-xs-1 col-sm-0"> </div>
+    <div class="col-xs-10 col-sm-12"> 
+    <%= link_to 'Nuevo  depósito', new_owner_commerce_deposit_path(@commerce) ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
+    <%= link_to 'Nuevo  depósito', new_owner_commerce_deposit_path(@commerce) ,class:"hidden-xs btn btn-primary "%>
+    </div>
+    <div class="col-xs-1 col-sm-0"> </div>
+
+</div> 
+
+
+                        

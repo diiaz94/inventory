@@ -108,7 +108,7 @@ class DownloadsController < ApplicationController
     end
   end  
   def products_of_store
-    @downloads = @store.downloads
+   @products_grouped = @store.downloads.group_by {|download| download.product_id}
   end
   def new_product_of_store
     @download = Download.new(store_id: @store.id)

@@ -14,17 +14,43 @@ class ApplicationController < ActionController::Base
 		return	Role.where(nombre:"Seller")[0].id
 	end
 
-	def get_commerce(id)
-	        puts "+++++get_commerce+++++"+id.to_s
-		if(id)
-	        @commerce = Commerce.friendly.find(params[:commerce_id])
-	        if current_user.admin? or(current_user.owner? and current_user.commerces.find(@commerce.id))
-	        	return @commerce
-	        else
-	        	redirect_to root_path, alert: "No tienes acceso a esta sección"
-	        end
+	def set_commerce
+		if(params[:commerce_id])
+            @commerce = current_user.commerces.friendly.find(params[:commerce_id])
+
       	end
 	end
+
+	require "rubygems"
+	require "net/https"
+	require "uri"
+	require "json"
+
+	def getCurrentTime
+	  begin
+	    puts "Begin******"
+
+	    uri = URI.parse("http://api.timezonedb.com/?zone=America/Caracas&format=json&key=ZKLS5YG2UNIH")
+	    http = Net::HTTP.new(uri.host, uri.port)
+	    request = Net::HTTP::Get.new(uri.request_uri)
+	 
+	    res = http.request(request)
+	    response = JSON.parse(res.body)
+
+	    if(response["status"] and response["status"]=="OK" and response["timestamp"])
+	      puts "OK****"
+	     puts DateTime.strptime(response["timestamp"].to_s,'%s').to_formatted_s(:db).to_s 
+	     
+	      return DateTime.strptime(response["timestamp"].to_s,'%s').to_formatted_s(:db) 
+
+	    else
+	    return  "null"
+	    end
+	  rescue
+	    return "null"
+	  end  
+	end  
+
   private
 	def not_authenticated
 	  redirect_to login_path, alert: "Debes iniciar sesion primero"

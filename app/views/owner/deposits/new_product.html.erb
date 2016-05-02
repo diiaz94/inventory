@@ -1,0 +1,66 @@
+<h1>Nuevo producto para <%=@deposit.nombre%></h1>
+
+
+<%= form_for(@load,url: (@load.new_record? ? owner_commerce_deposit_products_url : owner_commerce_deposit_product_url )) do |f| %>
+
+
+  <script type="text/javascript">
+   var errorsArray=[] ;
+  <% @load.errors.each do |atributo, mensaje| %>
+      errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
+  <% end %>
+  $( document ).ready(function() {
+    validarErrores(errorsArray);
+  });
+</script>
+
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Datos de la carga en depósito</h3>
+    </div><!-- /.box-header -->
+    
+    <div class="box-body">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :product_id, "Producto" %>*<br>
+            <%= f.select :product_id, 
+            options_for_select(Product.all.collect {|p| [p.nombre_marca, p['id'] ] },( @load.product_id ? @load.product_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div> 
+      
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :cantidad, "Cantidad" %><br>
+              <%= f.number_field :cantidad ,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :precio, "Precio" %><br>
+              <%= f.text_field :precio ,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+  
+    <div class="box-footer">
+      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
+      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+    </div>
+<% end %>
+
+
+
+<script>
+      $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+      });
+</script>
+

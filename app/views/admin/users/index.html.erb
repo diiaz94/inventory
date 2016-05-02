@@ -1,0 +1,138 @@
+       <!-- Main content -->
+        <section class="content">
+          <div class="row">
+            <div class="col-xs-12">
+
+
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Lista de Usuarios</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <table id="users_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
+                    <thead>
+                      <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th class="hidden-xs">Email</th>
+                        <th>Celular</th>
+                        <%if current_user.admin?%>
+                          <th class="hidden-xs">Rol</th>
+                        <%end%>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @users.each_with_index do |user,index| %>
+                        <tr class="link" data-toggle="modal" data-target=<%="#modal-user-"+index.to_s%>>
+                          <td><%= user.cedula %></td>
+                          <td><%= user.profile.primer_nombre %> <%= user.profile.primer_apellido%></td>
+                          <td class="hidden-xs"><%= user.profile.email %></td>
+                          <td><%= user.profile.celular %></td>
+                          <%if current_user.admin?%>
+                            <td class="hidden-xs"><%= user.role_name%></td>
+                          <%end%>
+                        </tr>
+                        <div class="example-modal">
+                          <div class="modal fade" id=<%="modal-user-"+index.to_s%>>
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <h4 class="modal-title">Información</h4>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-xs-12">
+                                      <div class="box box-solid">
+                                        <div class="box-header with-border">
+                                          <i class="fa fa-text-width"></i>
+                                          <h3 class="box-title">Datos de <%=user.profile.short_name%></h3>
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                          <dl>
+                                            <dt>Cédula:</dt>
+                                            <dd><%=user.cedula%></dd>
+                                            <dt>Nombre completo:</dt>
+                                            <dd><%=user.profile.complete_name%></dd>
+                                            <dt>Sexo:</dt>
+                                            <dd><%=user.profile.sex_name%></dd>
+                                            <dt>Email:</dt>
+                                            <dd><%=user.profile.email%></dd>
+                                            <dt>Teléfono celular:</dt>
+                                            <dd><%=user.profile.celular%></dd> 
+                                            <%if current_user.admin?%>
+                                              <dt>Rol:</dt>
+                                              <dd><%=user.role_name%></dd> 
+                                            <%end%>                                   
+                                          </dl>
+                                       </div><!-- /.box-body -->
+                                      </div><!-- /.box -->
+                                    </div><!-- ./col -->
+                                  </div><!-- /.row -->
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                                  
+                                  <button data-url=<%=admin_users_path%> data-id=<%=user.id%> type="button" class="btn btn-danger delete-record">Eliminar</button>
+                                  <button type="button" class="btn btn-primary" aria-label="Left Align" onclick="window.location.href='<%=edit_admin_user_path(user)%>'">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar &nbsp;
+                                  </button>
+                                </div>
+                              </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                          </div><!-- /.modal -->
+                        </div><!-- /.example-modal -->
+                          
+                      <% end %>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th class="hidden-xs">Email</th>
+                        <th>Celular</th>
+                        <%if current_user.admin?%>
+                          <th class="hidden-xs">Rol</th>
+                        <%end%>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </section><!-- /.content -->
+
+
+
+
+ <script>
+      $(function () {
+        $("#users_table").DataTable({
+          "language": {
+            "url": "/plugins/datatables/dataTables.spanish.lang"
+          },
+          "columnDefs": [ {
+          "targets": 'no-sort',
+          "orderable": false,
+          "searchable": false
+          } ],
+          stateSave: true
+        });
+      });
+</script>
+
+<br>
+
+
+
+<div class="row">
+    <div class="col-xs-1"> </div>
+    <div class="col-xs-10"> 
+        <%= link_to 'Nuevo  usuario', new_admin_user_path ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
+        <%= link_to 'Nuevo  usuario', new_admin_user_path ,class:"hidden-xs btn btn-primary "%>
+
+    </div>
+    <div class="col-xs-1"> </div>
+
+</div>  

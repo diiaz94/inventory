@@ -1,0 +1,18 @@
+       <!-- Main content -->
+        <section class="content">
+          <%= render 'stores_table' %>
+        </section><!-- /.content -->
+
+<br>
+
+
+<div class="row">
+    <div class="col-xs-1 col-sm-0"> </div>
+    <div class="col-xs-10 col-sm-12"> 
+    <%= link_to 'Nueva tienda', new_owner_commerce_store_path(@commerce) ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
+    <%= link_to 'Nuevo tienda', new_owner_commerce_store_path(@commerce) ,class:"hidden-xs btn btn-primary "%>
+    </div>
+    <div class="col-xs-1 col-sm-0"> </div>
+
+</div> 
+

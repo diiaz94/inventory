@@ -1,51 +1,12 @@
 Rails.application.routes.draw do
-  resources :sellers
 
-  resources :roles
 
-  resources :downloads
-
-  resources :loads
-
-  resources :stores
-
-  resources :brands
-
-  resources :units
-
-  get 'welcome/index'
-
-  #resources :deposits_products
-
-  resources :products
-
-  resources :deposits
-
-  resources :categories
-
-  resources :commerces
-
-  resources :profiles
   resources :sessions
+  get 'welcome/index'
 
   get 'login' => 'sessions#new', as: :login
   get 'logout' => 'sessions#destroy', as: :logout
 
-  get 'deposits/:deposit_id/products' => 'loads#products_of_deposit', as: :products_of_deposit
-  get 'deposits/:deposit_id/products/new' => 'loads#new_product_of_deposit', as: :new_product_of_deposit
-  get 'deposits/:deposit_id/products/:id' => 'loads#show', as: :product_of_deposit 
-  post 'deposits/:deposit_id/products' => 'loads#create_product_of_deposit'
-  get 'deposits/:deposit_id/products/:id/edit' => 'loads#edit_product_of_deposit', as: :edit_product_of_deposit
-  patch 'deposits/:deposit_id/products/:id' => 'loads#update_product_of_deposit' 
-  put 'deposits/:deposit_id/products/:id' => 'loads#update_product_of_deposit' 
-
-  get 'stores/:store_id/products' => 'downloads#products_of_store', as: :products_of_store
-  get 'stores/:store_id/products/new' => 'downloads#new_product_of_store', as: :new_product_of_store
-  get 'stores/:store_id/products/:id' => 'downloads#show', as: :product_of_store 
-  post 'stores/:store_id/products' => 'downloads#create_product_of_store'
-  get 'stores/:store_id/products/:id/edit' => 'downloads#edit_product_of_store', as: :edit_product_of_store
-  patch 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
-  put 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
   
 
 
@@ -53,24 +14,17 @@ Rails.application.routes.draw do
   get 'admin_user' => 'welcome#admin_user', as: :admin_user
   
 
-  get 'commerce/:commerce_id/deposits/new' => 'deposits#new', as: :new_deposit_of_commerce
-  get 'commerce/:commerce_id/deposits/:id/edit' => 'deposits#edit', as: :edit_deposit_of_commerce
-  get 'commerce/:commerce_id/deposits' => 'deposits#index', as: :deposits_of_commerce
-  
-  get 'commerce/:commerce_id/stores/new' => 'stores#new', as: :new_store_of_commerce
-  get 'commerce/:commerce_id/stores/:id/edit' => 'stores#edit', as: :edit_store_of_commerce
-  get 'commerce/:commerce_id/stores' => 'stores#index', as: :stores_of_commerce
-  
-  get 'commerce/:commerce_id/seller/new' => 'sellers#new', as: :new_seller_of_commerce
-  get 'commerce/:commerce_id/seller/:id/edit' => 'sellers#edit', as: :edit_seller_of_commerce
-  get 'commerce/:commerce_id/sellers' => 'sellers#index', as: :sellers_of_commerce
 
-  get 'my_profile' => 'users#my_profile', as: :my_profile
 # post 'deposits/:deposit_id/products' => 'deposits_products#create'
 #  get 'deposits/:deposit_id/new' => 'deposits_products#new', as: :new_deposits_product
 #  get 'deposits/:deposit_id/products/:id/edit' => 'deposits_products#edit', as: :edit_deposits_product
  # get 'deposits/:deposit_id/products/:id' => 'deposits_products#show', as: :deposits_product
-  resources :users
+  
+
+
+  get 'admin' => 'welcome#admin', as: :admin_index
+  get 'owner' => 'welcome#owner', as: :owner_index
+  get 'seller' => 'welcome#seller', as: :seller_index
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -78,6 +32,52 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'welcome#index'
 
+  get 'my_profile' => 'users#my_profile', as: :my_profile
+  namespace "admin" do
+    resources :users
+    resources :roles
+    resources :commerces
+    resources :stores
+    resources :deposits
+    resources :sellers
+    resources :downloads
+    resources :loads
+  end
+    resources :products
+  
+  namespace "owner" do
+    resources :users
+    resources :commerces do
+      resources :deposits, :stores,:sellers
+      get 'deposits/:id/products' => 'deposits#products', as: :deposit_products
+      get 'deposits/:id/products/new' => 'deposits#new_product', as: :new_deposit_product
+      get 'deposits/:deposit_id/products/:product_id' => 'deposits#show_product', as: :deposit_product
+      post 'deposits/:deposit_id/products' => 'deposits#add_product'
+      get 'deposits/:deposit_id/products/:product_id/edit' => 'deposits#edit_product', as: :edit_deposit_product
+      patch 'deposits/:deposit_id/products/:product_id' => 'deposits#update_product' 
+      put 'deposits/:deposit_id/products/:product_id' => 'deposits#update_product' 
+      
+      get 'stores/:store_id/products' => 'downloads#products_of_store', as: :store_products
+      get 'stores/:store_id/products/new' => 'downloads#new_product_of_store', as: :new_store_product
+      get 'stores/:store_id/products/:id' => 'downloads#show', as: :store_product 
+      post 'stores/:store_id/products' => 'downloads#create_product_of_store'
+      get 'stores/:store_id/products/:id/edit' => 'downloads#edit_product_of_store', as: :edit_store_product
+      patch 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
+      put 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
+    end
+    resources :loads
+  
+   
+  end
+  namespace "seller" do
+    resources :users
+    resources :stores
+  end
+    resources :users
+    resources :products
+    resources :categories
+    resources :brands
+    resources :units
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

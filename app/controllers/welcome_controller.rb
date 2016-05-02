@@ -1,15 +1,30 @@
 class WelcomeController < ApplicationController
-  skip_before_action :require_login,  except: [:index]
+  skip_before_action :require_login,  except: [:index,:admin_welcome,:owner_welcome,:seller_welcome]
 
   def index
 
+    if current_user.admin?
+      redirect_to admin_index_path
+    end 
     if current_user.owner?
-      @products_of_deposits =current_user.commerces.first.deposits.first.loads.sum(:cantidad)
-      @products_of_stores =current_user.commerces.first.stores.first.downloads.sum(:cantidad)
+      redirect_to owner_index_path
+    end 
+    if current_user.seller?
+      redirect_to seller_index_path
     end 
     
   end
-
+  def admin
+    render "index"
+  end
+  def owner
+    @products_of_deposits =current_user.commerces.first.deposits.first.loads.sum(:cantidad)
+    @products_of_stores =current_user.commerces.first.stores.first.downloads.sum(:cantidad)
+    render "index"
+  end
+  def seller
+    render "index"
+  end
   def admin_user
   	@user = User.new
     if !@notUsers

@@ -3,7 +3,7 @@ class CreateSellers < ActiveRecord::Migration
     create_table :sellers do |t|
       t.belongs_to :commerce, index: true
       t.belongs_to :store, index: true
-
+      t.string :slug
       t.timestamps
     end
   end

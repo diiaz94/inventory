@@ -18,15 +18,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                    <% @downloads.each_with_index do |download,index| %>
-                      <tr class="link" data-toggle="modal" data-target=<%="#modal-products_of_deposit-"+index.to_s%>>
-                        <td><%= download.product.nombre_marca%></td>
-                        <td><%= download.cantidad %></td>
-                        <td><%= download.precio %> Bs.</td>
+                    <% @products_grouped.each do |attr_name, attr_value|%>
+                      <tr class="link" data-toggle="modal" data-target=<%="#modal-products_of_deposit-"+attr_name.to_s%>>
+                        <td><%= product =Product.find(attr_name).nombre_marca%></td>
+                        <td><%= cantidad = Download.where(id: attr_value.map(&:id)).sum(:cantidad) %></td>
+                        <% download = Download.where(id: attr_value.map(&:id)).order(:created_at).last%>
+                        <td><%= download.precio%> Bs.</td>
                           
                       </tr>
                         <div class="example-modal">
-                          <div class="modal fade" id=<%="modal-products_of_deposit-"+index.to_s%>>
+                          <div class="modal fade" id=<%="modal-products_of_deposit-"+attr_name.to_s%>>
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
@@ -44,9 +45,9 @@
                                         <div class="box-body">
                                           <dl>
                                             <dt>Producto:</dt>
-                                            <dd><%=download.product.nombre_marca%></dd>
+                                            <dd><%=product%></dd>
                                             <dt>Cantidad:</dt>
-                                            <dd><%=download.cantidad%></dd>
+                                            <dd><%=cantidad%></dd>
                                             <dt>Precio:</dt>
                                             <dd><%=download.precio%> Bs.</dd>
                                

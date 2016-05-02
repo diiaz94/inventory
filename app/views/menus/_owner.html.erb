@@ -10,7 +10,7 @@
                
                 <%if current_user.commerces.count>0%>
                   <li>
-                    <a href="<%=commerces_path%>"><i class="fa fa-search-plus"></i> Ver Todos</a>
+                    <a href="<%=owner_commerces_path%>"><i class="fa fa-search-plus"></i> Ver Todos</a>
                   </li>   
                   <%current_user.commerces.each do |commerce|%>
                     <li class="treeview">
@@ -21,7 +21,7 @@
                       </a>
                       <ul class="treeview-menu">
                         <li>
-                          <a href="<%=commerce_path(commerce)%>"><i class="fa  fa-search-plus"></i> Ver Comercio</a>
+                          <a href="<%=owner_commerce_path(commerce)%>"><i class="fa  fa-search-plus"></i> Ver Comercio</a>
                         </li> 
                         <li class="treeview">
                           <a href="#">
@@ -32,17 +32,17 @@
                           <ul class="treeview-menu">
                             <%if commerce.deposits.count>0%>
                               <li>
-                                <a href="<%=deposits_of_commerce_path(commerce)%>"><i class="fa fa-search-plus"></i> Ver Todos</a>
+                                <a href="<%=owner_commerce_deposits_path(commerce)%>"><i class="fa fa-search-plus"></i> Ver Todos</a>
                               </li>  
                               <%commerce.deposits.each do |deposit|%>
                                 <li>
-                                <a href="<%=products_of_deposit_path(deposit)%>"><i class="fa fa-square"></i> <%=deposit.nombre%></a>
+                                <a href="<%=owner_commerce_deposit_products_path(commerce,deposit)%>"><i class="fa fa-square"></i> <%=deposit.nombre%></a>
                               </li> 
                               <%end%> 
 
                             <%end%>
                             <li>
-                              <a href="<%=new_deposit_of_commerce_path(commerce)%>"><i class="fa fa-plus-square"></i> Agregar Deposito</a>
+                              <a href="<%=new_owner_commerce_deposit_path(commerce)%>"><i class="fa fa-plus-square"></i> Agregar Deposito</a>
                             </li>                            
                           </ul>
                         </li>                        
@@ -55,16 +55,16 @@
                           <ul class="treeview-menu">
                             <%if commerce.stores.count>0%>
                               <li>
-                                <a href="<%=stores_of_commerce_path(commerce)%>"><i class="fa fa-search-plus"></i> Ver Todos</a>
+                                <a href="<%=owner_commerce_stores_path(commerce)%>"><i class="fa fa-search-plus"></i> Ver Todos</a>
                               </li> 
                               <%commerce.stores.each do |store|%>
                                 <li>
-                                <a href="<%=products_of_store_path(store)%>"><i class="glyphicon glyphicon-shopping-cart"></i> <%=store.nombre%></a>
+                                <a href="<%=owner_commerce_store_products_path(commerce,store)%>"><i class="glyphicon glyphicon-shopping-cart"></i> <%=store.nombre%></a>
                               </li> 
                               <%end%> 
                             <%end%>
                             <li>
-                              <a href="<%=new_store_of_commerce_path(commerce)%>"><i class="fa fa-plus-square"></i> Agregar Tienda</a>
+                              <a href="<%=new_owner_commerce_store_path(commerce)%>"><i class="fa fa-plus-square"></i> Agregar Tienda</a>
                             </li>  
                           </ul>
                         </li>                        
@@ -78,16 +78,16 @@
                           <ul class="treeview-menu">
                             <%if commerce.sellers.count>0%>
                               <li>
-                                <a href="<%=sellers_of_commerce_path(commerce)%>"><i class="fa fa-search-plus"></i> Ver Todos</a>
+                                <a href="<%=owner_commerce_sellers_path(commerce)%>"><i class="fa fa-search-plus"></i> Ver Todos</a>
                               </li> 
                               <%commerce.sellers.each do |seller|%>
                                 <li>
-                                <a href="<%=seller_path(seller)%>"><i class="fa fa-user"></i> <%=seller.user.profile.short_name%></a>
+                                <a href="<%=owner_commerce_seller_path(commerce,seller)%>"><i class="fa fa-user"></i> <%=seller.user.profile.short_name%></a>
                               </li> 
                               <%end%> 
                             <%end%>
                             <li>
-                              <a href="<%=new_seller_of_commerce_path(commerce)%>"><i class="fa fa-plus-square"></i> Agregar Vendedor</a>
+                              <a href="<%=new_owner_commerce_seller_path(commerce)%>"><i class="fa fa-plus-square"></i> Agregar Vendedor</a>
                             </li>
                           </ul>
                         </li>                        
@@ -98,7 +98,7 @@
                   <%end%>   
                 <%end%>
                 <li>
-                  <a href="<%=new_commerce_path%>"><i class="fa fa-plus-square"></i> Agregar Comercio</a>
+                  <a href="<%=new_owner_commerce_path%>"><i class="fa fa-plus-square"></i> Agregar Comercio</a>
                 </li>
               </ul>
             </li>
@@ -108,7 +108,7 @@
 
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-barcode"></i> <span>Productos</span>
+                <i class="glyphicon glyphicon-barcode"></i> <span>Productos</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
@@ -134,3 +134,9 @@
                 </li>
               </ul>
             </li>
+                        <li>
+              <a href="<%=owner_loads_path%>">
+                <i class="glyphicon glyphicon-barcode"></i> <span>Cargas en Depósitos</span>
+              </a>
+            </li>
+
