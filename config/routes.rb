@@ -57,13 +57,13 @@ Rails.application.routes.draw do
       patch 'deposits/:deposit_id/products/:product_id' => 'deposits#update_product' 
       put 'deposits/:deposit_id/products/:product_id' => 'deposits#update_product' 
       
-      get 'stores/:store_id/products' => 'downloads#products_of_store', as: :store_products
-      get 'stores/:store_id/products/new' => 'downloads#new_product_of_store', as: :new_store_product
-      get 'stores/:store_id/products/:id' => 'downloads#show', as: :store_product 
-      post 'stores/:store_id/products' => 'downloads#create_product_of_store'
-      get 'stores/:store_id/products/:id/edit' => 'downloads#edit_product_of_store', as: :edit_store_product
-      patch 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
-      put 'stores/:store_id/products/:id' => 'downloads#update_product_of_store' 
+      get 'stores/:store_id/products' => 'stores#products', as: :store_products
+      get 'stores/:store_id/products/new' => 'stores#new_product', as: :new_store_product
+      get 'stores/:store_id/products/:product_id' => 'stores#show_product', as: :store_product 
+      post 'stores/:store_id/products' => 'stores#add_product'
+      get 'stores/:store_id/products/:id/edit' => 'stores#edit_product', as: :edit_store_product
+      patch 'stores/:store_id/products/:id' => 'stores#update_product' 
+      put 'stores/:store_id/products/:id' => 'stores#update_product' 
     end
     resources :loads
   

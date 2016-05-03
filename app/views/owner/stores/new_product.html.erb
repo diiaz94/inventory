@@ -1,0 +1,79 @@
+<h1>Nuevo producto para <%=@store.nombre%></h1>
+
+
+<%= form_for(@download,url: (@download.new_record? ? owner_commerce_store_products_url : owner_commerce_store_product_url )) do |f| %>
+
+
+  <script type="text/javascript">
+   var errorsArray=[] ;
+  <% @download.errors.each do |atributo, mensaje| %>
+      errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
+  <% end %>
+  $( document ).ready(function() {
+    validarErrores(errorsArray);
+  });
+</script>
+
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Datos de la descarga en tienda</h3>
+    </div><!-- /.box-header -->
+    
+    <div class="box-body">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :deposit_id, "Deposito origen" %>*<br>
+            <%= f.select :deposit_id, 
+            options_for_select(@deposits.collect {|p| [p.nombre, p['id'] ] },( @download.deposit_id ? @download.deposit_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div> 
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :product_id, "Producto" %>*<br>
+            <%= f.select :product_id, 
+            options_for_select(Product.all.collect {|p| [p.nombre_marca , p['id'] ] },( @download.product_id ? @download.product_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div> 
+      
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :cantidad, "Cantidad" %><br>
+              <%= f.number_field :cantidad ,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :precio, "Precio" %><br>
+              <%= f.text_field :precio ,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+  
+    <div class="box-footer">
+      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
+      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+    </div>
+<% end %>
+
+
+
+<script>
+      $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+        $("select.select2#download_product_id").change(calculate_price);
+        commerce_id = "<%=@store.commerce.id%>"
+        $("select.select2#download_deposit_id").change(fill_products_for_store);
+        $("select.select2#download_deposit_id").trigger("change");
+      });
+</script>
+

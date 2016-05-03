@@ -85,14 +85,15 @@ function validarErrores(array){
 }
 
 var products = [];
+var commerce_id;
 function fill_products_for_store(){
 
-$.ajax("/deposits/"+this.value+"/products.json").done(
+$.ajax("/owner/commerces/"+commerce_id+"/deposits/"+this.value+"/products.json").done(
 	function(data){
 		$("select.select2#download_product_id").html("");
 		$.each(data,function( index, obj ) {
 	 			$("select.select2#download_product_id").append(
-	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+" - "+obj.precio+" Bs.</option>"
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+"</option>"
 	 			) 
 		});
 		products = data;	
@@ -103,9 +104,9 @@ $.ajax("/deposits/"+this.value+"/products.json").done(
 
 function calculate_price(){
 var product = products[$($(this).find("option:selected")).data("index")]
-var precio_base = typeof(product)!==undefined ? product.precio : products[0].precio
+//var precio_base = typeof(product)!==undefined ? product.precio : products[0].precio
 $("label[for='download_cantidad'").text("Cantidad (Quedan "+product.cantidad+" en depósito)")
-$("#download_precio").val(precio_base+(precio_base*0.30))
+//$("#download_precio").val(precio_base+(precio_base*0.30))
 
 
 }
