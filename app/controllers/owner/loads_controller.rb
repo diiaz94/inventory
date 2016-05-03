@@ -9,10 +9,8 @@ class Owner::LoadsController < ApplicationController
     @commerces = current_user.commerces
     @loads = []
     @commerces.each do |commerce|
-      puts "*********EPA****"
       commerce.deposits.each do |deposit|
-      puts "*********AQUI****"
-      puts deposit.loads.to_json
+        puts deposit.loads.to_json
         @loads = @loads + deposit.loads
       end
     end
@@ -38,7 +36,7 @@ class Owner::LoadsController < ApplicationController
   def create
     @load = Load.new(load_params)
     respond_to do |format|
-      if @load.save
+      if @load.save 
         format.html { redirect_to owner_loads_path, notice: 'Carga realizada exitosamente.' }
         format.json { render :show, status: :created, location: @load }
       else
@@ -81,13 +79,22 @@ class Owner::LoadsController < ApplicationController
     end
 
     def set_date_created_at
+      if params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
+      end
       time = getCurrentTime
-      @load.created_at = time ? time : Date.today
+      @load.created_at = time ? time : (fecha ? fecha : Date.today)
       @load.save
     end
     def set_date_updated_at
+      if params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f.anio, f.mes, f.dia,  f.hora,  f.min,  f.seg)
+      end
       time = getCurrentTime
-      @load.updated_at = time ? time : Date.today
+      puts @fecha.to_s
+      @load.updated_at = time ? time : (fecha ? fecha : Date.today)
       @load.save
     end    
 

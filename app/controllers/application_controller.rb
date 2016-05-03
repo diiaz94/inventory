@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 	  begin
 	    puts "Begin******"
 
-	    uri = URI.parse("http://api.timezonedb.com/?zone=America/Caracas&format=json&key=ZKLS5YG2UNIH")
+	    uri = URI.parse("http://api.timezonedb.com/?zone=America/Asuncion&format=json&key=ZKLS5YG2UNIH")
 	    http = Net::HTTP.new(uri.host, uri.port)
 	    request = Net::HTTP::Get.new(uri.request_uri)
 	 

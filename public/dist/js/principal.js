@@ -36,6 +36,25 @@ validarMensajes();
 	  headers: {
 	    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
 	  }});
+
+	$("#new_load").submit(function(event){
+		var d = new Date();
+		var fecha = {
+			"dia":d.getDate(),
+			"mes":d.getMonth(),
+			"anio":d.getFullYear(),
+			"hora":d.getHours(),
+			"min":d.getMinutes(),
+			"seg":d.getSeconds()
+		}
+
+		$("#new_load").append(
+			"<input type='hidden' name='fecha' value='"+JSON.stringify(fecha)+"'/>"
+			);
+		return 
+		event.preventDefault();
+	});
+
 });
 
 function validarMensajes(){
