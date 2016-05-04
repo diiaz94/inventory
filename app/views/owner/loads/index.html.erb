@@ -9,7 +9,7 @@
                   <h3 class="box-title">Lista de cargas en depósitos</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  <table id="products_of_deposit_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
+                  <table id="loads_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                       <tr>
                         <th>Comercio</th>
@@ -22,7 +22,7 @@
                     </thead>
                     <tbody>
                     <% @loads.each_with_index do |load,index| %>
-                      <tr class="link" data-toggle="modal" data-target=<%="#modal-products_of_deposit-"+index.to_s%>>
+                      <tr class="link" data-toggle="modal" data-target=<%="#modal-load-"+index.to_s%>>
                         <td><%= load.deposit.commerce.nombre%></td>
                         <td><%= load.deposit.nombre%></td>
                         <td><%= load.product.nombre_marca%></td>
@@ -31,7 +31,7 @@
                         <td><%= load.fecha_c %></td>
                       </tr>
                         <div class="example-modal">
-                          <div class="modal fade" id=<%="modal-products_of_deposit-"+index.to_s%>>
+                          <div class="modal fade" id=<%="modal-load-"+index.to_s%>>
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
@@ -95,7 +95,7 @@
 
  <script>
       $(function () {
-        $("#products_of_deposit_table").DataTable({
+        $("#loads_table").DataTable({
           "language": {
             "url": "/plugins/datatables/dataTables.spanish.lang"
           },

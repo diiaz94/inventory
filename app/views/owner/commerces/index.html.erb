@@ -46,6 +46,11 @@
                                             <dd><%=commerce.descripcion%></dd>
                                                                                 
                                           </dl>
+                                <%= link_to 'Ver Depósitos', owner_commerce_deposits_path(commerce), class:"visible-xs btn btn-block btn-warning btn-sm" %>
+                                <%= link_to 'Ver Depósitos', owner_commerce_deposits_path(commerce), class:"hidden-xs btn btn-warning btn-sm" %>
+                                <%= link_to 'Ver Tiendas', owner_commerce_stores_path(commerce), class:"visible-xs btn btn-block btn-warning btn-sm" %>
+                                <%= link_to 'Ver Tiendas', owner_commerce_stores_path(commerce), class:"hidden-xs btn btn-warning btn-sm" %>
+
                                        </div><!-- /.box-body -->
                                       </div><!-- /.box -->
                                     </div><!-- ./col -->

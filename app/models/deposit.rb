@@ -3,7 +3,7 @@ class Deposit < ActiveRecord::Base
   	has_many :products, through: :loads
   	has_many :downloads
   	has_many :stores, through: :downloads
-	belongs_to :commerce
+	  belongs_to :commerce
   extend FriendlyId
   friendly_id :nombre, use: :slugged
 

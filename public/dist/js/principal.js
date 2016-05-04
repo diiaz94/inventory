@@ -175,7 +175,7 @@ $.ajax("/owner/commerces/"+this.value+"/deposits.json").done(
 	}).error(
 		function(data){
 			debugger
-			alert(data)
+			alert(data.responseText)
 		}
 	);
 }

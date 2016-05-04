@@ -5,10 +5,7 @@ class Admin::UsersController < ApplicationController
   # GET /users_url
   # GET /users.json
   def index
-    if current_user.admin?
       @users = User.all
-    end
-  
   end
 
   # GET /users/1
@@ -23,7 +20,6 @@ class Admin::UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    puts "++++"+@user.crypted_password
   end
 
   # POST /users

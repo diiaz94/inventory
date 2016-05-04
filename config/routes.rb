@@ -43,8 +43,8 @@ Rails.application.routes.draw do
     resources :downloads
     resources :loads
   end
-    resources :products
   
+ 
   namespace "owner" do
     resources :users
     resources :commerces do
@@ -66,9 +66,9 @@ Rails.application.routes.draw do
       put 'stores/:store_id/products/:id' => 'stores#update_product' 
     end
     resources :loads
-  
-   
+    resources :downloads
   end
+  
   namespace "seller" do
     resources :users
     resources :stores

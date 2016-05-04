@@ -1,11 +1,18 @@
 class Owner::DownloadsController < ApplicationController
-  before_action :set_download, only: [:show, :edit, :update, :destroy, :edit_product_of_store ,:update_product_of_store]
-  before_action :set_store, only: [ :create_product_of_store,:update_product_of_store,:products_of_store,:new_product_of_store,:edit_product_of_store]
+  before_action :set_load, only: [:show, :edit, :update, :destroy]
+  after_action :set_date_created_at, only: [:create]
+  after_action :set_date_updated_at, only: [:update]
 
   # GET /downloads
   # GET /downloads.json
   def index
-    @downloads = Download.all
+    @commerces = current_user.commerces
+    @downloads = []
+    @commerces.each do |commerce|
+      commerce.stores.each do |store|
+        @downloads = @downloads + store.downloads
+      end
+    end
   end
 
   # GET /downloads/1
@@ -15,7 +22,33 @@ class Owner::DownloadsController < ApplicationController
 
   # GET /downloads/new
   def new
+    commerces=current_user.commerces
+    deposits_count=0
+    stores_count=0
+    products_deposits_count =0
+    products_stores_count =0
+    commerces.each do |c|
+      deposits = c.deposits
+      stores = c.stores
+      deposits_count=+deposits.count
+      stores_deposits_count=+ stores.count
+
+      deposits.each do |d|
+        products_deposits_count =+ d.products.count
+      end
+      stores.each do |s|
+       products_stores_count =+ s.products.count
+      end
+    end
+    if  commerces.count == 0 or
+        deposits_count == 0 or
+        stores_count == 0 or
+        products_deposits_count == 0 
+        redirect_to(:back,alert: "Disculpa, no posees elementos para hacer una descarga.")
+    end
     @download = Download.new
+    @commerces = current_user.commerces
+
   end
 
   # GET /downloads/1/edit
@@ -26,10 +59,9 @@ class Owner::DownloadsController < ApplicationController
   # POST /downloads.json
   def create
     @download = Download.new(download_params)
-
     respond_to do |format|
       if @download.save
-        format.html { redirect_to @download, notice: 'Download was successfully created.' }
+        format.html { redirect_to owner_downloads_path, notice: 'Descarga realizada exitosamente.' }
         format.json { render :show, status: :created, location: @download }
       else
         format.html { render :new }
@@ -43,7 +75,7 @@ class Owner::DownloadsController < ApplicationController
   def update
     respond_to do |format|
       if @download.update(download_params)
-        format.html { redirect_to @download, notice: 'Download was successfully updated.' }
+        format.html { redirect_to owner_downloads_path, notice: 'Descarga actualizada exitosamente.' }
         format.json { render :show, status: :ok, location: @download }
       else
         format.html { render :edit }
@@ -62,69 +94,6 @@ class Owner::DownloadsController < ApplicationController
     end
   end
 
-  def create_product_of_store
-    @download = Download.new(download_params)
-    loads = @download.deposit.loads.where(product_id: @download.product_id)
-    if loads.sum(:cantidad)<@download.cantidad
-      redirect_to :back, alert: 'Error.'
-      return
-    else
-      cantidad_cargada=@download.cantidad
-      loads.order(:created_at).each do |load|
-        if cantidad_cargada==0 and load.cantidad!=0
-          break;
-        else
-          if load.cantidad>=cantidad_cargada
-            load.cantidad=load.cantidad-cantidad_cargada
-            load.save
-            break;
-          else
-            cantidad_cargada=cantidad_cargada-load.cantidad
-            load.cantidad=0
-            load.save
-          end  
-        end
-      end
-    end
-    respond_to do |format|
-      if @download.save
-        format.html { redirect_to products_of_store_path(@store), notice: 'Se agregó el producto a la tienda exitosamente.' }
-        format.json { render :show, status: :created, location: @download }
-      else
-        format.html { render :new }
-        format.json { render json: @download.errors, status: :unprocessable_entity }
-      end
-    end
-  end  
-  def update_product_of_store
-     respond_to do |format|
-      if @download.update(download_params)
-        format.html { redirect_to products_of_store_path(@store), notice: 'Se actualizó el producto a la tienda exitosamente.' }
-        format.json { render :show, status: :created, location: @download }
-      else
-        format.html { render :new }
-        format.json { render json: @download.errors, status: :unprocessable_entity }
-      end
-    end
-  end  
-  def products_of_store
-   @products_grouped = @store.downloads.group_by {|download| download.product_id}
-  end
-  def new_product_of_store
-    @download = Download.new(store_id: @store.id)
-    puts "**********"
-    puts "DOWNLOAD"
-    puts @download.to_json
-    @deposits =  @store.commerce.deposits.length>0 ? @store.commerce.deposits : []
-    @products = (@deposits.length > 0 and @deposits.first.products.length>0) ? @deposits.first.products : []
-    puts "**********"
-    puts @products.to_json
-  end
-  def edit_product_of_store
-    @deposits =  @store.commerce.deposits.length>0 ? @store.commerce.deposits : []
-    @products = (@deposits.length > 0 and @deposits.first.products.length>0) ? @deposits.first.products : []
-
-  end
 
 
 
@@ -133,9 +102,26 @@ class Owner::DownloadsController < ApplicationController
     def set_download
       @download = Download.find(params[:id])
     end
-    def set_store
-      @store = Store.friendly.find(params[:store_id])
+    def set_date_created_at
+      if params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
+      end
+      time = getCurrentTime
+      @download.created_at = time ? time : (fecha ? fecha : Date.today)
+      @download.save
     end
+    def set_date_updated_at
+      if params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f.anio, f.mes, f.dia,  f.hora,  f.min,  f.seg)
+      end
+      time = getCurrentTime
+      puts @fecha.to_s
+      @download.updated_at = time ? time : (fecha ? fecha : Date.today)
+      @download.save
+    end    
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def download_params
       params.require(:download).permit(:cantidad, :precio,:deposit_id,:product_id).merge(store_id: @store.id.to_s)

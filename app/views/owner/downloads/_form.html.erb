@@ -1,10 +1,7 @@
-
-<%= form_for(@load,{:url => (@load.new_record? ? products_of_deposit_path : product_of_deposit_path(@deposit.slug,@load) )}) do |f| %>
-
-
-  <script type="text/javascript">
+<%= form_for(@download,url: @download.new_record? ? owner_downloads_path : owner_download_path) do |f| %>
+    <script type="text/javascript">
    var errorsArray=[] ;
-  <% @load.errors.each do |atributo, mensaje| %>
+  <% @download.errors.each do |atributo, mensaje| %>
       errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
   <% end %>
   $( document ).ready(function() {
@@ -18,12 +15,32 @@
     </div><!-- /.box-header -->
     
     <div class="box-body">
+      
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label "comercio", "Comercio" %>*<br>
+            <%= select_tag "comercio", options_from_collection_for_select(@commerces,"id","nombre", ""),{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div> 
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :deposit_id, "Deposito origen" %>*<br>
+            <%= f.select :deposit_id, 
+            options_for_select(Deposit.all.collect {|p| [p.nombre, p['id'] ] },( @download.new_record? ? "" : @download.deposit_id )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div> 
+
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
             <%= f.label :product_id, "Producto" %>*<br>
             <%= f.select :product_id, 
-            options_for_select(Product.all.collect {|p| [p.nombre_marca, p['id'] ] },( @load.product_id ? @load.product_id : "" )),{},{class:"form-control select2"}%>
+            options_for_select(Product.all.collect {|p| [p.nombre_marca, p['id'] ] },( @download.product_id ? @download.product_id : "" )),{},{class:"form-control select2"}%>
           </div>
         </div>
       </div> 
@@ -59,5 +76,11 @@
       $(function () {
         //Initialize Select2 Elements
         $(".select2").select2();
+  
+        $("select.select2#comercio").change(fill_deposits_for_commerce);
+       // $("select.select2#download_deposit_id").change(fill_products_for_deposit);
+        
+        $("select.select2#comercio").trigger("change")
       });
 </script>
+

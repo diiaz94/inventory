@@ -10,7 +10,6 @@ class Owner::LoadsController < ApplicationController
     @loads = []
     @commerces.each do |commerce|
       commerce.deposits.each do |deposit|
-        puts deposit.loads.to_json
         @loads = @loads + deposit.loads
       end
     end

@@ -18,8 +18,10 @@ class WelcomeController < ApplicationController
     render "index"
   end
   def owner
-    @products_of_deposits =current_user.commerces.first.deposits.first.loads.sum(:cantidad)
-    @products_of_stores =current_user.commerces.first.stores.first.downloads.sum(:cantidad)
+#    @products_of_deposits =current_user.commerces.first.deposits.first.loads.sum(:cantidad)
+#   @products_of_stores =current_user.commerces.first.stores.first.downloads.sum(:cantidad)
+    @products_of_deposits =0
+   @products_of_stores =0
     render "index"
   end
   def seller
