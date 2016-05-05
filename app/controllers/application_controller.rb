@@ -44,10 +44,11 @@ class ApplicationController < ActionController::Base
 	      return DateTime.strptime(response["timestamp"].to_s,'%s').to_formatted_s(:db) 
 
 	    else
-	    return  "null"
+	    	puts "Error en webservice::"
+	    return  nil
 	    end
 	  rescue
-	    return "null"
+	    return nil
 	  end  
 	end  
 

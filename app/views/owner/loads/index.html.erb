@@ -13,8 +13,9 @@
                     <thead>
                       <tr>
                         <th>Comercio</th>
-                        <th>Deposito</th>
+                        <th>Depósito</th>
                         <th>Producto</th>
+                        <th>Cantidad Inicial</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
                         <th>Fecha</th>
@@ -26,6 +27,7 @@
                         <td><%= load.deposit.commerce.nombre%></td>
                         <td><%= load.deposit.nombre%></td>
                         <td><%= load.product.nombre_marca%></td>
+                        <td><%= load.cantidad_inicial %></td>
                         <td><%= load.cantidad %></td>
                         <td><%= load.precio %> Bs.</td>
                         <td><%= load.fecha_c %></td>
@@ -79,10 +81,12 @@
                     <tfoot>
                       <tr>
                         <th>Comercio</th>
-                        <th>Deposito</th>
+                        <th>Depósito</th>
                         <th>Producto</th>
+                        <th>Cantidad Inicial</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
+                        <th>Fecha</th>
                       </tr>
                     </tfoot>
                   </table>

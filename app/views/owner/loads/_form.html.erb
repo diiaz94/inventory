@@ -30,7 +30,7 @@
           <div class="form-group">
             <%= f.label :deposit_id, "Deposito origen" %>*<br>
             <%= f.select :deposit_id, 
-            options_for_select(Deposit.all.collect {|p| [p.nombre, p['id'] ] },( @load.new_record? ? "" : @load.deposit_id )),{},{class:"form-control select2"}%>
+            options_for_select(Deposit.all.collect {|p| [p.nombre, p['id'] ] },( @load.new_record? ? "" : @load.deposit_id )),{},{class:"form-control select2 deposits"}%>
           </div>
         </div>
       </div> 

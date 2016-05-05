@@ -22,6 +22,17 @@ class Owner::LoadsController < ApplicationController
 
   # GET /loads/new
   def new
+    commerces=current_user.commerces
+    deposits_count=0
+    commerces.each do |c|
+      deposits = c.deposits
+      deposits_count=+deposits.count
+    end
+    if  commerces.count == 0 or
+        deposits_count == 0
+        redirect_to(:back,alert: "Disculpa, no posees elementos para hacer una descarga.")
+    end
+
     @load = Load.new
     @commerces = current_user.commerces
   end
@@ -34,6 +45,7 @@ class Owner::LoadsController < ApplicationController
   # POST /loads.json
   def create
     @load = Load.new(load_params)
+    @load.cantidad_inicial = @load.cantidad
     respond_to do |format|
       if @load.save 
         format.html { redirect_to owner_loads_path, notice: 'Carga realizada exitosamente.' }
@@ -79,10 +91,13 @@ class Owner::LoadsController < ApplicationController
 
     def set_date_created_at
       if params[:fecha]
+        puts "Se informo la fecha desde el cliente::"+params[:fecha]
         f = JSON.parse(params[:fecha])
         fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
       end
       time = getCurrentTime
+      puts "Respondio el werbservice del tiempo::"+time.to_s
+        
       @load.created_at = time ? time : (fecha ? fecha : Date.today)
       @load.save
     end

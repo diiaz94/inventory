@@ -41,7 +41,7 @@ validarMensajes();
 		var d = new Date();
 		var fecha = {
 			"dia":d.getDate(),
-			"mes":d.getMonth(),
+			"mes":d.getMonth()+1,
 			"anio":d.getFullYear(),
 			"hora":d.getHours(),
 			"min":d.getMinutes(),
@@ -164,14 +164,15 @@ function fill_deposits_for_commerce(){
 
 $.ajax("/owner/commerces/"+this.value+"/deposits.json").done(
 	function(data){
-		$("select.select2#load_deposit_id").html("");
+		$("select.select2.deposit").html("");
 		$.each(data,function( index, obj ) {
-	 			$("select.select2#load_deposit_id").append(
+	 			$("select.select2.deposits").append(
 	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
 	 			) 
 		});
-		$("select.select2#load_deposit_id").select2();
-        //$("select.select2#load_deposit_id").trigger("change");
+		$("select.select2.deposits").select2();
+		debugger
+        $("select.select2.deposits").trigger("change");
 	}).error(
 		function(data){
 			debugger
@@ -185,13 +186,13 @@ function fill_products_for_deposit(){
 
 $.ajax("/owner/commerces/"+$("select.select2#comercio").val()+"/deposits/"+this.value+"/products.json").done(
 	function(data){
-		$("select.select2#load_product_id").html("");
+		$("select.select2.products").html("");
 		$.each(data,function( index, obj ) {
-	 			$("select.select2#load_product_id").append(
+	 			$("select.select2.products").append(
 	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+"</option>"
 	 			) 
 		});
-		$("select.select2#load_product_id").select2();
+		$("select.select2.products").select2();
        // $("select.select2#download_product_id").trigger("change");
 	}).error(
 		function(data){

@@ -31,7 +31,7 @@ class Owner::DownloadsController < ApplicationController
       deposits = c.deposits
       stores = c.stores
       deposits_count=+deposits.count
-      stores_deposits_count=+ stores.count
+      stores_count=+ stores.count
 
       deposits.each do |d|
         products_deposits_count =+ d.products.count
@@ -40,6 +40,10 @@ class Owner::DownloadsController < ApplicationController
        products_stores_count =+ s.products.count
       end
     end
+    puts "Cantidad de comercios::"+commerces.count.to_s
+    puts "Cantidad de depositos::"+deposits_count.to_s
+    puts "Cantidad de tiendas::"+stores_count.to_s
+    puts "Cantidad de productos en deposito::"+products_deposits_count.to_s
     if  commerces.count == 0 or
         deposits_count == 0 or
         stores_count == 0 or
@@ -59,6 +63,8 @@ class Owner::DownloadsController < ApplicationController
   # POST /downloads.json
   def create
     @download = Download.new(download_params)
+    @download.cantidad_inicial = @download.cantidad
+
     respond_to do |format|
       if @download.save
         format.html { redirect_to owner_downloads_path, notice: 'Descarga realizada exitosamente.' }

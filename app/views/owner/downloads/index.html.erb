@@ -13,9 +13,10 @@
                     <thead>
                       <tr>
                         <th>Comercio</th>
-                        <th>Deposito Origen</th>
+                        <th>Depósito Origen</th>
                         <th>Tienda Destino</th>
                         <th>Producto</th>
+                        <th>Cantidad Inicial</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
                         <th>Fecha</th>
@@ -24,13 +25,14 @@
                     <tbody>
                     <% @downloads.each_with_index do |download,index| %>
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-download-"+index.to_s%>>
-                        <td><%= load.store.commerce.nombre%></td>
-                        <td><%= load.deposit.nombre%></td>
-                        <td><%= load.store.nombre%></td>
-                        <td><%= load.product.nombre_marca%></td>
-                        <td><%= load.cantidad %></td>
-                        <td><%= load.precio %> Bs.</td>
-                        <td><%= load.fecha_c %></td>
+                        <td><%= download.store.commerce.nombre%></td>
+                        <td><%= download.deposit.nombre%></td>
+                        <td><%= download.store.nombre%></td>
+                        <td><%= download.product.nombre_marca%></td>
+                        <td><%= download.cantidad_inicial %></td>
+                        <td><%= download.cantidad %></td>
+                        <td><%= download.precio %> Bs.</td>
+                        <td><%= download.fecha_c %></td>
                           
                       </tr>
                         <div class="example-modal">
@@ -82,9 +84,10 @@
                     <tfoot>
                       <tr>
                         <th>Comercio</th>
-                        <th>Deposito Origen</th>
+                        <th>Depósito Origen</th>
                         <th>Tienda Destino</th>
                         <th>Producto</th>
+                        <th>Cantidad Inicial</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
                         <th>Fecha</th>
@@ -118,8 +121,8 @@
 <div class="row">
     <div class="col-xs-1 col-sm-0"> </div>
     <div class="col-xs-10 col-sm-12"> 
-      <%= link_to 'Agregar Productos', new_owner_download_path,class:"visible-xs btn btn-block btn-primary btn-lg"%>
-      <%= link_to 'Agregar Productos', new_owner_download_path,class:"hidden-xs btn btn-primary "%>
+      <%= link_to 'Nueva descarga', new_owner_download_path,class:"visible-xs btn btn-block btn-primary btn-lg"%>
+      <%= link_to 'Nueva descarga', new_owner_download_path,class:"hidden-xs btn btn-primary "%>
 
     </div>
     <div class="col-xs-1 col-sm-0"> </div>
