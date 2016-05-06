@@ -30,7 +30,7 @@ class Owner::LoadsController < ApplicationController
     end
     if  commerces.count == 0 or
         deposits_count == 0
-        redirect_to(:back,alert: "Disculpa, no posees elementos para hacer una descarga.")
+        redirect_to(:back,alert: "Disculpa, no posees elementos para hacer una carga.")
     end
 
     @load = Load.new

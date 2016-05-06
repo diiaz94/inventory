@@ -75,11 +75,11 @@
 <script>
       $(function () {
         //Initialize Select2 Elements
+        triggerChangeDeposit = false;
         $(".select2").select2();
   
         $("select.select2#comercio").change(fill_deposits_for_commerce);
        // $("select.select2#load_deposit_id").change(fill_products_for_deposit);
-        
         $("select.select2#comercio").trigger("change")
       });
 </script>

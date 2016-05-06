@@ -1,5 +1,6 @@
 
 $( document ).ready(function() {
+	var triggerChangeDeposit;
     console.log( "ready!" );
 	$(".delete-record").on("click",function(){
 
@@ -164,15 +165,16 @@ function fill_deposits_for_commerce(){
 
 $.ajax("/owner/commerces/"+this.value+"/deposits.json").done(
 	function(data){
-		$("select.select2.deposit").html("");
+		$("select.select2.deposits").html("");
 		$.each(data,function( index, obj ) {
 	 			$("select.select2.deposits").append(
 	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
 	 			) 
 		});
 		$("select.select2.deposits").select2();
-		debugger
-        $("select.select2.deposits").trigger("change");
+		if(triggerChangeDeposit){
+		    $("select.select2.deposits").trigger("change");
+		}
 	}).error(
 		function(data){
 			debugger
