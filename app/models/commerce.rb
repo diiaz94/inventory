@@ -5,4 +5,15 @@ class Commerce < ActiveRecord::Base
   	has_many :sellers,dependent: :destroy
   	extend FriendlyId
   	friendly_id :nombre, use: :slugged
+
+  	def deposits_count
+  		self.deposits.count
+  	end
+  	def stores_count
+  		self.stores.count
+  	end
+  	def sellers_count
+  		self.sellers.count
+  	end
+
 end

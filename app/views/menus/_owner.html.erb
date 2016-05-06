@@ -82,7 +82,7 @@
                               </li> 
                               <%commerce.sellers.each do |seller|%>
                                 <li>
-                                <a href="<%=owner_commerce_seller_path(commerce,seller)%>"><i class="fa fa-user"></i> <%=seller.user.profile.short_name%></a>
+                                <a href="<%=owner_commerce_seller_path(commerce,seller.id)%>"><i class="fa fa-user"></i> <%=seller.user.profile.short_name%></a>
                               </li> 
                               <%end%> 
                             <%end%>

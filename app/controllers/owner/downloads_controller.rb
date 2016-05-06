@@ -36,7 +36,10 @@ class Owner::DownloadsController < ApplicationController
       deposits.each do |d|
         products_deposits_count =+ d.products.count
       end
+
       stores.each do |s|
+      puts "*******"+s.nombre
+      puts "AQUII"+s.products.count.to_s
        products_stores_count =+ s.products.count
       end
     end

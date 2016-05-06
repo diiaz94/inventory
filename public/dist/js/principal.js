@@ -167,6 +167,7 @@ $.ajax("/owner/commerces/"+this.value+"/deposits.json").done(
 	function(data){
 		$("select.select2.deposits").html("");
 		$.each(data,function( index, obj ) {
+			debugger
 	 			$("select.select2.deposits").append(
 	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
 	 			) 
@@ -202,4 +203,28 @@ $.ajax("/owner/commerces/"+$("select.select2#comercio").val()+"/deposits/"+this.
 			alert(data)
 		}
 	);
+}
+
+
+function initComerces(){
+debugger
+$.ajax("/owner/commerces.json").done(
+	function(data){
+		$("select.select2#comercio").html("");
+		$.each(data,function( index, obj ) {
+			if(obj.deposits_count>0){
+				$("select.select2#comercio").append(
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
+	 			) 
+			}
+		});
+		$("select.select2#comercio").select2();
+       	$("select.select2#comercio").trigger("change");
+	}).error(
+		function(data){
+			debugger
+			alert(data)
+		}
+	);
+
 }
