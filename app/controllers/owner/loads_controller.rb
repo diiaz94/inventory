@@ -39,6 +39,7 @@ class Owner::LoadsController < ApplicationController
 
   # GET /loads/1/edit
   def edit
+    @commerces = current_user.commerces
   end
 
   # POST /loads
@@ -99,12 +100,13 @@ class Owner::LoadsController < ApplicationController
       puts "Respondio el werbservice del tiempo::"+time.to_s
         
       @load.created_at = time ? time : (fecha ? fecha : Date.today)
+      @load.updated_at = time ? time : (fecha ? fecha : Date.today)
       @load.save
     end
     def set_date_updated_at
       if params[:fecha]
         f = JSON.parse(params[:fecha])
-        fecha = DateTime.new(f.anio, f.mes, f.dia,  f.hora,  f.min,  f.seg)
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
       end
       time = getCurrentTime
       puts @fecha.to_s

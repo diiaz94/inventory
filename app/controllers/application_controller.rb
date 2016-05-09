@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   before_action :require_login 
+	
 	def admin_role
 		return	Role.where(nombre:"Admin")[0].id
 	end
@@ -15,9 +16,8 @@ class ApplicationController < ActionController::Base
 	end
 
 	def set_commerce
-		if(params[:commerce_id])
+		if params[:commerce_id]
             @commerce = current_user.commerces.friendly.find(params[:commerce_id])
-
       	end
 	end
 
@@ -52,8 +52,36 @@ class ApplicationController < ActionController::Base
 	  end  
 	end  
 
+def descarga_valida(download)
+  
+    loads = download.deposit.loads.where(product_id: download.product_id)
+    if loads.sum(:cantidad)<download.cantidad
+    	return false
+    else
+      cantidad_cargada=download.cantidad
+      loads.order(:created_at).each do |load|
+        if cantidad_cargada==0 and load.cantidad!=0
+          break;
+        else
+          if load.cantidad>=cantidad_cargada
+            load.cantidad=load.cantidad-cantidad_cargada
+            load.save
+            break;
+          else
+            cantidad_cargada=cantidad_cargada-load.cantidad
+            load.cantidad=0
+            load.save
+          end  
+        end
+      end
+      return true
+    end
+	
+end
+
+
   private
 	def not_authenticated
-	  redirect_to login_path, alert: "Debes iniciar sesion primero"
+	  redirect_to login_path, alert: "Debes iniciar sesión primero"
 	end
 end

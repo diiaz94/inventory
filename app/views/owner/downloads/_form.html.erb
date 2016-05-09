@@ -1,4 +1,4 @@
-<%= form_for(@download,url: @download.new_record? ? owner_downloads_path : owner_download_path) do |f| %>
+<%= form_for(@download,url: @download.new_record? ? owner_downloads_path : owner_download_path, html: { class:  "submit_client_date"} ) do |f| %>
     <script type="text/javascript">
    var errorsArray=[] ;
   <% @download.errors.each do |atributo, mensaje| %>
@@ -33,7 +33,7 @@
             options_for_select(Deposit.all.collect {|p| [p.nombre, p['id'] ] },( @download.new_record? ? "" : @download.deposit_id )),{},{class:"form-control select2 deposits"}%>
           </div>
         </div>
-      </div> 
+      </div>
 
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -44,6 +44,15 @@
           </div>
         </div>
       </div> 
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :store_id, "Tienda Destino" %>*<br>
+            <%= f.select :store_id, 
+            options_for_select(Deposit.all.collect {|p| [p.nombre, p['id'] ] },( @download.new_record? ? "" : @download.store_id )),{},{class:"form-control select2 stores"}%>
+          </div>
+        </div>
+      </div>  
       
       <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -77,9 +86,14 @@
         //Initialize Select2 Elements
         triggerChangeDeposit = true;
         $(".select2").select2();
-        initComerces(){}
+        initComerces();
         $("select.select2#comercio").change(fill_deposits_for_commerce);
-        $("select.select2#download_deposit_id").change(fill_products_for_deposit);
+        $("select.select2#comercio").change(fill_stores_for_commerce);
+        $("select.select2#comercio").change(function(){
+          commerce_id = $("select.select2#comercio").val();
+        });
+
+        $("select.select2.deposits").change(fill_products_for_deposit);
       });
 </script>
 

@@ -1,3 +1,4 @@
-json.array!(@products) do |product|
-  json.extract! product.product, :id, :nombre_marca, :cantidad
+json.array!(@products) do |load|
+  json.extract! load.product, :id, :nombre_marca 
+  json.extract! load, :cantidad
 end

@@ -1,7 +1,7 @@
 <h1>Nuevo producto para <%=@store.nombre%></h1>
 
 
-<%= form_for(@download,url: (@download.new_record? ? owner_commerce_store_products_url : owner_commerce_store_product_url )) do |f| %>
+<%= form_for(@download,url: (@download.new_record? ? owner_commerce_store_products_url : owner_commerce_store_product_url ), html: { class:  "submit_client_date"} ) do |f| %>
 
 
   <script type="text/javascript">
@@ -25,7 +25,7 @@
           <div class="form-group">
             <%= f.label :deposit_id, "Deposito origen" %>*<br>
             <%= f.select :deposit_id, 
-            options_for_select(@deposits.collect {|p| [p.nombre, p['id'] ] },( @download.deposit_id ? @download.deposit_id : "" )),{},{class:"form-control select2"}%>
+            options_for_select(@deposits.collect {|p| [p.nombre, p['id'] ] },( @download.deposit_id ? @download.deposit_id : "" )),{},{class:"form-control select2 deposits"}%>
           </div>
         </div>
       </div> 
@@ -34,7 +34,7 @@
           <div class="form-group">
             <%= f.label :product_id, "Producto" %>*<br>
             <%= f.select :product_id, 
-            options_for_select(Product.all.collect {|p| [p.nombre_marca , p['id'] ] },( @download.product_id ? @download.product_id : "" )),{},{class:"form-control select2"}%>
+            options_for_select(Product.all.collect {|p| [p.nombre_marca , p['id'] ] },( @download.product_id ? @download.product_id : "" )),{},{class:"form-control select2 products"}%>
           </div>
         </div>
       </div> 
@@ -70,10 +70,10 @@
       $(function () {
         //Initialize Select2 Elements
         $(".select2").select2();
-        $("select.select2#download_product_id").change(calculate_price);
+
         commerce_id = "<%=@store.commerce.id%>"
-        $("select.select2#download_deposit_id").change(fill_products_for_store);
-        $("select.select2#download_deposit_id").trigger("change");
+        initDeposits();
+        $("select.select2.deposits").change(fill_products_for_deposit);
       });
 </script>
 

@@ -1,6 +1,8 @@
 class Owner::StoresController < ApplicationController
   before_action :set_commerce
   before_action :set_store, only: [:show, :edit, :update, :destroy,:products,:new_product,:add_product]
+  after_action :set_date_created_at, only: [:add_product]
+
 
   # GET /stores
   # GET /stores.json
@@ -79,29 +81,11 @@ class Owner::StoresController < ApplicationController
 
   def add_product
     @download = Download.new(download_params)
+    @download.cantidad_inicial = @download.cantidad
     @download.store = @store
-
-    loads = @download.deposit.loads.where(product_id: @download.product_id)
-    if loads.sum(:cantidad)<@download.cantidad
+    if !descarga_valida(@download)
       redirect_to :back, alert: 'No existe la cantidad solicitada en el depósito.'
       return
-    else
-      cantidad_cargada=@download.cantidad
-      loads.order(:created_at).each do |load|
-        if cantidad_cargada==0 and load.cantidad!=0
-          break;
-        else
-          if load.cantidad>=cantidad_cargada
-            load.cantidad=load.cantidad-cantidad_cargada
-            load.save
-            break;
-          else
-            cantidad_cargada=cantidad_cargada-load.cantidad
-            load.cantidad=0
-            load.save
-          end  
-        end
-      end
     end
 
     respond_to do |format|
@@ -117,6 +101,16 @@ class Owner::StoresController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_date_created_at
+      if params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
+      end
+      time = getCurrentTime
+      @download.created_at = time ? time : (fecha ? fecha : Date.today)
+      @download.updated_at = time ? time : (fecha ? fecha : Date.today)
+      @download.save
+    end
     def set_store
      @store = @commerce.stores.friendly.find(params[:store_id] ? params[:store_id] : params[:id])
     end

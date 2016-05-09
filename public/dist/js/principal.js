@@ -15,10 +15,9 @@ $( document ).ready(function() {
 			  	alert("Registro eliminado exitosamente.");
 			    location.reload();
 			  })
-			  .fail(function( msg ){
-			  	debugger;
-			  	alert("FAIL ::"+msg)
-			  });
+			  .fail(function(data){
+					alert(data.responseText);
+				});
 		}
 	});
   	$('.cedula').unbind();
@@ -38,7 +37,8 @@ validarMensajes();
 	    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
 	  }});
 
-	$("#new_load").submit(function(event){
+	$(".submit_client_date").submit(function(event){
+		debugger
 		var d = new Date();
 		var fecha = {
 			"dia":d.getDate(),
@@ -49,7 +49,7 @@ validarMensajes();
 			"seg":d.getSeconds()
 		}
 
-		$("#new_load").append(
+		$(this).append(
 			"<input type='hidden' name='fecha' value='"+JSON.stringify(fecha)+"'/>"
 			);
 		return 
@@ -85,31 +85,108 @@ function validarErrores(array){
 	}
 }
 
-var products = [];
-var commerce_id;
-function fill_products_for_store(){
-
-$.ajax("/owner/commerces/"+commerce_id+"/deposits/"+this.value+"/products.json").done(
+function initComerces(){
+$.ajax("/owner/commerces.json").done(
 	function(data){
-		$("select.select2#download_product_id").html("");
+		$("select.select2#comercio").html("");
 		$.each(data,function( index, obj ) {
-	 			$("select.select2#download_product_id").append(
-	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+"</option>"
+			if(obj.deposits_count>0){
+				$("select.select2#comercio").append(
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
 	 			) 
+			}
 		});
-		products = data;	
-		$("select.select2#download_product_id").select2();
-        $("select.select2#download_product_id").trigger("change");
-	});
+		$("select.select2#comercio").select2();
+       	$("select.select2#comercio").trigger("change");
+	}).error(
+		function(data){
+			alert(data.responseText);
+		}
+	);
+
 }
 
-function calculate_price(){
-var product = products[$($(this).find("option:selected")).data("index")]
-//var precio_base = typeof(product)!==undefined ? product.precio : products[0].precio
-$("label[for='download_cantidad'").text("Cantidad (Quedan "+product.cantidad+" en depósito)")
-//$("#download_precio").val(precio_base+(precio_base*0.30))
+function initDeposits(){
+$.ajax("/owner/commerces/"+commerce_id+"/deposits.json").done(
+	function(data){
+		$("select.select2.deposits").html("");
+		$.each(data,function( index, obj ) {
+			if(obj.products_count>0){
+				$("select.select2.deposits").append(
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
+	 			) 
+			}
+		});
+		$("select.select2.deposits").select2();
+       	$("select.select2.deposits").trigger("change");
+	}).error(
+		function(data){
+			alert(data.responseText);
+		}
+	);
+
+}
 
 
+function fill_deposits_for_commerce(){
+
+$.ajax("/owner/commerces/"+this.value+"/deposits.json").done(
+	function(data){
+		$("select.select2.deposits").html("");
+		$.each(data,function( index, obj ) {
+			if (obj.products_count>0) {
+	 			$("select.select2.deposits").append(
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
+	 			) 
+			}
+		});
+		$("select.select2.deposits").select2();
+		if(triggerChangeDeposit){
+		    $("select.select2.deposits").trigger("change");
+		}
+	}).error(
+		function(data){
+			alert(data.responseText)
+		}
+	);
+}
+function fill_stores_for_commerce(){
+
+$.ajax("/owner/commerces/"+this.value+"/stores.json").done(
+	function(data){
+		$("select.select2.stores").html("");
+		$.each(data,function( index, obj ) {
+ 			$("select.select2.stores").append(
+ 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
+ 			) 
+		});
+		$("select.select2.stores").select2();
+	}).error(
+		function(data){
+			alert(data.responseText)
+		}
+	);
+}
+
+var products = [];
+var commerce_id;
+function fill_products_for_deposit(){
+$.ajax("/owner/commerces/"+commerce_id+"/deposits/"+this.value+"/products.json").done(
+	function(data){
+		$("select.select2.products").html("");
+		$.each(data,function( index, obj ) {
+	 			$("select.select2.products").append(
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+" (Quedan "+obj.cantidad+")</option>"
+	 			) 
+		});
+		$("select.select2.products").select2();
+		//$("label[for='download_cantidad'").text("Cantidad (Quedan "+product.cantidad+" en depósito)")
+       	// $("select.select2#download_product_id").trigger("change");
+	}).error(
+		function(data){
+			alert(data.responseText);
+		}
+	);
 }
 
 function graficoTortaInit(products_of_deposits,products_of_stores){
@@ -161,70 +238,7 @@ function graficoTortaInit(products_of_deposits,products_of_stores){
 }
 
 
-function fill_deposits_for_commerce(){
-
-$.ajax("/owner/commerces/"+this.value+"/deposits.json").done(
-	function(data){
-		$("select.select2.deposits").html("");
-		$.each(data,function( index, obj ) {
-			debugger
-	 			$("select.select2.deposits").append(
-	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
-	 			) 
-		});
-		$("select.select2.deposits").select2();
-		if(triggerChangeDeposit){
-		    $("select.select2.deposits").trigger("change");
-		}
-	}).error(
-		function(data){
-			debugger
-			alert(data.responseText)
-		}
-	);
-}
 
 
-function fill_products_for_deposit(){
-
-$.ajax("/owner/commerces/"+$("select.select2#comercio").val()+"/deposits/"+this.value+"/products.json").done(
-	function(data){
-		$("select.select2.products").html("");
-		$.each(data,function( index, obj ) {
-	 			$("select.select2.products").append(
-	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+"</option>"
-	 			) 
-		});
-		$("select.select2.products").select2();
-       // $("select.select2#download_product_id").trigger("change");
-	}).error(
-		function(data){
-			debugger
-			alert(data)
-		}
-	);
-}
 
 
-function initComerces(){
-debugger
-$.ajax("/owner/commerces.json").done(
-	function(data){
-		$("select.select2#comercio").html("");
-		$.each(data,function( index, obj ) {
-			if(obj.deposits_count>0){
-				$("select.select2#comercio").append(
-	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
-	 			) 
-			}
-		});
-		$("select.select2#comercio").select2();
-       	$("select.select2#comercio").trigger("change");
-	}).error(
-		function(data){
-			debugger
-			alert(data)
-		}
-	);
-
-}

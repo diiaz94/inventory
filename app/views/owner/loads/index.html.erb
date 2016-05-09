@@ -9,14 +9,14 @@
                   <h3 class="box-title">Lista de cargas en depósitos</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  <table id="loads_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
+                  <table id="loads_table"  class="table table-condensed table-responsive table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                       <tr>
                         <th>Comercio</th>
                         <th>Depósito</th>
                         <th>Producto</th>
                         <th>Cantidad Inicial</th>
-                        <th>Cantidad</th>
+                        <th>Cantidad Restante</th>
                         <th>Precio</th>
                         <th>Fecha</th>
                       </tr>
@@ -49,13 +49,23 @@
                                           <h3 class="box-title">Datos de la carga</h3>
                                         </div><!-- /.box-header -->
                                         <div class="box-body">
-                                          <dl>
+                                          <dl class="dl-horizontal">
+                                            <dt>Comercio Asociado:</dt>
+                                            <dd><%=load.deposit.commerce.nombre%></dd>
+                                            <dt>Depósito Destino:</dt>
+                                            <dd><%=load.deposit.nombre%></dd>
                                             <dt>Producto:</dt>
                                             <dd><%=load.product.nombre_marca%></dd>
-                                            <dt>Cantidad:</dt>
+                                            <dt>Cantidad Inicial:</dt>
+                                            <dd><%=load.cantidad_inicial%></dd>
+                                            <dt>Cantidad Restante:</dt>
                                             <dd><%=load.cantidad%></dd>
                                             <dt>Precio:</dt>
                                             <dd><%=load.precio%> Bs.</dd>
+                                            <dt>Fecha de creación:</dt>
+                                            <dd><%=load.fecha_c%></dd>
+                                            <dt>Última Actualización:</dt>
+                                            <dd><%=load.fecha_u%></dd>
                               
                                           </dl>
                                        </div><!-- /.box-body -->
@@ -84,7 +94,7 @@
                         <th>Depósito</th>
                         <th>Producto</th>
                         <th>Cantidad Inicial</th>
-                        <th>Cantidad</th>
+                        <th>Cantidad Restante</th>
                         <th>Precio</th>
                         <th>Fecha</th>
                       </tr>
@@ -103,7 +113,7 @@
           "language": {
             "url": "/plugins/datatables/dataTables.spanish.lang"
           },
-          "order": [[ 5, "desc" ]],
+          "order": [[ 6, "desc" ]],
           "columnDefs": [ {
           "targets": 'no-sort',
           "orderable": false,

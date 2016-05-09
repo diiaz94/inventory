@@ -12,6 +12,10 @@ class Store < ActiveRecord::Base
   	friendly_id :nombre, use: :slugged
 
   	def nombre_comercio
-  		self.commerce	 ? self.commerce.nombre : "S/C"
+  		self.commerce ? self.commerce.nombre : "S/C"
  	end
+
+ 	def products_count
+    	self.products.count
+  	end
 end

@@ -54,7 +54,7 @@
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
                                   
-                                  <button data-url=<%=owner_commerce_stores_path(store)%> data-id=<%=store.id%> type="button" class="btn btn-danger delete-record">Eliminar</button>
+                                  <button data-url=<%=owner_commerce_stores_path(@commerce)%> data-id=<%=store.id%> type="button" class="btn btn-danger delete-record">Eliminar</button>
                                   <button type="button" class="btn btn-primary" aria-label="Left Align" 
                                     onclick="window.location.href=
                                     '<%=edit_owner_commerce_store_path(@commerce.slug,store) %>'">

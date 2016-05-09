@@ -1,6 +1,7 @@
 class Owner::DepositsController < ApplicationController
   before_action :set_commerce
   before_action :set_deposit, only: [:show, :edit, :update, :destroy, :products,:new_product,:add_product]
+  after_action :set_date_created_at, only: [:add_product]
 
   # GET /deposits
   # GET /deposits.json
@@ -92,6 +93,17 @@ class Owner::DepositsController < ApplicationController
   end  
   private
     # Use callbacks to share common setup or constraints between actions.
+     def set_date_created_at
+      if params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
+      end
+      time = getCurrentTime
+      @load.created_at = time ? time : (fecha ? fecha : Date.today)
+      @load.updated_at = time ? time : (fecha ? fecha : Date.today)
+      @load.save
+    end
+
     def set_deposit
       @deposit = @commerce.deposits.friendly.find(params[:deposit_id] ? params[:deposit_id] : params[:id])
     end

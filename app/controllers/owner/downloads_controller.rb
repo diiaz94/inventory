@@ -1,5 +1,5 @@
 class Owner::DownloadsController < ApplicationController
-  before_action :set_load, only: [:show, :edit, :update, :destroy]
+  before_action :set_download, only: [:show, :edit, :update, :destroy]
   after_action :set_date_created_at, only: [:create]
   after_action :set_date_updated_at, only: [:update]
 
@@ -30,17 +30,14 @@ class Owner::DownloadsController < ApplicationController
     commerces.each do |c|
       deposits = c.deposits
       stores = c.stores
-      deposits_count=+deposits.count
-      stores_count=+ stores.count
-
+      deposits_count += deposits.count
+      stores_count += stores.count
       deposits.each do |d|
-        products_deposits_count =+ d.products.count
+        products_deposits_count += d.products.count
       end
 
       stores.each do |s|
-      puts "*******"+s.nombre
-      puts "AQUII"+s.products.count.to_s
-       products_stores_count =+ s.products.count
+       products_stores_count += s.products.count
       end
     end
     puts "Cantidad de comercios::"+commerces.count.to_s
@@ -60,6 +57,7 @@ class Owner::DownloadsController < ApplicationController
 
   # GET /downloads/1/edit
   def edit
+    @commerces = current_user.commerces
   end
 
   # POST /downloads
@@ -68,6 +66,10 @@ class Owner::DownloadsController < ApplicationController
     @download = Download.new(download_params)
     @download.cantidad_inicial = @download.cantidad
 
+    if !descarga_valida(@download)
+      redirect_to :back, alert: 'No existe la cantidad solicitada en el depósito.'
+      return
+    end
     respond_to do |format|
       if @download.save
         format.html { redirect_to owner_downloads_path, notice: 'Descarga realizada exitosamente.' }
@@ -82,6 +84,15 @@ class Owner::DownloadsController < ApplicationController
   # PATCH/PUT /downloads/1
   # PATCH/PUT /downloads/1.json
   def update
+puts "****EPAAQUI**"
+    puts params[:cantidad]
+     puts @download.to_json
+    @download.cantidad= params[:cantidad].to_i - @download.cantidad.to_i
+    puts @download.to_json
+    if !descarga_valida(@download)
+      redirect_to :back, alert: 'No existe la cantidad solicitada en el depósito.'
+      return
+    end
     respond_to do |format|
       if @download.update(download_params)
         format.html { redirect_to owner_downloads_path, notice: 'Descarga actualizada exitosamente.' }
@@ -118,12 +129,13 @@ class Owner::DownloadsController < ApplicationController
       end
       time = getCurrentTime
       @download.created_at = time ? time : (fecha ? fecha : Date.today)
+      @download.updated_at = time ? time : (fecha ? fecha : Date.today)
       @download.save
     end
     def set_date_updated_at
       if params[:fecha]
         f = JSON.parse(params[:fecha])
-        fecha = DateTime.new(f.anio, f.mes, f.dia,  f.hora,  f.min,  f.seg)
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
       end
       time = getCurrentTime
       puts @fecha.to_s
@@ -133,6 +145,6 @@ class Owner::DownloadsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def download_params
-      params.require(:download).permit(:cantidad, :precio,:deposit_id,:product_id).merge(store_id: @store.id.to_s)
+      params.require(:download).permit(:cantidad, :precio,:deposit_id,:product_id,:store_id)
     end
 end

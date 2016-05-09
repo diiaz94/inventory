@@ -10,4 +10,7 @@ class Deposit < ActiveRecord::Base
   def nombre_comercio
   		self.commerce	 ? self.commerce.nombre : "S/C"
   end
+  def products_count
+    self.products.count
+  end
 end
