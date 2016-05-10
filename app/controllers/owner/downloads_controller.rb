@@ -84,17 +84,16 @@ class Owner::DownloadsController < ApplicationController
   # PATCH/PUT /downloads/1
   # PATCH/PUT /downloads/1.json
   def update
-puts "****EPAAQUI**"
-    puts params[:cantidad]
-     puts @download.to_json
-    @download.cantidad= params[:cantidad].to_i - @download.cantidad.to_i
-    puts @download.to_json
+
+    @download.cantidad = params[:download][:cantidad].to_i - @download.cantidad.to_i
     if !descarga_valida(@download)
       redirect_to :back, alert: 'No existe la cantidad solicitada en el depósito.'
       return
     end
     respond_to do |format|
       if @download.update(download_params)
+        @download.cantidad_inicial = @download.cantidad
+        @download.save
         format.html { redirect_to owner_downloads_path, notice: 'Descarga actualizada exitosamente.' }
         format.json { render :show, status: :ok, location: @download }
       else

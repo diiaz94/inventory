@@ -134,7 +134,7 @@ $.ajax("/owner/commerces/"+this.value+"/deposits.json").done(
 	function(data){
 		$("select.select2.deposits").html("");
 		$.each(data,function( index, obj ) {
-			if (obj.products_count>0) {
+			if (!triggerChangeDeposit||obj.products_count>0) {
 	 			$("select.select2.deposits").append(
 	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre+"</option>"
 	 			) 
