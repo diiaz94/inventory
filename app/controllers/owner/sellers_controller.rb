@@ -27,7 +27,7 @@ class Owner::SellersController < ApplicationController
   def create
     @seller = Seller.new(seller_params)
     @seller.commerce = @commerce
-
+    @seller.user.role_id = seller_role
     respond_to do |format|
       if @seller.save
         format.html { redirect_to owner_commerce_sellers_path(@seller.commerce.slug), notice: 'Vendedor creado exitosamente.' }
