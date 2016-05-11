@@ -11,10 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427031347) do
+ActiveRecord::Schema.define(version: 20160511025117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bills", force: true do |t|
+    t.float    "total"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "brands", force: true do |t|
     t.string   "nombre"
@@ -53,6 +59,19 @@ ActiveRecord::Schema.define(version: 20160427031347) do
   end
 
   add_index "deposits", ["commerce_id"], name: "index_deposits_on_commerce_id", using: :btree
+
+  create_table "deposits_products", force: true do |t|
+    t.integer  "cantidad"
+    t.float    "precio"
+    t.integer  "deposit_id"
+    t.integer  "product_id"
+    t.string   "slug"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deposits_products", ["deposit_id"], name: "index_deposits_products_on_deposit_id", using: :btree
+  add_index "deposits_products", ["product_id"], name: "index_deposits_products_on_product_id", using: :btree
 
   create_table "downloads", force: true do |t|
     t.integer  "cantidad"
@@ -121,6 +140,16 @@ ActiveRecord::Schema.define(version: 20160427031347) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "sales", force: true do |t|
+    t.integer  "cantidad"
+    t.float    "precio"
+    t.integer  "bill_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sales", ["bill_id"], name: "index_sales_on_bill_id", using: :btree
 
   create_table "sellers", force: true do |t|
     t.integer  "commerce_id"

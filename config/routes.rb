@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
 
+
+
   resources :sessions
   get 'welcome/index'
 
@@ -67,11 +69,16 @@ Rails.application.routes.draw do
     end
     resources :loads
     resources :downloads
+    resources :sales
+    resources :bills
   end
   
   namespace "seller" do
     resources :users
     resources :stores
+    resources :sales
+    resources :bills
+
   end
     resources :users
     resources :products
