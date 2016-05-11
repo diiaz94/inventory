@@ -20,4 +20,7 @@ class Product < ActiveRecord::Base
   def nombre_marca
     self.nombre+" - "+self.marca
   end
+  def codigo_nombre_marca
+    self.id.to_s+" - "+self.nombre+" - "+self.marca
+  end
 end

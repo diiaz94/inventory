@@ -240,5 +240,28 @@ function graficoTortaInit(products_of_deposits,products_of_stores){
 
 
 
+function initRowSale(){
+	var row = $("#row-sale-template").clone();
+	row.removeClass("hidden");
 
+	$.ajax("/seller/stores/products.json").done(
+	function(data){
+		alert(JSON.stringify(data));
+		$("select.select2.products").html("");
+		$.each(data,function( index, obj ) {
+	 			$("select.select2.products").append(
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+" (Quedan "+obj.cantidad+")</option>"
+	 			) 
+		});
+		$("select.select2.products").select2();
+		//$("label[for='download_cantidad'").text("Cantidad (Quedan "+product.cantidad+" en depósito)")
+       	// $("select.select2#download_product_id").trigger("change");
+	}).error(
+		function(data){
+			alert(data.responseText);
+		}
+	);
+}
+
+}
 

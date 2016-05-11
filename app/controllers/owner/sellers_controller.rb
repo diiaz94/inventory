@@ -15,6 +15,12 @@ class Owner::SellersController < ApplicationController
 
   # GET /sellers/new
   def new
+    commerce = current_user.commerces.friendly.find(params[:commerce_id])
+
+    puts "Cantidad de tiendas::"+commerce.stores.count.to_s
+    if  commerce.stores.count == 0
+        redirect_to(:back,alert: "Disculpa, este comercio no posee tiendas para agregar un vendedor")
+    end
     @seller = Seller.new
   end
 

@@ -18,9 +18,12 @@ ActiveRecord::Schema.define(version: 20160511025117) do
 
   create_table "bills", force: true do |t|
     t.float    "total"
+    t.integer  "seller_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "bills", ["seller_id"], name: "index_bills_on_seller_id", using: :btree
 
   create_table "brands", force: true do |t|
     t.string   "nombre"
@@ -59,19 +62,6 @@ ActiveRecord::Schema.define(version: 20160511025117) do
   end
 
   add_index "deposits", ["commerce_id"], name: "index_deposits_on_commerce_id", using: :btree
-
-  create_table "deposits_products", force: true do |t|
-    t.integer  "cantidad"
-    t.float    "precio"
-    t.integer  "deposit_id"
-    t.integer  "product_id"
-    t.string   "slug"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "deposits_products", ["deposit_id"], name: "index_deposits_products_on_deposit_id", using: :btree
-  add_index "deposits_products", ["product_id"], name: "index_deposits_products_on_product_id", using: :btree
 
   create_table "downloads", force: true do |t|
     t.integer  "cantidad"
@@ -145,11 +135,13 @@ ActiveRecord::Schema.define(version: 20160511025117) do
     t.integer  "cantidad"
     t.float    "precio"
     t.integer  "bill_id"
+    t.integer  "product_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "sales", ["bill_id"], name: "index_sales_on_bill_id", using: :btree
+  add_index "sales", ["product_id"], name: "index_sales_on_product_id", using: :btree
 
   create_table "sellers", force: true do |t|
     t.integer  "commerce_id"

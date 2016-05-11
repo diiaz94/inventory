@@ -4,6 +4,7 @@ class CreateSales < ActiveRecord::Migration
       t.integer :cantidad
       t.float :precio
       t.belongs_to :bill, index: true
+      t.belongs_to :product, index: true
       t.timestamps
     end
   end

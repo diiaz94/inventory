@@ -1,16 +1,12 @@
-class StoresController < ApplicationController
-  before_action :set_store, only: [:show, :edit, :update, :destroy]
-  before_action :set_commerce, only:[:new_store_of_commerce]
+class Seller::StoresController < ApplicationController
+  before_action :set_commerce
+  before_action :set_store, only: [:show, :edit, :update, :destroy,:products]
+
 
   # GET /stores
   # GET /stores.json
- def index
-    if current_user.admin?
-      @stores = Store.all
-    end
-    if current_user.owner?
-     @stores=current_user.commerces.friendly.find(get_commerce(params[:commerce_id])).stores
-    end
+  def index
+    @stores = @commerce.stores
   end
 
   # GET /stores/1
@@ -20,35 +16,22 @@ class StoresController < ApplicationController
 
   # GET /stores/new
   def new
-    if current_user.admin?
       @store = Store.new
-    end
-    if current_user.owner?
-      @commerce = get_commerce(params[:commerce_id])
-      @store = Store.new
-      @store.commerce_id = @commerce.id
-    end
-    
   end
-  # GET /commerce/:commerce_id/store/new
-
+  
   # GET /stores/1/edit
   def edit
-    if current_user.owner?
-      @commerce = get_commerce(params[:commerce_id])
-    end
   end
 
   # POST /stores
   # POST /stores.json
   def create
     @store = Store.new(store_params)
-
+    @store.commerce = @commerce
+      
     respond_to do |format|
       if @store.save
-        ruta = current_user.admin? ? stores_path : stores_of_commerce_path(@store.commerce.slug)
-        puts"RUTA****"+ruta+"******"
-        format.html { redirect_to ruta, notice: 'Tienda creada exitosamente.' }
+        format.html { redirect_to owner_commerce_stores_path(@store.commerce.slug), notice: 'Depósito creado exitosamente.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
@@ -61,9 +44,9 @@ class StoresController < ApplicationController
   # PATCH/PUT /stores/1.json
   def update
     respond_to do |format|
+      @store.slug=nil
       if @store.update(store_params)
-        ruta = current_user.admin? ? stores_path : stores_of_commerce_path(@store.commerce.slug)
-        format.html { redirect_to ruta, notice: 'Tienda actualizada exitosamente.' }
+        format.html { redirect_to owner_commerce_stores_path(@store.commerce.slug), notice: 'Depósito actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @store }
       else
         format.html { render :edit }
@@ -81,22 +64,26 @@ class StoresController < ApplicationController
       format.json { head :no_content }
     end
   end
+  def products
+    @products_grouped = @store.downloads.group_by {|download| download.product_id}
+    @products = []
+    @products_grouped.each do |attr_name, attr_value|
+      @product = Download.new(product_id: Product.find(attr_name).id, cantidad: Download.where(id: attr_value.map(&:id)).sum(:cantidad))
+      @products.push(@product)
+    end
+  end
 
+ 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store
-      @store = Store.friendly.find(params[:id])
-    end
-    def set_commerce
-      if(params[:commerce_id])
-        puts "******1**"
-        @commerce = Commerce.friendly.find(params[:commerce_id])
-        puts @commerce.to_json
-        puts "******FIN**"
-      end
+     @store = @commerce.stores.friendly.find(params[:store_id] ? params[:store_id] : params[:id])
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
       params.require(:store).permit(:nombre, :direccion, :commerce_id)
     end
+    def download_params
+      params.require(:download).permit(:cantidad, :precio,:product_id,:deposit_id)
+    end 
 end
