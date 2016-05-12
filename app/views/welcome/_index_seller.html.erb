@@ -12,18 +12,62 @@
 
 <div class="example-modal">
   <div class="modal fade modal-default" id="modal-bill">
-    <div class="modal-dialog" style="width:80%;">
+    <div class="modal-dialog" >
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Datos de la venta</h4>
+          <h4 class="modal-title">Nueva Venta</h4>
         </div>
         <div class="modal-body">
-          <div class="row " id="row-products">
-            <div class="col-xs-12">
-              <select class: 'form-control'></select>
+          <div class="row" id="row-products">
+            <div class="col-xs-8 ">
+              <label for="product">Producto</label><br>
+              <select id="product" class: 'form-control'></select>
+
+            </div>
+            <div class="col-xs-2 ">
+             <div class="form-group">
+                <label for="cantidad">Cantidad</label><br>
+                <input class="form-control" id="cantidad" value=1  type="number">
+              </div>
+            </div>
+            <div class="col-xs-2 ">
+              <button type="button" class="btn btn-default pull-right" style="margin-top: 25px">Agregar</button>
             </div>
           </div>
+
+          <div class="row" style="margin-top:10px;">
+            <div class="col-xs-12">
+
+              <div class="panel panel-default">
+                <div class="panel-heading">Datos de la venta</div>
+                <div class="panel-body">
+                <!-- Table -->
+                  <table class="table">
+                    <thead> 
+                      <tr> 
+                        <th>Código</th> 
+                        <th>Producto</th> 
+                        <th>Marca</th> 
+                        <th>Cantidad</th>
+                        <th>Precio</th> 
+                      </tr> 
+                    </thead> 
+                    <tbody id="bill-detail"> 
+                      <tr> 
+                        <th class="codigo" scope="row">1</th> 
+                          <td class="nombre">Mark</td> 
+                          <td class="marca">Otto</td> 
+                          <td class="cantidad">@mdo</td> 
+                          <td class="precio">@mdo</td> 
+                      </tr> 
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>  
 
         </div>
         <div class="modal-footer">

@@ -30,6 +30,9 @@ input[type=number].cedula::-webkit-inner-spin-button {
     padding: 0!important;
   }
 }
+@media (min-width: 800px) {
+  #modal-bill > div {width:80%;}
+}
 
 tr.link{
 	cursor: pointer!important;

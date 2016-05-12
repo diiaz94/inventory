@@ -252,7 +252,7 @@ function initSelectBill(){
 		select.html("");
 		$.each(data,function( index, obj ) {
 	 			select.append(
-	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+" (Quedan "+obj.cantidad+")</option>"
+	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.codigo_nombre_marca+" (Quedan "+obj.cantidad+")</option>"
 	 			) 
 		});
 		select.select2();
