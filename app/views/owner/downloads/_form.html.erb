@@ -19,8 +19,13 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <%= f.label "comercio", "Comercio" %>*<br>
-            <%= select_tag "comercio", options_from_collection_for_select(@commerces,"id","nombre", ""),{class:"form-control select2"}%>
+            <%if @download.new_record?%>
+              <%= f.label "comercio", "Comercio" %>*<br>
+              <%= select_tag "comercio", options_from_collection_for_select(@commerces,"id","nombre", ""),{class:"form-control select2"}%>
+            <%else%>
+              <label> Comercio: <%=@download.deposit.commerce.nombre%></label>
+              
+            <%end%>
           </div>
         </div>
       </div> 
@@ -28,9 +33,14 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <%= f.label :deposit_id, "Deposito origen" %>*<br>
+            <%if @download.new_record?%>
+            <%= f.label :deposit_id, "Depósito origen" %>*<br>
             <%= f.select :deposit_id, 
             options_for_select(Deposit.all.collect {|p| [p.nombre, p['id'] ] },( @download.new_record? ? "" : @download.deposit_id )),{},{class:"form-control select2 deposits"}%>
+            <%else%>
+              <label> Depósito origen: <%=@download.deposit.nombre%></label>
+              
+            <%end%>
           </div>
         </div>
       </div>
@@ -38,18 +48,28 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
+            <%if @download.new_record?%>
             <%= f.label :product_id, "Producto" %>*<br>
             <%= f.select :product_id, 
             options_for_select(Product.all.collect {|p| [p.nombre_marca, p['id'] ] },( @download.product_id ? @download.product_id : "" )),{},{class:"form-control select2 products"}%>
+            <%else%>
+              <label> Producto: <%=@download.product.nombre_marca%></label>
+              
+            <%end%>
           </div>
         </div>
       </div> 
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
+          <%if @download.new_record?%>
             <%= f.label :store_id, "Tienda Destino" %>*<br>
             <%= f.select :store_id, 
-            options_for_select(Deposit.all.collect {|p| [p.nombre, p['id'] ] },( @download.new_record? ? "" : @download.store_id )),{},{class:"form-control select2 stores"}%>
+            options_for_select(Store.all.collect {|p| [p.nombre, p['id'] ] },( @download.new_record? ? "" : @download.store_id )),{},{class:"form-control select2 stores"}%>
+            <%else%>
+              <label> Tienda destino: <%=@download.store.nombre%></label>
+              
+            <%end%>
           </div>
         </div>
       </div>  

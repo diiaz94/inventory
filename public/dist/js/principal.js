@@ -30,7 +30,9 @@ $( document ).ready(function() {
 		if(this.value.length>parseInt($(this).data("maxlength"))-1){
 	    	this.value = this.value.substring(0,$(this).data("maxlength"))
 	    }
+
 	});
+	    $("#new_bill").on("click",initSelectBill);
 validarMensajes();
 	$.ajaxSetup({
 	  headers: {
@@ -240,20 +242,20 @@ function graficoTortaInit(products_of_deposits,products_of_stores){
 
 
 
-function initRowSale(){
-	var row = $("#row-sale-template").clone();
+function initSelectBill(){
+	var row = $("#row-products")	
 	row.removeClass("hidden");
-
-	$.ajax("/seller/stores/products.json").done(
+	var select = $(row.find("select"))
+	$.ajax("/seller/store/products.json").done(
 	function(data){
 		alert(JSON.stringify(data));
-		$("select.select2.products").html("");
+		select.html("");
 		$.each(data,function( index, obj ) {
-	 			$("select.select2.products").append(
+	 			select.append(
 	 				"<option data-index ="+index+" value='"+obj.id+"'>"+obj.nombre_marca+" (Quedan "+obj.cantidad+")</option>"
 	 			) 
 		});
-		$("select.select2.products").select2();
+		select.select2();
 		//$("label[for='download_cantidad'").text("Cantidad (Quedan "+product.cantidad+" en depósito)")
        	// $("select.select2#download_product_id").trigger("change");
 	}).error(
@@ -263,5 +265,5 @@ function initRowSale(){
 	);
 }
 
-}
+
 

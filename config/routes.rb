@@ -75,7 +75,7 @@ Rails.application.routes.draw do
   
   namespace "seller" do
     resources :users
-    resources :stores
+    get 'store/products' => 'stores#products', as: :store_products
     resources :sales
     resources :bills
 

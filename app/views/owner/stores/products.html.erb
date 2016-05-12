@@ -14,6 +14,7 @@
                       <tr>
                         <th>Producto</th>
                         <th>Cantidad</th>
+                        <th>Precio</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -21,6 +22,7 @@
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-products_of_store-"+index.to_s%>>
                         <td><%= p.product.nombre_marca%></td>
                         <td><%= p.cantidad %></td>
+                        <td><%= p.precio %></td>
                       </tr>
                         <div class="example-modal">
                           <div class="modal fade" id=<%="modal-products_of_store-"+index.to_s%>>
@@ -44,6 +46,8 @@
                                             <dd><%=p.product.nombre_marca%></dd>
                                             <dt>Cantidad:</dt>
                                             <dd><%= p.cantidad%></dd>
+                                            <dt>Precio:</dt>
+                                            <dd><%= p.precio%></dd>
                              
                                           </dl>
                                        </div><!-- /.box-body -->

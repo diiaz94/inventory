@@ -80,6 +80,7 @@ class Owner::DepositsController < ApplicationController
 
   def add_product
     @load = Load.new(load_params)
+    @load.cantidad_inicial = @load.cantidad
     @load.deposit = @deposit
     respond_to do |format|
       if @load.save

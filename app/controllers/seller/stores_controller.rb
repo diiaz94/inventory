@@ -1,5 +1,4 @@
 class Seller::StoresController < ApplicationController
-  before_action :set_commerce
   before_action :set_store, only: [:show, :edit, :update, :destroy,:products]
 
 
@@ -68,7 +67,10 @@ class Seller::StoresController < ApplicationController
     @products_grouped = @store.downloads.group_by {|download| download.product_id}
     @products = []
     @products_grouped.each do |attr_name, attr_value|
-      @product = Download.new(product_id: Product.find(attr_name).id, cantidad: Download.where(id: attr_value.map(&:id)).sum(:cantidad))
+      downloads = Download.where(id: attr_value.map(&:id)).order(:created_at)
+      @product = Download.new(product_id: Product.find(attr_name).id, 
+                              cantidad: downloads.sum(:cantidad),
+                              precio: downloads.last.precio)
       @products.push(@product)
     end
   end
@@ -77,7 +79,7 @@ class Seller::StoresController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store
-     @store = @commerce.stores.friendly.find(params[:store_id] ? params[:store_id] : params[:id])
+     @store = current_user.seller.store
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params

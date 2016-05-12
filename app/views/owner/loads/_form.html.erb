@@ -19,8 +19,13 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <%= f.label "comercio", "Comercio" %>*<br>
-            <%= select_tag "comercio", options_from_collection_for_select(@commerces,"id","nombre", ""),{class:"form-control select2"}%>
+            <%if @load.new_record?%>
+              <%= f.label "comercio", "Comercio" %>*<br>
+              <%= select_tag "comercio", options_from_collection_for_select(@commerces,"id","nombre", ""),{class:"form-control select2"}%>
+            <%else%>
+              <label> Comercio: <%=@load.deposit.commerce.nombre%></label>
+              
+            <%end%>
           </div>
         </div>
       </div> 
@@ -28,9 +33,14 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
+            <%if @load.new_record?%>
             <%= f.label :deposit_id, "Deposito origen" %>*<br>
             <%= f.select :deposit_id, 
             options_for_select(Deposit.all.collect {|p| [p.nombre, p['id'] ] },( @load.new_record? ? "" : @load.deposit_id )),{},{class:"form-control select2 deposits"}%>
+            <%else%>
+              <label> Depósito Origen: <%=@load.deposit.nombre%></label>
+              
+            <%end%>
           </div>
         </div>
       </div> 
@@ -38,9 +48,14 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
-            <%= f.label :product_id, "Producto" %>*<br>
-            <%= f.select :product_id, 
-            options_for_select(Product.all.collect {|p| [p.nombre_marca, p['id'] ] },( @load.product_id ? @load.product_id : "" )),{},{class:"form-control select2"}%>
+            <%if @load.new_record?%>
+              <%= f.label :product_id, "Producto" %>*<br>
+              <%= f.select :product_id, options_for_select(Product.all.collect {|p| [p.nombre_marca, p['id'] ] },( @load.product_id ? @load.product_id : "" )),{},{class:"form-control select2"}%>
+            <%else%>
+              <label> Producto: <%=@load.product.nombre_marca%></label>
+              
+            <%end%>
+
           </div>
         </div>
       </div> 
@@ -71,7 +86,7 @@
 <% end %>
 
 
-
+<%if @load.new_record?%>
 <script>
       $(function () {
         //Initialize Select2 Elements
@@ -84,4 +99,5 @@
         });
       });
 </script>
+<%end%>
 

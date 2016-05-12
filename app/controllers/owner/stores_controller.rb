@@ -69,7 +69,10 @@ class Owner::StoresController < ApplicationController
     @products_grouped = @store.downloads.group_by {|download| download.product_id}
     @products = []
     @products_grouped.each do |attr_name, attr_value|
-      @product = Download.new(product_id: Product.find(attr_name).id, cantidad: Download.where(id: attr_value.map(&:id)).sum(:cantidad))
+      downloads = Download.where(id: attr_value.map(&:id)).order(:created_at)
+      @product = Download.new(product_id: Product.find(attr_name).id, 
+                              cantidad: downloads.sum(:cantidad),
+                              precio: downloads.last.precio)
       @products.push(@product)
     end
   end
