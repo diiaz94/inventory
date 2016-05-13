@@ -20,26 +20,28 @@
         </div>
         <div class="modal-body">
           <div class="row" id="row-products">
-            <div class="col-xs-8 ">
+            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
               <label for="product">Producto</label><br>
               <select id="product" class: 'form-control'></select>
 
             </div>
-            <div class="col-xs-2 ">
+            <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
              <div class="form-group">
                 <label for="cantidad">Cantidad</label><br>
                 <input class="form-control" id="cantidad" value=1  type="number">
               </div>
             </div>
-            <div class="col-xs-2 ">
-              <button type="button" class="btn btn-default pull-right" style="margin-top: 25px">Agregar</button>
+            <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+                  <button id="add_sale" class="btn btn-app" style="margin: 0 0 0 0;width:100%">
+                    <i class="fa fa-plus-square"></i> Agregar
+                  </button>
             </div>
           </div>
 
-          <div class="row" style="margin-top:10px;">
+          <div class="row" id="row-bill-detail" style="margin-top:10px;">
             <div class="col-xs-12">
 
-              <div class="panel panel-default">
+              <div class="panel panel-info">
                 <div class="panel-heading">Datos de la venta</div>
                 <div class="panel-body">
                 <!-- Table -->
@@ -53,16 +55,20 @@
                         <th>Precio</th> 
                       </tr> 
                     </thead> 
-                    <tbody id="bill-detail"> 
-                      <tr> 
-                        <th class="codigo" scope="row">1</th> 
-                          <td class="nombre">Mark</td> 
-                          <td class="marca">Otto</td> 
-                          <td class="cantidad">@mdo</td> 
-                          <td class="precio">@mdo</td> 
-                      </tr> 
+                    <tbody id="table-bill-detail"> 
                     </tbody>
                   </table>
+                </div>
+                <div class="panel-footer">
+                  <div class="row">
+                    <div class="col-xs-8">
+
+                    </div>
+                    <div class="col-xs-4">
+                    <label id="total-bill">Total 0 Bs.</label>
+                    </div>
+
+                  </div>
                 </div>
               </div>
 
