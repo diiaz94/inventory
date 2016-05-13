@@ -1,3 +1,16 @@
+$.fn.pressEnter = function(fn) {  
+  
+    return this.each(function() {  
+        $(this).bind('enterPress', fn);
+        $(this).keyup(function(e){
+            if(e.keyCode == 13)
+            {
+              $(this).trigger("enterPress");
+            }
+        })
+    });  
+ }; 
+
 
 $( document ).ready(function() {
 	var triggerChangeDeposit;
@@ -26,14 +39,20 @@ $( document ).ready(function() {
 	    	this.value = this.value.substring(0,$(this).data("maxlength"))
 	    }
 	});
+
 	$('.cedula').bind('keypress', function(){
 		if(this.value.length>parseInt($(this).data("maxlength"))-1){
 	    	this.value = this.value.substring(0,$(this).data("maxlength"))
 	    }
-
 	});
+	
 	    $("#new_bill").on("click",initBillProducts);
 	    $("#add_sale").on("click",addBillSale);
+	    $('#cantidad').pressEnter(addBillSale);
+	    $("#row-products").change(function(){
+          document.getElementById("cantidad").focus();
+          $('#cantidad').click();
+        });
 	validarMensajes();
 	$.ajaxSetup({
 	  headers: {
