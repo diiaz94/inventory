@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-  skip_before_action :require_login,  except: [:index,:admin_welcome,:owner_welcome,:seller_welcome]
+  skip_before_action :require_login,  except: [:index,:admin,:owner,:seller]
 
   def index
 

@@ -75,6 +75,10 @@ class Owner::DepositsController < ApplicationController
   end
 
   def new_product
+    if  Product.all.count == 0
+        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
+    end
+
     @load = Load.new
   end
 

@@ -43,9 +43,10 @@
 
               <div class="panel panel-info">
                 <div class="panel-heading">Datos de la venta</div>
-                <div class="panel-body">
+                <div class="panel-body"> 
+                  <div id="aviso">Aun no has agregado productos</div>
                 <!-- Table -->
-                  <table class="table">
+                  <table class="table hidden">
                     <thead> 
                       <tr> 
                         <th>Código</th> 
@@ -78,7 +79,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-          <button data-url=<%=stores_path%> data-id=<%=store.id%> type="button" class="btn ">Eliminar</button>
+          <button type="button" class="btn ">Procesar</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

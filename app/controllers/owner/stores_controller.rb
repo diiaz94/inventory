@@ -78,7 +78,38 @@ class Owner::StoresController < ApplicationController
   end
 
   def new_product
-    @download = Download.new
+    if  Product.all.count == 0
+        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
+    end
+    commerces=current_user.commerces
+    deposits_count=0
+    stores_count=0
+    products_deposits_count =0
+    products_stores_count =0
+    commerces.each do |c|
+      deposits = c.deposits
+      stores = c.stores
+      deposits_count += deposits.count
+      stores_count += stores.count
+      deposits.each do |d|
+        products_deposits_count += d.products.count
+      end
+
+      stores.each do |s|
+       products_stores_count += s.products.count
+      end
+    end
+    puts "Cantidad de comercios::"+commerces.count.to_s
+    puts "Cantidad de depositos::"+deposits_count.to_s
+    puts "Cantidad de tiendas::"+stores_count.to_s
+    puts "Cantidad de productos en deposito::"+products_deposits_count.to_s
+    if  commerces.count == 0 or
+        deposits_count == 0 or
+        stores_count == 0 or
+        products_deposits_count == 0 
+        redirect_to(:back,alert: "Disculpa, no posees elementos para hacer una descarga.")
+    end
+        @download = Download.new
     @deposits = @commerce.deposits
   end
 

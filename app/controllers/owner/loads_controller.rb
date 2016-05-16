@@ -22,6 +22,10 @@ class Owner::LoadsController < ApplicationController
 
   # GET /loads/new
   def new
+
+    if  Product.all.count == 0
+        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
+    end
     commerces=current_user.commerces
     deposits_count=0
     commerces.each do |c|

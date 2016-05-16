@@ -22,6 +22,10 @@ class Owner::DownloadsController < ApplicationController
 
   # GET /downloads/new
   def new
+    if  Product.all.count == 0
+        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
+        return
+    end
     commerces=current_user.commerces
     deposits_count=0
     stores_count=0
@@ -49,6 +53,7 @@ class Owner::DownloadsController < ApplicationController
         stores_count == 0 or
         products_deposits_count == 0 
         redirect_to(:back,alert: "Disculpa, no posees elementos para hacer una descarga.")
+        return
     end
     @download = Download.new
     @commerces = current_user.commerces

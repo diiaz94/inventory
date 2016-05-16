@@ -46,7 +46,7 @@ $( document ).ready(function() {
 	    }
 	});
 	
-	    $("#new_bill").on("click",initBillProducts);
+	    $("#new_bill").on("click",initBillModal);
 	    $("#add_sale").on("click",addBillSale);
 	    $('#cantidad').pressEnter(addBillSale);
 	    $("#row-products").change(function(){
@@ -263,6 +263,23 @@ function graficoTortaInit(products_of_deposits,products_of_stores){
 var billProducts =[]
 var billProductsListed=[]
 var totalBill=0;
+var lastSelected=-1;
+function initBillModal(){
+
+	$("#row-bill-detail table").addClass("hidden");
+	$("#row-bill-detail #aviso").removeClass("hidden");
+	$("#row-bill-detail #table-bill-detail").html("");
+	$("#total-bill").text("Total 0 Bs.");	
+	billProducts =[]
+	billProductsListed=[]
+	totalBill=0;
+	lastSelected=-1
+	$(".edit-sale").unbind();
+	$(".ok-edit-sale").unbind();
+	$(".delete-sale").unbind();
+	initBillProducts();
+}
+
 function initBillProducts(){
 	$.ajax("/seller/store/products.json").done(
 	function(data){
@@ -286,11 +303,12 @@ function initBillSelect(){
 		var select = $(row.find("select"))
 		select.html("");
 		$.each(billProducts,function(index, obj) {
-			if (obj.cantidad>0) {
+			//if (obj.cantidad>0) {
+				debugger
 				select.append(
-					"<option data-index ="+index+" value='"+obj.id+"'>"+obj.codigo_nombre_marca+" (Quedan "+obj.cantidad+")</option>"
+					"<option"+(index==lastSelected?" selected='selected'":"")+" data-index ="+index+" value='"+obj.id+"'>"+obj.codigo_nombre_marca+" (Quedan "+obj.cantidad+")</option>"
 			 		) 
-			}
+			//}
 		});
 		select.select2();
 	}
@@ -305,16 +323,19 @@ function addBillSale(){
 	if (existsProducts.length>0) {
 
 		var optionSelected = $("#row-products select option:selected");
-		var productSelect = billProducts[optionSelected.data("index")];
+		lastSelected=optionSelected.data("index");	
+		var productSelect = billProducts[lastSelected];
 		var cantidad=$("#cantidad").val();
 		var tableSales = $("#row-bill-detail #table-bill-detail")
 		if (cantidad>productSelect.cantidad) {
-			alert("Disculpa, debes escoger una menor cantidad para este producto");
+			alert("Disculpa, debes escoger una cantidad menor para este producto");
 		}else{
+			$("#row-bill-detail table").removeClass("hidden");
+			$("#row-bill-detail #aviso").addClass("hidden");
 			var sale = {id:productSelect.id, nombre:productSelect.nombre,marca:productSelect.marca,cantidad:cantidad, precio:productSelect.precio};
 			var index ;
 			var previusSelecteds= $.grep(billProductsListed, function(n,i) { 
-					index=i;
+					index=n.id == sale.id?i:index;
 					return n.id == sale.id; 
 			})
 			if (previusSelecteds.length==0) {
@@ -323,16 +344,27 @@ function addBillSale(){
 				totalBill+=(sale.precio*cantidad);
 				tableSales.append(
 					"<tr>"+
-					"<td>"+sale.id+"</td>"+
+					"<td class='codigo'>"+sale.id+"</td>"+
 					"<td>"+sale.nombre+"</td>"+
 					"<td>"+sale.marca+"</td>"+
-					"<td class='cantidad'>"+sale.cantidad+"</td>"+
-					"<td class='precio'>"+sale.precio+" Bs. </td>"+
+					"<td class='cantidad'> "+ 
+						"<input class='form-control hidden new-cantidad' value='"+sale.cantidad+"'  type='number'>"+
+						"<span class='current-cantidad'>"+sale.cantidad+"</span>"+
+						"<i class='edit-sale fa fa-fw fa-edit' title='Editar cantidad'></i>"+
+						"<i class='ok-edit-sale fa fa-fw fa-check hidden'title='Guardar cambio'></i></td>"+
+					"<td class='precio'>"+sale.precio+" Bs. <i title='Eliminar esta fila' style='float:right'class='delete-sale fa fa-fw fa-close'></i></td>"+
 					"</tr>");
+				$(".edit-sale").unbind();
+				$(".edit-sale").bind("click",edit_sale);
+				$(".ok-edit-sale").unbind();
+				$(".ok-edit-sale").bind("click",ok_edit_sale);
+				$(".delete-sale").unbind();
+				$(".delete-sale").bind("click",delete_sale);
 			}else{
 				totalBill+=(billProductsListed[index].precio*cantidad);				
 				billProductsListed[index].cantidad = parseInt(billProductsListed[index].cantidad) + parseInt(cantidad);
-				$(tableSales.children()[index]).find(".cantidad").text(billProductsListed[index].cantidad); 
+				$(tableSales.children()[index]).find(".current-cantidad").text(billProductsListed[index].cantidad); 
+				$(tableSales.children()[index]).find(".new-cantidad").val(billProductsListed[index].cantidad); 
 			}
 			$("#total-bill").text("Total "+totalBill+" Bs.");
 			productSelect.cantidad = productSelect.cantidad-cantidad; 
@@ -340,4 +372,47 @@ function addBillSale(){
 		}
 	}
 }
+
+function edit_sale(){
+	var element=$(this)
+	element.addClass("hidden");
+	element.siblings(".current-cantidad").addClass("hidden");
+	element.siblings(".ok-edit-sale").removeClass("hidden");
+	element.siblings(".new-cantidad").removeClass("hidden");
+
+
+}
+
+function ok_edit_sale(){
+
+	var element=$(this)
+	var id=element.closest("tr").find(".codigo").text();
+	var find = $.grep(billProductsListed, function(n,i) { 
+			return n.id==id; 
+		})
+	if (find.length>0) {
+		var sale=find[0];
+		element.addClass("hidden");
+		totalBill-=(sale.cantidad*sale.precio);
+		sale.cantidad=element.siblings(".new-cantidad").val();
+		totalBill+=(sale.cantidad*sale.precio);	
+		element.siblings(".current-cantidad").text(sale.cantidad);
+		element.siblings(".current-cantidad").removeClass("hidden");
+		element.siblings(".edit-sale").removeClass("hidden");
+		element.siblings(".new-cantidad").addClass("hidden");
+		$("#total-bill").text("Total "+totalBill+" Bs.");
+	}
+
+
+	
+}
+
+function delete_sale(){
+	if (confirm("¿Estas seguro/a?")) {
+		var element=$(this)
+		element.closest("tr").remove();
+	};
+
+}
+
 
