@@ -48,11 +48,19 @@ $( document ).ready(function() {
 	
 	    $("#new_bill").on("click",initBillModal);
 	    $("#add_sale").on("click",addBillSale);
+	    $('#close-bill-modal').on("click",close_bill_modal);
+	    $("#ok-bill").on("click",ok_bill);
 	    $('#cantidad').pressEnter(addBillSale);
+	    $("#cantidad").focus(function(){
+	   		//alert("aaa");
+    		});
+
 	    $("#row-products").change(function(){
-          document.getElementById("cantidad").focus();
-          $('#cantidad').click();
+          setTimeout(function(){ $('#cantidad').trigger("focus"); }, 250);
+
+
         });
+
 	validarMensajes();
 	$.ajaxSetup({
 	  headers: {
@@ -266,6 +274,9 @@ var totalBill=0;
 var lastSelected=-1;
 function initBillModal(){
 
+
+	$("#modal-bill").modal({backdrop: 'static', keyboard: false}); 
+
 	$("#row-bill-detail table").addClass("hidden");
 	$("#row-bill-detail #aviso").removeClass("hidden");
 	$("#row-bill-detail #table-bill-detail").html("");
@@ -283,7 +294,7 @@ function initBillModal(){
 function initBillProducts(){
 	$.ajax("/seller/store/products.json").done(
 	function(data){
-		alert(JSON.stringify(data));
+		//alert(JSON.stringify(data));
 		billProducts = data;
 		initBillSelect();	
 		//$("label[for='download_cantidad'").text("Cantidad (Quedan "+product.cantidad+" en depósito)")
@@ -304,7 +315,6 @@ function initBillSelect(){
 		select.html("");
 		$.each(billProducts,function(index, obj) {
 			//if (obj.cantidad>0) {
-				debugger
 				select.append(
 					"<option"+(index==lastSelected?" selected='selected'":"")+" data-index ="+index+" value='"+obj.id+"'>"+obj.codigo_nombre_marca+" (Quedan "+obj.cantidad+")</option>"
 			 		) 
@@ -390,17 +400,32 @@ function ok_edit_sale(){
 	var find = $.grep(billProductsListed, function(n,i) { 
 			return n.id==id; 
 		})
+	var index2;
+	var findSelected = $.grep(billProducts, function(n,i) {
+			index2=n.id == id?i:index2; 
+					return n.id==id; 
+			});
+
 	if (find.length>0) {
+		debugger
 		var sale=find[0];
-		element.addClass("hidden");
-		totalBill-=(sale.cantidad*sale.precio);
-		sale.cantidad=element.siblings(".new-cantidad").val();
-		totalBill+=(sale.cantidad*sale.precio);	
-		element.siblings(".current-cantidad").text(sale.cantidad);
-		element.siblings(".current-cantidad").removeClass("hidden");
-		element.siblings(".edit-sale").removeClass("hidden");
-		element.siblings(".new-cantidad").addClass("hidden");
-		$("#total-bill").text("Total "+totalBill+" Bs.");
+		var productSelect = billProducts[index2];
+		if (parseInt(element.siblings(".new-cantidad").val())>parseInt(productSelect.cantidad)) {
+			alert("Disculpa, debes escoger una cantidad menor para este producto");
+		}else{
+			element.addClass("hidden");
+			totalBill-=(sale.cantidad*sale.precio);
+			productSelect.cantidad += parseInt(sale.cantidad); 
+			sale.cantidad=element.siblings(".new-cantidad").val();
+			productSelect.cantidad -= parseInt(sale.cantidad); 
+			totalBill+=(sale.cantidad*sale.precio);	
+			element.siblings(".current-cantidad").text(sale.cantidad);
+			element.siblings(".current-cantidad").removeClass("hidden");
+			element.siblings(".edit-sale").removeClass("hidden");
+			element.siblings(".new-cantidad").addClass("hidden");
+			$("#total-bill").text("Total "+totalBill+" Bs.");
+			initBillSelect();
+		}
 	}
 
 
@@ -410,9 +435,46 @@ function ok_edit_sale(){
 function delete_sale(){
 	if (confirm("¿Estas seguro/a?")) {
 		var element=$(this)
-		element.closest("tr").remove();
-	};
+		var id=element.closest("tr").find(".codigo").text();
+		var index,index2;
+		var find = $.grep(billProductsListed, function(n,i) {
+			index=n.id == id?i:index; 
+					return n.id==id; 
+			});
+		var findSelected = $.grep(billProducts, function(n,i) {
+			index2=n.id == id?i:index2; 
+					return n.id==id; 
+			});
+
+		if (find.length>0) {
+			var sale=find[0];
+			var productSelect = billProducts[index2];
+			productSelect.cantidad += sale.cantidad; 
+			initBillSelect();
+			totalBill-=(sale.cantidad*sale.precio);
+			$("#total-bill").text("Total "+totalBill+" Bs.");
+			billProductsListed = billProductsListed.splice(index+1,1);
+			element.closest("tr").remove();
+			if (billProductsListed.length==0) {
+				$("#row-bill-detail table").addClass("hidden");
+				$("#row-bill-detail #aviso").removeClass("hidden");
+			}
+
+		}
+	}
 
 }
 
 
+
+function close_bill_modal(){
+	if (confirm("¿Estas seguro/a?\n Se perderán todos los cambios.")) {
+		$("#modal-bill").modal("hide");
+	}
+}
+
+function ok_bill(){
+	if (confirm("¿Estas seguro/a?")) {
+
+	}
+}
