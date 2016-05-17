@@ -91,3 +91,6 @@ width: 20%!important;
 #add_sale{
   color:green;
 }
+.delete-tr{
+  background: rgba(169, 68, 66, 0.49);
+}

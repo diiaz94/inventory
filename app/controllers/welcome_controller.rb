@@ -30,7 +30,6 @@ class WelcomeController < ApplicationController
   def admin_user
   	@user = User.new
     if !@notUsers
-      puts "EPAAAA***************"
       render "register_user", layout: "blank"
     else
       redirect_to root_path

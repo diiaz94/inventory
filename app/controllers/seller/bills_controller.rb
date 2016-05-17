@@ -25,7 +25,8 @@ class Seller::BillsController < ApplicationController
   # POST /bills.json
   def create
     @bill = Bill.new(bill_params)
-
+    puts "AQUIINOJODA"
+    return "RECIBIDO"
     respond_to do |format|
       if @bill.save
         format.html { redirect_to @bill, notice: 'Bill was successfully created.' }

@@ -335,7 +335,7 @@ function addBillSale(){
 		var optionSelected = $("#row-products select option:selected");
 		lastSelected=optionSelected.data("index");	
 		var productSelect = billProducts[lastSelected];
-		var cantidad=$("#cantidad").val();
+		var cantidad=parseInt($("#cantidad").val());
 		var tableSales = $("#row-bill-detail #table-bill-detail")
 		if (cantidad>productSelect.cantidad) {
 			alert("Disculpa, debes escoger una cantidad menor para este producto");
@@ -353,7 +353,7 @@ function addBillSale(){
 				//alert(JSON.stringify(productSelect));
 				totalBill+=(sale.precio*cantidad);
 				tableSales.append(
-					"<tr>"+
+					"<tr style='display:none'>"+
 					"<td class='codigo'>"+sale.id+"</td>"+
 					"<td>"+sale.nombre+"</td>"+
 					"<td>"+sale.marca+"</td>"+
@@ -364,6 +364,7 @@ function addBillSale(){
 						"<i class='ok-edit-sale fa fa-fw fa-check hidden'title='Guardar cambio'></i></td>"+
 					"<td class='precio'>"+sale.precio+" Bs. <i title='Eliminar esta fila' style='float:right'class='delete-sale fa fa-fw fa-close'></i></td>"+
 					"</tr>");
+				tableSales.children().last().fadeIn();
 				$(".edit-sale").unbind();
 				$(".edit-sale").bind("click",edit_sale);
 				$(".ok-edit-sale").unbind();
@@ -407,16 +408,15 @@ function ok_edit_sale(){
 			});
 
 	if (find.length>0) {
-		debugger
 		var sale=find[0];
 		var productSelect = billProducts[index2];
-		if (parseInt(element.siblings(".new-cantidad").val())>parseInt(productSelect.cantidad)) {
+		if (parseInt(element.siblings(".new-cantidad").val())-sale.cantidad>parseInt(productSelect.cantidad)) {
 			alert("Disculpa, debes escoger una cantidad menor para este producto");
 		}else{
 			element.addClass("hidden");
-			totalBill-=(sale.cantidad*sale.precio);
+			totalBill-=(parseInt(sale.cantidad)*sale.precio);
 			productSelect.cantidad += parseInt(sale.cantidad); 
-			sale.cantidad=element.siblings(".new-cantidad").val();
+			sale.cantidad=parseInt(element.siblings(".new-cantidad").val());
 			productSelect.cantidad -= parseInt(sale.cantidad); 
 			totalBill+=(sale.cantidad*sale.precio);	
 			element.siblings(".current-cantidad").text(sale.cantidad);
@@ -433,8 +433,11 @@ function ok_edit_sale(){
 }
 
 function delete_sale(){
+	var element=$(this);
+	element.closest("tr").addClass("delete-tr");
+
 	if (confirm("¿Estas seguro/a?")) {
-		var element=$(this)
+		
 		var id=element.closest("tr").find(".codigo").text();
 		var index,index2;
 		var find = $.grep(billProductsListed, function(n,i) {
@@ -448,12 +451,13 @@ function delete_sale(){
 
 		if (find.length>0) {
 			var sale=find[0];
-			var productSelect = billProducts[index2];
-			productSelect.cantidad += sale.cantidad; 
+			var productSelect = findSelected[0];
+			productSelect.cantidad += parseInt(sale.cantidad); 
 			initBillSelect();
-			totalBill-=(sale.cantidad*sale.precio);
+			totalBill-=(parseInt(sale.cantidad)*sale.precio);
 			$("#total-bill").text("Total "+totalBill+" Bs.");
-			billProductsListed = billProductsListed.splice(index+1,1);
+			billProductsListed.splice(index,1);
+			element.closest("tr").fadeOut();
 			element.closest("tr").remove();
 			if (billProductsListed.length==0) {
 				$("#row-bill-detail table").addClass("hidden");
@@ -462,19 +466,38 @@ function delete_sale(){
 
 		}
 	}
+	element.closest("tr").removeClass("delete-tr");
 
 }
 
 
 
 function close_bill_modal(){
-	if (confirm("¿Estas seguro/a?\n Se perderán todos los cambios.")) {
+	if (confirm("¿Estas seguro/a?\n Se perderán todos los cambios realizados.")) {
 		$("#modal-bill").modal("hide");
 	}
 }
 
 function ok_bill(){
 	if (confirm("¿Estas seguro/a?")) {
-
+		procesarBill();
 	}
+}
+
+function procesarBill(){
+	$.ajax({
+		method: "POST",
+  		url: "/seller/bills",
+  		data: { 
+  			sales: billProducts,
+  			bill: {total: totalBill}
+  		}
+	}).done(
+	function(data){
+		alert(data)
+	}).error(
+		function(data){
+			alert(data.responseText);
+		}
+	);
 }
