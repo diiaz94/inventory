@@ -25,12 +25,47 @@ class Seller::BillsController < ApplicationController
   # POST /bills.json
   def create
     @bill = Bill.new(bill_params)
-    puts "AQUIINOJODA"
-    return "RECIBIDO"
+    @bill.seller = current_user.seller
+    sales = params[:sales]
+
+
+    sales.each do |i, sale|
+      puts "AQUIVALE"
+      puts sale.to_json
+      new_sale=Sale.new
+      new_sale.product_id=sale["id"].to_i
+      new_sale.cantidad=sale["cantidad"].to_i
+      new_sale.precio=sale["precio"].to_f
+      new_sale.bill=@bill
+      
+      downloads = current_user.seller.store.downloads.where(product_id: new_sale.product_id)
+      if downloads.sum(:cantidad)<new_sale.cantidad
+        puts "Error"
+      else
+        cantidad_cargada=new_sale.cantidad
+        downloads.order(:created_at).each do |download|
+        if cantidad_cargada==0 and download.cantidad!=0
+          break;
+        else
+          if download.cantidad>=cantidad_cargada
+            download.cantidad=download.cantidad-cantidad_cargada
+            download.save
+            break;
+          else
+            cantidad_cargada=cantidad_cargada-download.cantidad
+            download.cantidad=0
+            download.save
+            end  
+          end
+        end
+        puts "todo ok"
+      end
+      new_sale.save
+    end  
     respond_to do |format|
       if @bill.save
-        format.html { redirect_to @bill, notice: 'Bill was successfully created.' }
-        format.json { render :show, status: :created, location: @bill }
+        format.html { redirect_to root_path, notice: 'Bill was successfully created.' }
+        format.json { render :show, status: :created, location: root_path }
       else
         format.html { render :new }
         format.json { render json: @bill.errors, status: :unprocessable_entity }

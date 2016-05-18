@@ -1,4 +1,4 @@
-class SalesController < ApplicationController
+class Seller::SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy]
 
   # GET /sales

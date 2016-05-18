@@ -487,14 +487,14 @@ function ok_bill(){
 function procesarBill(){
 	$.ajax({
 		method: "POST",
-  		url: "/seller/bills",
+  		url: "/seller/bills.json",
   		data: { 
   			sales: billProducts,
   			bill: {total: totalBill}
   		}
 	}).done(
 	function(data){
-		alert(data)
+		alert(JSON.stringnify(data))
 	}).error(
 		function(data){
 			alert(data.responseText);
