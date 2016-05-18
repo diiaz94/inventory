@@ -331,7 +331,8 @@ function addBillSale(){
 			return n.cantidad>0; 
 		})
 	if (existsProducts.length>0) {
-
+		$("#ok-bill").removeAttr("disabled");
+		$("#ok-bill").removeClass("disabled");
 		var optionSelected = $("#row-products select option:selected");
 		lastSelected=optionSelected.data("index");	
 		var productSelect = billProducts[lastSelected];
@@ -466,6 +467,9 @@ function delete_sale(){
 
 		}
 	}
+	if (billProductsListed.length==0) {
+		$("#ok-bill").attr("disabled",true);
+	};
 	element.closest("tr").removeClass("delete-tr");
 
 }
@@ -489,12 +493,12 @@ function procesarBill(){
 		method: "POST",
   		url: "/seller/bills.json",
   		data: { 
-  			sales: billProducts,
+  			sales: billProductsListed,
   			bill: {total: totalBill}
   		}
 	}).done(
 	function(data){
-		alert(JSON.stringnify(data))
+		window.location.href = "/seller/bills";
 	}).error(
 		function(data){
 			alert(data.responseText);

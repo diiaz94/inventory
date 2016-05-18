@@ -1,25 +1,101 @@
-<h1>Listing bills</h1>
+       <!-- Main content -->
+        <section class="content">
+          <div class="row">
+            <div class="col-xs-12">
 
-<table>
-  <thead>
-    <tr>
-      <th>Total</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @bills.each do |bill| %>
-      <tr>
-        <td><%= bill.total %></td>
-        <td><%= link_to 'Show', bill %></td>
-        <td><%= link_to 'Edit', edit_bill_path(bill) %></td>
-        <td><%= link_to 'Destroy', bill, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Lista de Ventas</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <table id="bills_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
+                    <thead>
+                      <tr>
+                        <th>Código</th>
+                        <th>Cantidad de productos</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <% @bills.each_with_index do |bill,index| %>
+                      <tr class="link" data-toggle="modal" data-target=<%="#modal-bill-"+index.to_s%>>
+                        <td><%= bill.id %></td>
+                        <td><%= bill.sales.sum(:cantidad).to_s %></td>
+                        <td><%= bill.total %></td>
+                      </tr>
+                        <div class="example-modal">
+                          <div class="modal fade" id=<%="modal-bill-"+index.to_s%>>
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <h4 class="modal-title">Información</h4>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-xs-12">
+                                      <div class="box box-solid">
+                                        <div class="box-header with-border">
+                                          <i class="fa fa-text-width"></i>
+                                          <h3 class="box-title">Datos de la venta</h3>
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                          <div class="panel panel-default">
+                                            <!-- Default panel contents -->
+                                            <div class="panel-heading">Panel heading</div>
+                                            <div class="panel-body">
+                                              <p>...</p>
+                                            </div>
 
+                                            <!-- List group -->
+                                            <ul class="list-group">
+                                              <li class="list-group-item">Cras justo odio</li>
+                                              <li class="list-group-item">Dapibus ac facilisis in</li>
+                                              <li class="list-group-item">Morbi leo risus</li>
+                                              <li class="list-group-item">Porta ac consectetur ac</li>
+                                              <li class="list-group-item">Vestibulum at eros</li>
+                                            </ul>
+                                          </div>
+
+                                       </div><!-- /.box-body -->
+                                      </div><!-- /.box -->
+                                    </div><!-- ./col -->
+                                  </div><!-- /.row -->
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                                </div>
+                              </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                          </div><!-- /.modal -->
+                        </div><!-- /.example-modal -->
+                      <% end %>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Código</th>
+                        <th>Cantidad de productos</th>
+                        <th>Total</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </section><!-- /.content -->
+
+
+ <script>
+      $(function () {
+
+      });
+</script>
 <br>
 
-<%= link_to 'New Bill', new_bill_path %>
+
+
+
+
+                        
