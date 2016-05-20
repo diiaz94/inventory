@@ -1,4 +1,4 @@
 class Sale < ActiveRecord::Base
 	belongs_to :bill
-	has_one :product
+	belongs_to :product
 end

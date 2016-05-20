@@ -15,6 +15,7 @@
                         <th>Código</th>
                         <th>Cantidad de productos</th>
                         <th>Total</th>
+                        <th>Fecha</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -22,7 +23,8 @@
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-bill-"+index.to_s%>>
                         <td><%= bill.id %></td>
                         <td><%= bill.sales.sum(:cantidad).to_s %></td>
-                        <td><%= bill.total %></td>
+                        <td class="monto"><%= bill.total %></td>
+                        <td ><%= bill.fecha_c %></td>
                       </tr>
                         <div class="example-modal">
                           <div class="modal fade" id=<%="modal-bill-"+index.to_s%>>
@@ -43,19 +45,53 @@
                                         <div class="box-body">
                                           <div class="panel panel-default">
                                             <!-- Default panel contents -->
-                                            <div class="panel-heading">Panel heading</div>
+                                            <div class="panel-heading">Detalle de la venta</div>
                                             <div class="panel-body">
-                                              <p>...</p>
+                                            <!-- List group -->
+                                              <ul class="list-group">
+                                                <li class="list-group-item" style="rgb(245, 245, 245);font-weight: bold;">
+                                                  <div class="row">
+                                                    <div class="col-xs-4">
+                                                      <span >Producto</span>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                      <span >Cantidad</span>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                      <span >Precio</span>
+                                                    </div>
+                                                  </div>
+                                                </li>
+                                                <% bill.sales.each do |sale| %>
+                                                  <li class="list-group-item">
+                                                    <div class="row">
+                                                      <div class="col-xs-4">
+                                                        <span><%=sale.product.nombre_marca%></span>
+                                                      </div>
+                                                      <div class="col-xs-4">
+                                                        <span>x<%=sale.cantidad%></span>
+                                                      </div>
+                                                      <div class="col-xs-4">
+                                                        <span class="monto"><%=sale.precio%></span>
+                                                      </div>
+                                                    </div>
+                                                  </li>
+                                                <%end%>
+                                                <li class="list-group-item" style="background:rgba(12, 119, 171, 0.12);font-weight: bold;">
+                                                  <div class="row">
+                                                    <div class="col-xs-4"></div>
+                                                    <div class="col-xs-4">
+                                                      <span>Total</span>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                      <span class="monto"><%=bill.total%></span>
+                                                    </div>
+                                                  </div>
+                                                </li>
+
+                                              </ul>
                                             </div>
 
-                                            <!-- List group -->
-                                            <ul class="list-group">
-                                              <li class="list-group-item">Cras justo odio</li>
-                                              <li class="list-group-item">Dapibus ac facilisis in</li>
-                                              <li class="list-group-item">Morbi leo risus</li>
-                                              <li class="list-group-item">Porta ac consectetur ac</li>
-                                              <li class="list-group-item">Vestibulum at eros</li>
-                                            </ul>
                                           </div>
 
                                        </div><!-- /.box-body -->
@@ -77,6 +113,7 @@
                         <th>Código</th>
                         <th>Cantidad de productos</th>
                         <th>Total</th>
+                        <th>Fecha</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -89,7 +126,17 @@
 
  <script>
       $(function () {
-
+        $("#bills_table").DataTable({
+          "language": {
+            "url": "/plugins/datatables/dataTables.spanish.lang"
+          },
+          "columnDefs": [ {
+          "targets": 'no-sort',
+          "orderable": false,
+          "searchable": false
+          } ],
+          stateSave: true
+        });
       });
 </script>
 <br>

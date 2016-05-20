@@ -1,5 +1,7 @@
 class Seller::BillsController < ApplicationController
   before_action :set_bill, only: [:show, :edit, :update, :destroy]
+  after_action :set_date_created_at, only: [:create]
+  after_action :set_date_updated_at, only: [:update]
 
   # GET /bills
   # GET /bills.json
@@ -101,6 +103,29 @@ class Seller::BillsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_date_created_at
+      if params[:fecha]
+        puts "Se informo la fecha desde el cliente::"+params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
+      end
+      time = getCurrentTime
+      puts "Respondio el werbservice del tiempo::"+time.to_s
+        
+      @bill.created_at = time ? time : (fecha ? fecha : Date.today)
+      @bill.updated_at = time ? time : (fecha ? fecha : Date.today)
+      @bill.save
+    end
+    def set_date_updated_at
+      if params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
+      end
+      time = getCurrentTime
+      puts @fecha.to_s
+      @bill.updated_at = time ? time : (fecha ? fecha : Date.today)
+      @bill.save
+    end 
     def set_bill
       @bill = Bill.find(params[:id])
     end

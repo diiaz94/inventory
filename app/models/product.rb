@@ -1,6 +1,7 @@
 class Product < ActiveRecord::Base
-	belongs_to :category
-	belongs_to :unit
+	has_one :sale
+  belongs_to :category
+  belongs_to :unit
 	belongs_to :brand
   has_many :loads
   has_many :deposits, through: :loads
