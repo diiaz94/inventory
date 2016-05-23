@@ -6,7 +6,7 @@
 
               <div class="box">
                 <div class="box-header">
-                  <h3 class="box-title">Lista de Productos en <%= @store.nombre%></h3>
+                  <h3 class="box-title">Lista de Productos en la tienda <%= @store.nombre%></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <table id="products_of_store_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
@@ -22,7 +22,7 @@
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-products_of_store-"+index.to_s%>>
                         <td><%= p.product.nombre_marca%></td>
                         <td><%= p.cantidad %></td>
-                        <td><%= p.precio %></td>
+                        <td class="monto"><%= p.precio %></td>
                       </tr>
                         <div class="example-modal">
                           <div class="modal fade" id=<%="modal-products_of_store-"+index.to_s%>>
@@ -47,7 +47,7 @@
                                             <dt>Cantidad:</dt>
                                             <dd><%= p.cantidad%></dd>
                                             <dt>Precio:</dt>
-                                            <dd><%= p.precio%></dd>
+                                            <dd class="monto"><%= p.precio%></dd>
                              
                                           </dl>
                                        </div><!-- /.box-body -->
@@ -69,7 +69,7 @@
                       <tr>
                         <th>Producto</th>
                         <th>Cantidad</th>
-
+                        <th>Precio</th>
                       </tr>
                     </tfoot>
                   </table>

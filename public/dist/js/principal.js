@@ -47,6 +47,7 @@ $( document ).ready(function() {
 	});
 	
 	    $("#new_bill").on("click",initBillModal);
+	    $(".new_bill_for_owner").on("click",setOwnerUrls);
 	    $("#add_sale").on("click",addBillSale);
 	    $('#close-bill-modal').on("click",close_bill_modal);
 	    $("#ok-bill").on("click",ok_bill);
@@ -276,10 +277,10 @@ var billProducts =[]
 var billProductsListed=[]
 var totalBill=0;
 var lastSelected=-1;
+var url_store_products;
+var url_create_bill;
+var url_redirect;
 function initBillModal(){
-
-
-	$("#modal-bill").modal({backdrop: 'static', keyboard: false}); 
 
 	$("#row-bill-detail table").addClass("hidden");
 	$("#row-bill-detail #aviso").removeClass("hidden");
@@ -295,19 +296,38 @@ function initBillModal(){
 	initBillProducts();
 }
 
+
+function setOwnerUrls(){
+//url_store_products = this.
+	var url=$(this).data("url")
+	var store=$(this).data("store")
+	if (typeof(url)!="undefined") {
+		url_store_products=url;
+		store_id=store;
+		initBillProducts();
+	}
+}
+
+
 function initBillProducts(){
-	$.ajax("/seller/store/products.json").done(
-	function(data){
-		//alert(JSON.stringify(data));
-		billProducts = data;
+
+$.ajax({
+  url: url_store_products,
+  beforeSend: function( xhr ) {
+	$("#modal-loader").modal({backdrop: 'static', keyboard: false}); 
+  }
+}).done(function( data ) {
+    billProducts = data;
+		$("#modal-bill").modal("show"); 
 		initBillSelect();	
-		//$("label[for='download_cantidad'").text("Cantidad (Quedan "+product.cantidad+" en depósito)")
-       	// $("select.select2#download_product_id").trigger("change");
-	}).error(
+  }).error(
 		function(data){
 			alert(data.responseText);
 		}
-	);
+	).always(function() {
+   		$("#modal-loader").modal("hide");
+  });
+
 }
 
 function initBillSelect(){
@@ -342,49 +362,53 @@ function addBillSale(){
 		var productSelect = billProducts[lastSelected];
 		var cantidad=parseInt($("#cantidad").val());
 		var tableSales = $("#row-bill-detail #table-bill-detail")
-		if (cantidad>productSelect.cantidad) {
-			alert("Disculpa, debes escoger una cantidad menor para este producto");
+		if (cantidad<1) {
+			alert("Disculpa, la cantidad debe ser mayor a 1");
 		}else{
-			$("#row-bill-detail table").removeClass("hidden");
-			$("#row-bill-detail #aviso").addClass("hidden");
-			var sale = {id:productSelect.id, nombre:productSelect.nombre,marca:productSelect.marca,cantidad:cantidad, precio:productSelect.precio};
-			var index ;
-			var previusSelecteds= $.grep(billProductsListed, function(n,i) { 
-					index=n.id == sale.id?i:index;
-					return n.id == sale.id; 
-			})
-			if (previusSelecteds.length==0) {
-				billProductsListed.push(sale);
-				//alert(JSON.stringify(productSelect));
-				totalBill+=(sale.precio*cantidad);
-				tableSales.append(
-					"<tr style='display:none'>"+
-					"<td class='codigo'>"+sale.id+"</td>"+
-					"<td>"+sale.nombre+"</td>"+
-					"<td>"+sale.marca+"</td>"+
-					"<td class='cantidad'> "+ 
-						"<input class='form-control hidden new-cantidad' value='"+sale.cantidad+"'  type='number'>"+
-						"<span class='current-cantidad'>"+sale.cantidad+"</span>"+
-						"<i class='edit-sale fa fa-fw fa-edit' title='Editar cantidad'></i>"+
-						"<i class='ok-edit-sale fa fa-fw fa-check hidden'title='Guardar cambio'></i></td>"+
-					"<td class='precio'>"+sale.precio+" Bs. <i title='Eliminar esta fila' style='float:right'class='delete-sale fa fa-fw fa-close'></i></td>"+
-					"</tr>");
-				tableSales.children().last().fadeIn();
-				$(".edit-sale").unbind();
-				$(".edit-sale").bind("click",edit_sale);
-				$(".ok-edit-sale").unbind();
-				$(".ok-edit-sale").bind("click",ok_edit_sale);
-				$(".delete-sale").unbind();
-				$(".delete-sale").bind("click",delete_sale);
+			if (cantidad>productSelect.cantidad) {
+				alert("Disculpa, debes escoger una cantidad menor para este producto");
 			}else{
-				totalBill+=(billProductsListed[index].precio*cantidad);				
-				billProductsListed[index].cantidad = parseInt(billProductsListed[index].cantidad) + parseInt(cantidad);
-				$(tableSales.children()[index]).find(".current-cantidad").text(billProductsListed[index].cantidad); 
-				$(tableSales.children()[index]).find(".new-cantidad").val(billProductsListed[index].cantidad); 
+				$("#row-bill-detail table").removeClass("hidden");
+				$("#row-bill-detail #aviso").addClass("hidden");
+				var sale = {id:productSelect.id, nombre:productSelect.nombre,marca:productSelect.marca,cantidad:cantidad, precio:productSelect.precio};
+				var index ;
+				var previusSelecteds= $.grep(billProductsListed, function(n,i) { 
+						index=n.id == sale.id?i:index;
+						return n.id == sale.id; 
+				})
+				if (previusSelecteds.length==0) {
+					billProductsListed.push(sale);
+					//alert(JSON.stringify(productSelect));
+					totalBill+=(sale.precio*cantidad);
+					tableSales.append(
+						"<tr style='display:none'>"+
+						"<td class='codigo'>"+sale.id+"</td>"+
+						"<td>"+sale.nombre+"</td>"+
+						"<td>"+sale.marca+"</td>"+
+						"<td class='cantidad'> "+ 
+							"<input class='form-control hidden new-cantidad' value='"+sale.cantidad+"'  type='number'>"+
+							"<span class='current-cantidad'>"+sale.cantidad+"</span>"+
+							"<i class='edit-sale fa fa-fw fa-edit' title='Editar cantidad'></i>"+
+							"<i class='ok-edit-sale fa fa-fw fa-check hidden'title='Guardar cambio'></i></td>"+
+						"<td class='precio'>"+formato_numero(sale.precio, 2, ',', '.')+" <i title='Eliminar esta fila' style='float:right'class='delete-sale fa fa-fw fa-close'></i></td>"+
+						"</tr>");
+					tableSales.children().last().fadeIn();
+					$(".edit-sale").unbind();
+					$(".edit-sale").bind("click",edit_sale);
+					$(".ok-edit-sale").unbind();
+					$(".ok-edit-sale").bind("click",ok_edit_sale);
+					$(".delete-sale").unbind();
+					$(".delete-sale").bind("click",delete_sale);
+				}else{
+					totalBill+=(billProductsListed[index].precio*cantidad);				
+					billProductsListed[index].cantidad = parseInt(billProductsListed[index].cantidad) + parseInt(cantidad);
+					$(tableSales.children()[index]).find(".current-cantidad").text(billProductsListed[index].cantidad); 
+					$(tableSales.children()[index]).find(".new-cantidad").val(billProductsListed[index].cantidad); 
+				}
+				$("#total-bill").text("Total "+formato_numero(totalBill, 2, ',', '.'));
+				productSelect.cantidad = productSelect.cantidad-cantidad; 
+				initBillSelect();
 			}
-			$("#total-bill").text("Total "+totalBill+" Bs.");
-			productSelect.cantidad = productSelect.cantidad-cantidad; 
-			initBillSelect();
 		}
 	}
 }
@@ -493,22 +517,27 @@ function ok_bill(){
 }
 
 function procesarBill(){
+	$("#modal-loader").modal("show");
+
 	$.ajax({
 		method: "POST",
-  		url: "/seller/bills.json",
+  		url: url_create_bill,
   		data: { 
   			sales: billProductsListed,
-  			bill: {total: totalBill}
+  			bill: {total: totalBill},
+  			store_id: store_id ? store_id : ""
   		}
 	}).done(
 	function(data){
-		window.location.href = "/seller/bills";
+		window.location.href = url_redirect;
 	}).error(
 		function(data){
+	   		$("#modal-loader").modal("hide");
 			alert(data.responseText);
 		}
 	);
 }
+
 
 function formato_numero(numero, decimales, separador_decimal, separador_miles){ 
     numero=parseFloat(numero);

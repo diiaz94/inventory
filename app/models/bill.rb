@@ -1,4 +1,5 @@
 class Bill < ActiveRecord::Base
+	include ApplicationHelper	
 	has_many :sales
 	belongs_to :seller
 

@@ -3,9 +3,11 @@ class User < ActiveRecord::Base
   attr_accessor  :password, :password_confirmation
   has_many :commerces
   has_one :profile, dependent: :destroy
+  has_many :sellers, dependent: :destroy
   belongs_to :role
-  belongs_to :seller
   accepts_nested_attributes_for :profile, allow_destroy: true
+  accepts_nested_attributes_for :sellers, allow_destroy: true
+
   extend FriendlyId
   friendly_id :cedula, use: :slugged
 
@@ -43,9 +45,13 @@ validates :password_confirmation, :presence =>  { :if => :password_required?, :m
     if self.admin?
       return "Administrador"
     end
-    if self.owner? and self.commerces.count>0
-      count = self.commerces.count
-      return "Propietari"+(self.profile.sexo==true ? "o": "a")+" de "+count.to_s+" Comercio"+(count>1 ? "s" : "")
+    if self.owner? 
+      if self.commerces.count>0
+        count = self.commerces.count
+        return "Propietari"+(self.profile.sexo==true ? "o": "a")+" de "+count.to_s+" Comercio"+(count>1 ? "s" : "")
+      else
+        return "Owner"
+      end
     end
     if self.seller?
       return "Vendedor"+(self.profile.sexo ? "" : "a")+" en la tienda "+self.seller.store.nombre 

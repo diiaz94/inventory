@@ -1,4 +1,4 @@
-<h1>Nuevo producto para <%=@store.nombre%></h1>
+<h1>Nuevo producto para la tienda <%=@store.nombre%></h1>
 
 
 <%= form_for(@download,url: (@download.new_record? ? owner_commerce_store_products_url : owner_commerce_store_product_url ), html: { class:  "submit_client_date"} ) do |f| %>

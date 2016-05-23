@@ -1,4 +1,4 @@
-<%= form_for(setup_user(@user)) do |f| %>
+<%= form_for(setup_user(@user),url: (@user.new_record? ? admin_users_url : admin_user_url )) do |f| %>
 
 
   <script type="text/javascript">

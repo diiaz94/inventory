@@ -1,19 +1,17 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User:</strong>
-  <%= @seller.user %>
+  <strong>Usuario:</strong>
+  <%= @seller.user.profile.complete_name %>
 </p>
 
 <p>
-  <strong>Commerce:</strong>
-  <%= @seller.commerce %>
+  <strong>Comercio:</strong>
+  <%= @seller.commerce.nombre %>
 </p>
 
 <p>
-  <strong>Store:</strong>
-  <%= @seller.store %>
+  <strong>Tienda:</strong>
+  <%= @seller.store.nombre %>
 </p>
 
-<%= link_to 'Edit', edit_seller_path(@seller) %> |
-<%= link_to 'Back', sellers_path %>

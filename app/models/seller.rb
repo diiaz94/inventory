@@ -1,5 +1,5 @@
 class Seller < ActiveRecord::Base
-  has_one :user, dependent: :destroy
+  belongs_to :user
   belongs_to :commerce
   belongs_to :store
   has_many :bills

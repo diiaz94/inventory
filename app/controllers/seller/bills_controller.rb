@@ -2,7 +2,6 @@ class Seller::BillsController < ApplicationController
   before_action :set_bill, only: [:show, :edit, :update, :destroy]
   after_action :set_date_created_at, only: [:create]
   after_action :set_date_updated_at, only: [:update]
-
   # GET /bills
   # GET /bills.json
   def index

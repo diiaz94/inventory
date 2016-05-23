@@ -26,6 +26,12 @@ input[type=number].cedula::-webkit-inner-spin-button {
 }
 
 @media (max-width: 800px) {
+  .container-table{
+    top:80px; 
+    bottom:20px; 
+    max-height:100px;
+    overflow-y:auto;
+  }
   section.content {
     padding: 0!important;
   }
@@ -94,3 +100,11 @@ width: 20%!important;
 .delete-tr{
   background: rgba(169, 68, 66, 0.49);
 }
+
+  .container-table{
+    top:80px; 
+    bottom:20px; 
+    max-height:400px;
+    overflow-y:auto;
+  }
+

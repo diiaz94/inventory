@@ -28,7 +28,7 @@ class Admin::UsersController < ApplicationController
     @user = User.new(user_params)
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_path, notice: 'Usuario creado exitosamente.' }
+        format.html { redirect_to admin_users_path, notice: 'Usuario creado exitosamente.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -43,8 +43,7 @@ class Admin::UsersController < ApplicationController
     respond_to do |format|
       @user.slug=nil
       if @user.update(user_params)
-        ruta = @user==current_user ? root_path : users_path
-        format.html { redirect_to ruta, notice: 'Usuario actualizado exitosamente.' }
+        format.html { redirect_to admin_users_path, notice: 'Usuario actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }

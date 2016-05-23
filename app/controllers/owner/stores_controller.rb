@@ -29,10 +29,17 @@ class Owner::StoresController < ApplicationController
   def create
     @store = Store.new(store_params)
     @store.commerce = @commerce
-      
+    @seller = Seller.new
     respond_to do |format|
       if @store.save
-        format.html { redirect_to owner_commerce_stores_path(@store.commerce.slug), notice: 'Depósito creado exitosamente.' }
+        @seller.store=@store
+        @seller.commerce = @commerce
+        @seller.user_id=current_user.id
+        @seller.slug=current_user.cedula
+        puts "DATOS DE VENDEDOR *******"
+        puts @seller.to_json
+        @seller.save
+        format.html { redirect_to owner_commerce_stores_path(@store.commerce.slug), notice: 'Tienda creado exitosamente.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
@@ -47,7 +54,7 @@ class Owner::StoresController < ApplicationController
     respond_to do |format|
       @store.slug=nil
       if @store.update(store_params)
-        format.html { redirect_to owner_commerce_stores_path(@store.commerce.slug), notice: 'Depósito actualizado exitosamente.' }
+        format.html { redirect_to owner_commerce_stores_path(@store.commerce.slug), notice: 'Tienda actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @store }
       else
         format.html { render :edit }

@@ -1,4 +1,4 @@
-<h1>Nuevo producto para <%=@deposit.nombre%></h1>
+<h1>Nuevo producto para el déposito <%=@deposit.nombre%></h1>
 
 
 <%= form_for(@load,url: (@load.new_record? ? owner_commerce_deposit_products_url : owner_commerce_deposit_product_url ), html: { class:  "submit_client_date"} ) do |f| %>

@@ -144,4 +144,27 @@
                 <i class="fa fa-angle-double-down"></i> <span>Descargas en Tiendas</span>
               </a>
             </li>
+            <li class="treeview">
+              <a href="#">
+                <i class="glyphicon glyphicon-barcode"></i> <span>Nueva venta</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <%current_user.commerces.each do |commerce|%>
+                  <%commerce.stores.each do |store|%>
+                    <li>
+                        <a  class="new_bill_for_owner" href="#" data-store="<%=store.id%>" data-url="<%=owner_commerce_store_products_path(commerce,store,:json)%>"><i class="fa fa-circle-o"></i> <%=store.nombre%></a>
+                    </li>
+                  <%end%>
+                <%end%>
+              </ul>
+            </li>
+
+
+<script type="text/javascript">
+  url_create_bill="<%=owner_bills_path(format: :json)%>"
+  url_redirect="<%=owner_bills_path%>"
+
+
+</script>
 

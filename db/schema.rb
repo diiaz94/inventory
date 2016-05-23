@@ -146,6 +146,7 @@ ActiveRecord::Schema.define(version: 20160511025117) do
   create_table "sellers", force: true do |t|
     t.integer  "commerce_id"
     t.integer  "store_id"
+    t.integer  "user_id"
     t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -153,6 +154,7 @@ ActiveRecord::Schema.define(version: 20160511025117) do
 
   add_index "sellers", ["commerce_id"], name: "index_sellers_on_commerce_id", using: :btree
   add_index "sellers", ["store_id"], name: "index_sellers_on_store_id", using: :btree
+  add_index "sellers", ["user_id"], name: "index_sellers_on_user_id", using: :btree
 
   create_table "stores", force: true do |t|
     t.string   "nombre"
@@ -180,13 +182,11 @@ ActiveRecord::Schema.define(version: 20160511025117) do
     t.string   "salt"
     t.string   "slug"
     t.integer  "role_id"
-    t.integer  "seller_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "users", ["cedula"], name: "index_users_on_cedula", unique: true, using: :btree
   add_index "users", ["role_id"], name: "index_users_on_role_id", using: :btree
-  add_index "users", ["seller_id"], name: "index_users_on_seller_id", using: :btree
 
 end

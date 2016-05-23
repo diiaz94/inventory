@@ -31,7 +31,7 @@
                         <td><%= download.product.nombre_marca%></td>
                         <td><%= download.cantidad_inicial %></td>
                         <td><%= download.cantidad %></td>
-                        <td><%= download.precio %> Bs.</td>
+                        <td class="monto"><%= download.precio %> Bs.</td>
                         <td><%= download.fecha_c %></td>
                           
                       </tr>
@@ -66,7 +66,7 @@
                                             <dt>Cantidad Restante:</dt>
                                             <dd><%=download.cantidad%></dd>
                                             <dt>Precio:</dt>
-                                            <dd><%=download.precio%> Bs.</dd>
+                                            <dd class="monto"><%=download.precio%> Bs.</dd>
                                             <dt>Fecha de creación:</dt>
                                             <dd><%=download.fecha_c%></dd>
                                             <dt>Última Actualización:</dt>

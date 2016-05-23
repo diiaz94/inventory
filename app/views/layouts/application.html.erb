@@ -438,6 +438,33 @@ validarMensajes();
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 </div><!-- /.example-modal -->  
+<div class="example-modal" >
+  <div class="modal fade modal-default" id="modal-loader">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Información</h4>
+        </div>
+        <div class="modal-body">
+          <div class="box box-danger">
+            <div class="box-header">
+              <h3 class="box-title">Cargando..</h3>
+            </div>
+            <div class="box-body">
+              Por favor espere
+            </div>
+            <!-- /.box-body -->
+            <!-- Loading (remove the following to stop the loading)-->
+            <div class="overlay">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+            <!-- end loading -->
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div><!-- /.example-modal -->  
 
 
 
@@ -459,7 +486,7 @@ validarMensajes();
             <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
              <div class="form-group">
                 <label for="cantidad">Cantidad</label><br>
-                <input class="form-control" id="cantidad" value=1  type="number">
+                <input class="form-control" id="cantidad" value=1  type="number" min="1">
               </div>
             </div>
             <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
@@ -477,6 +504,7 @@ validarMensajes();
                 <div class="panel-body"> 
                   <div id="aviso">Aún no has agregado productos</div>
                 <!-- Table -->
+          
                   <table class="table hidden">
                     <thead> 
                       <tr> 
@@ -487,8 +515,10 @@ validarMensajes();
                         <th>Precio</th> 
                       </tr> 
                     </thead> 
+                <div style="">
                     <tbody id="table-bill-detail"> 
                     </tbody>
+                </div>
                   </table>
                 </div>
                 <div class="panel-footer">
