@@ -353,14 +353,14 @@ function initBillSelect(){
 function addBillSale(){
 		var existsProducts = $.grep(billProducts, function(n,i) { 
 			return n.cantidad>0; 
-		})
-	if (existsProducts.length>0) {
+		});
+	if (existsProducts.length>0 && $("#cantidad").val().length>0) {
 		$("#ok-bill").removeAttr("disabled");
 		$("#ok-bill").removeClass("disabled");
+		var cantidad=parseInt($("#cantidad").val());
 		var optionSelected = $("#row-products select option:selected");
 		lastSelected=optionSelected.data("index");	
 		var productSelect = billProducts[lastSelected];
-		var cantidad=parseInt($("#cantidad").val());
 		var tableSales = $("#row-bill-detail #table-bill-detail")
 		if (cantidad<1) {
 			alert("Disculpa, la cantidad debe ser mayor a 1");
@@ -517,22 +517,36 @@ function ok_bill(){
 }
 
 function procesarBill(){
+	$("#modal-bill").modal("hide");
 	$("#modal-loader").modal("show");
-
+	var d = new Date();
+		var fecha = {
+			"dia":d.getDate(),
+			"mes":d.getMonth()+1,
+			"anio":d.getFullYear(),
+			"hora":d.getHours(),
+			"min":d.getMinutes(),
+			"seg":d.getSeconds()
+		}
 	$.ajax({
 		method: "POST",
   		url: url_create_bill,
   		data: { 
   			sales: billProductsListed,
   			bill: {total: totalBill},
-  			store_id: store_id ? store_id : ""
+  			store_id: (typeof(store_id)!="undefined" ? store_id : ""),
+  			fecha: JSON.stringify(fecha)
   		}
 	}).done(
 	function(data){
-		window.location.href = url_redirect;
+		$("#modal-loader").modal("hide");
+		noticemsj ="Venta realizada exitosamente"
+		validarMensajes();
+		setTimeout(function(){ window.location.href = url_redirect;}, 1500);
 	}).error(
 		function(data){
 	   		$("#modal-loader").modal("hide");
+	   		$("#modal-bill").modal("hide");
 			alert(data.responseText);
 		}
 	);

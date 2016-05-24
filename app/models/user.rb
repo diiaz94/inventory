@@ -54,7 +54,7 @@ validates :password_confirmation, :presence =>  { :if => :password_required?, :m
       end
     end
     if self.seller?
-      return "Vendedor"+(self.profile.sexo ? "" : "a")+" en la tienda "+self.seller.store.nombre 
+      return "Vendedor"+(self.profile.sexo ? "" : "a")+" en la tienda "+self.sellers.first.store.nombre 
     end
   end
 end

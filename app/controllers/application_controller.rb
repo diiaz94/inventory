@@ -38,16 +38,17 @@ class ApplicationController < ActionController::Base
 	    response = JSON.parse(res.body)
 
 	    if(response["status"] and response["status"]=="OK" and response["timestamp"])
-	      puts "OK****"
-	     puts DateTime.strptime(response["timestamp"].to_s,'%s').to_formatted_s(:db).to_s 
+	    	puts "OK webservice de tiempo****"
+	     	puts DateTime.strptime(response["timestamp"].to_s,'%s').to_formatted_s(:db).to_s 
 	     
-	      return DateTime.strptime(response["timestamp"].to_s,'%s').to_formatted_s(:db) 
+	     	return DateTime.strptime(response["timestamp"].to_s,'%s').to_formatted_s(:db) 
 
 	    else
-	    	puts "Error en webservice::"
+	    	puts "Error en respuesta webservice::"
 	    return  nil
 	    end
 	  rescue
+	  	puts "Exception en webservice::"
 	    return nil
 	  end  
 	end  

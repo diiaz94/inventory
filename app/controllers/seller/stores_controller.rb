@@ -79,7 +79,7 @@ class Seller::StoresController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store
-     @store = current_user.seller.store
+     @store = current_user.sellers.first.store
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params

@@ -26,7 +26,7 @@ class Seller::BillsController < ApplicationController
   # POST /bills.json
   def create
     @bill = Bill.new(bill_params)
-    @bill.seller = current_user.seller
+    @bill.seller = current_user.sellers.first
     sales = params[:sales]
 
 
@@ -43,7 +43,7 @@ class Seller::BillsController < ApplicationController
           new_sale.precio=sale["precio"].to_f
           new_sale.bill=@bill
           
-          downloads = current_user.seller.store.downloads.where(product_id: new_sale.product_id)
+          downloads = @bill.seller.store.downloads.where(product_id: new_sale.product_id)
           if downloads.sum(:cantidad)<new_sale.cantidad
             puts "Error"
           else
