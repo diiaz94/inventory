@@ -1,0 +1,14 @@
+ 	<li>
+    	<a  id="new_bill" href="#"><i class="fa fa-circle-o"></i> Nueva venta</a>
+  	</li>
+	<li>
+        <a href="<%=seller_bills_path%>"><i class="fa fa-circle-o"></i> Ver Ventas</a>
+    </li>
+
+              
+
+<script type="text/javascript">
+  url_store_products="<%=seller_store_products_path(format: :json)%>"
+  url_create_bill="<%=seller_bills_path(format: :json)%>"
+  url_redirect="<%=seller_bills_path%>"
+</script>

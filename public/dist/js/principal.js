@@ -51,6 +51,7 @@ $( document ).ready(function() {
 	    $("#add_sale").on("click",addBillSale);
 	    $('#close-bill-modal').on("click",close_bill_modal);
 	    $("#ok-bill").on("click",ok_bill);
+	    $("#ok-bill-confirm").on("click",ok_bill_confirm);
 	    $('#cantidad').pressEnter(addBillSale);
 	    $("#cantidad").focus(function(){
 	   		//alert("aaa");
@@ -73,7 +74,6 @@ $( document ).ready(function() {
 	  }});
 
 	$(".submit_client_date").submit(function(event){
-		debugger
 		var d = new Date();
 		var fecha = {
 			"dia":d.getDate(),
@@ -511,13 +511,19 @@ function close_bill_modal(){
 }
 
 function ok_bill(){
+	$("#modal-bill-confirm").modal("show");
+}
+function ok_bill_confirm(){
+
 	if (confirm("¿Estas seguro/a?")) {
 		procesarBill();
 	}
+
 }
 
 function procesarBill(){
 	$("#modal-bill").modal("hide");
+	$("#modal-bill-confirm").modal("hide");
 	$("#modal-loader").modal("show");
 	var d = new Date();
 		var fecha = {
