@@ -556,7 +556,24 @@ validarMensajes();
           <h4 class="modal-title">Confirmación de venta</h4>
         </div>
         <div class="modal-body">
-            jsnjlksnl
+            <div class="row">
+              <div class="col-xs-0 col-sm-0 col-md-1 col-lg-1 ">
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                <div class="form-group">
+                  <label>
+                    <input type="radio" id="total-pago" name="tipo_pago" class="minimal" value="0" checked>&nbsp;
+                    <span>Pago Total</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="pago-total" disabled style="color:black;">
+                  </label><br>
+                  <label>
+                    <input type="radio" id="parcial-pago" name="tipo_pago" class="minimal" value="1">&nbsp;
+                    Pago Parcial &nbsp;  <input type="text" id="otro-monto" disabled style="color:black;">
+                  </label><br>
+                </div>
+              </div>
+              <div class="col-xs-0 col-sm-0 col-md-1 col-lg-1 ">
+              </div>
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Volver</button>
@@ -567,6 +584,21 @@ validarMensajes();
   </div><!-- /.modal -->
 </div><!-- /.example-modal -->  
 
+
+ <script>
+      $(function () {
+          $('.minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+          //$('input[type="radio"]').first().parent().addClass("checked")
+          $(".select2").select2();
+            $($("#total-pago").siblings().first()).click(function(){$("#otro-monto").val("");$("#otro-monto").attr("disabled",true);})
+            $($("#total-pago").closest("label")).click(function(){$("#otro-monto").val("");$("#otro-monto").attr("disabled",true);})
+            $($("#parcial-pago").siblings().first()).click(function(){$("#otro-monto").removeAttr("disabled");})
+            $($("#parcial-pago").closest("label")).click(function(){$("#otro-monto").removeAttr("disabled");})
+      });
+</script>
 
 </body>
 

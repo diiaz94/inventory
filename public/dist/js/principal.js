@@ -91,6 +91,8 @@ $( document ).ready(function() {
 		event.preventDefault();
 	});
 
+
+
 });
 
 function validarMensajes(){
@@ -511,6 +513,8 @@ function close_bill_modal(){
 }
 
 function ok_bill(){
+	$("#pago-total").val(formato_numero(totalBill, 2, ',', '.'));
+
 	$("#modal-bill-confirm").modal("show");
 }
 function ok_bill_confirm(){
