@@ -127,6 +127,6 @@ class Owner::BillsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bill_params
-      params.require(:bill).permit(:total)
+      params.require(:bill).permit(:total,:pago)
     end
 end

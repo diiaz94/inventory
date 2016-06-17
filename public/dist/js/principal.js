@@ -11,6 +11,10 @@ $.fn.pressEnter = function(fn) {
     });  
  }; 
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
 
 $( document ).ready(function() {
 	var triggerChangeDeposit;
@@ -45,7 +49,6 @@ $( document ).ready(function() {
 	    	this.value = this.value.substring(0,$(this).data("maxlength"))
 	    }
 	});
-	
 	    $("#new_bill").on("click",initBillModal);
 	    $(".new_bill_for_owner").on("click",setOwnerUrls);
 	    $("#add_sale").on("click",addBillSale);
@@ -529,6 +532,7 @@ function procesarBill(){
 	$("#modal-bill").modal("hide");
 	$("#modal-bill-confirm").modal("hide");
 	$("#modal-loader").modal("show");
+	var pago = $("input[name='tipo_pago']:checked").val() == "0" ? totalBill : $("#otro-monto").val().replaceAll(".","").replace(",",".");
 	var d = new Date();
 		var fecha = {
 			"dia":d.getDate(),
@@ -543,7 +547,7 @@ function procesarBill(){
   		url: url_create_bill,
   		data: { 
   			sales: billProductsListed,
-  			bill: {total: totalBill},
+  			bill: {total: totalBill,pago: pago},
   			store_id: (typeof(store_id)!="undefined" ? store_id : ""),
   			fecha: JSON.stringify(fecha)
   		}
@@ -586,4 +590,10 @@ function formato_numero(numero, decimales, separador_decimal, separador_miles){
     }
     return numero+" Bs.";
     //Implementación formato_numero(numeroAFormatear, 2, ',', '.');
+}
+
+
+
+function enmask(t){
+	if (t.length) {};
 }

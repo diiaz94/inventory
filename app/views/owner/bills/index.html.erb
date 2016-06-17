@@ -15,6 +15,7 @@
                         <th>Código</th>
                         <th>Cantidad de productos</th>
                         <th>Total</th>
+                        <th>Abono</th>
                         <th>Fecha</th>
                       </tr>
                     </thead>
@@ -24,6 +25,7 @@
                         <td><%= bill.id %></td>
                         <td><%= bill.sales.sum(:cantidad).to_s %></td>
                         <td class="monto"><%= bill.total %></td>
+                        <td class="monto"><%= bill.pago %></td>
                         <td ><%= bill.fecha_c %></td>
                       </tr>
                         <div class="example-modal">
@@ -113,6 +115,7 @@
                         <th>Código</th>
                         <th>Cantidad de productos</th>
                         <th>Total</th>
+                        <th>Abono</th>
                         <th>Fecha</th>
                       </tr>
                     </tfoot>

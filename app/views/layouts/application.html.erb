@@ -567,7 +567,7 @@ validarMensajes();
                   </label><br>
                   <label>
                     <input type="radio" id="parcial-pago" name="tipo_pago" class="minimal" value="1">&nbsp;
-                    Pago Parcial &nbsp;  <input type="text" id="otro-monto" disabled style="color:black;">
+                    Pago Parcial &nbsp;  <input type="text" id="otro-monto" class="money" disabled style="color:black;">
                   </label><br>
                 </div>
               </div>
@@ -593,10 +593,28 @@ validarMensajes();
         });
           //$('input[type="radio"]').first().parent().addClass("checked")
           $(".select2").select2();
-            $($("#total-pago").siblings().first()).click(function(){$("#otro-monto").val("");$("#otro-monto").attr("disabled",true);})
-            $($("#total-pago").closest("label")).click(function(){$("#otro-monto").val("");$("#otro-monto").attr("disabled",true);})
-            $($("#parcial-pago").siblings().first()).click(function(){$("#otro-monto").removeAttr("disabled");})
-            $($("#parcial-pago").closest("label")).click(function(){$("#otro-monto").removeAttr("disabled");})
+            var click_parcial = function(){
+              $("#otro-monto").val("");
+              $("#otro-monto").attr("disabled",true);
+              $("#total-pago").attr("checked",true);
+              $("#parcial-pago").removeAttr("checked");
+
+            }
+            var click_total = function(){
+              $("#otro-monto").removeAttr("disabled");
+              $("#total-pago").removeAttr("checked");
+              $("#parcial-pago").attr("checked",true);
+            }
+            $($("#total-pago").siblings().first()).click(click_parcial);
+            $($("#total-pago").closest("label")).click(click_parcial);
+            $($("#parcial-pago").siblings().first()).click(click_total);
+            $($("#parcial-pago").closest("label")).click(click_total);
+  $('.money').bind('keyup', function(){
+    debugger
+    var x =this
+    $(this).val(enmask(this.value))
+  });
+
       });
 </script>
 
