@@ -16,6 +16,13 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.split(search).join(replacement);
 };
 
+String.prototype.insert = function (index, string) {
+  if (index > 0)
+    return this.substring(0, index) + string + this.substring(index, this.length);
+  else
+    return string + this;
+};
+
 $( document ).ready(function() {
 	var triggerChangeDeposit;
     console.log( "ready!" );
@@ -65,9 +72,9 @@ $( document ).ready(function() {
 
 
         });
-//		$.each($(".monto"), function( index, value ) {
-//  			$(value).text(formato_numero($(value).text(), 2, ',', '.'))
-//		});
+		$.each($(".monto"), function( index, value ) {
+  			$(value).text(formato_numero($(value).text(), 2, ',', '.'))
+		});
         //$(".monto").text(formato_numero($(".monto").text(), 2, ',', '.'));
 
 	validarMensajes();
@@ -100,13 +107,13 @@ $( document ).ready(function() {
 
 function validarMensajes(){
 	if(typeof(alertmsj)!="undefined" && alertmsj.trim()!=""){
-		$(".modal-danger").find("#msjtxt").html(alertmsj);
-		$(".modal-danger").modal("show");
+		$("#modal-danger").find("#msjtxt").html(alertmsj);
+		$("#modal-danger").modal("show");
 	}
 	if(typeof(noticemsj)!="undefined" && noticemsj.trim()!=""){
-		$(".modal-success").find("#msjtxt").html(noticemsj);
-		$(".modal-success").modal("show");
-		setTimeout(function(){ $(".modal-success").modal("hide")}, 1500);
+		$("#modal-success").find("#msjtxt").html(noticemsj);
+		$("#modal-success").modal("show");
+		setTimeout(function(){ $("#modal-success").modal("hide")}, 1500);
 	}
 }
 
@@ -593,7 +600,27 @@ function formato_numero(numero, decimales, separador_decimal, separador_miles){
 }
 
 
+function unmask(v){
+return v.replaceAll(".","").replaceAll(",","");
+}
+function enmask(mask){
+	var result=unmask(mask)
+	if (result.length>2) {
+		result=result.insert(result.length-2, ",");
 
-function enmask(t){
-	if (t.length) {};
+		var cad = result.substring(0,result.length-3)
+		if (cad.length>3) {
+			var index = cad.length-3;
+			for (var i = 0; i < parseInt(cad.length/3); i++) {
+				if (index!=0) {
+				result = result.insert(index,".");
+				index -=3;
+				};
+			}
+		};
+			
+	
+	}
+
+	return result;
 }
