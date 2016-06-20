@@ -65,9 +65,9 @@ $( document ).ready(function() {
 
 
         });
-        $.each($(".monto"), function( index, value ) {
-  			$(value).text(formato_numero($(value).text(), 2, ',', '.'))
-		});
+//		$.each($(".monto"), function( index, value ) {
+//  			$(value).text(formato_numero($(value).text(), 2, ',', '.'))
+//		});
         //$(".monto").text(formato_numero($(".monto").text(), 2, ',', '.'));
 
 	validarMensajes();
