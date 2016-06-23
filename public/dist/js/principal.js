@@ -563,7 +563,8 @@ function procesarBill(){
 		$("#modal-loader").modal("hide");
 		noticemsj ="Venta realizada exitosamente"
 		validarMensajes();
-		setTimeout(function(){ window.location.href = url_redirect;}, 1500);
+		window.localStorage.setItem("tab","2");
+		setTimeout(function(){ window.location.href = data.url;}, 1500);
 	}).error(
 		function(data){
 	   		$("#modal-loader").modal("hide");

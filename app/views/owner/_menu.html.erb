@@ -59,7 +59,7 @@
                               </li> 
                               <%commerce.stores.each do |store|%>
                                 <li>
-                                <a href="<%=owner_commerce_store_products_path(commerce,store)%>"><i class="glyphicon glyphicon-shopping-cart"></i> <%=store.nombre%></a>
+                                <a href="<%=owner_commerce_store_path(commerce,store)%>"><i class="glyphicon glyphicon-shopping-cart"></i> <%=store.nombre%></a>
                               </li> 
                               <%end%> 
                             <%end%>
@@ -163,7 +163,7 @@
 
 <script type="text/javascript">
   url_create_bill="<%=owner_bills_path(format: :json)%>"
-  url_redirect="<%=owner_bills_path%>"
+  module_redirect="/owner"
 
 
 </script>

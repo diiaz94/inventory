@@ -13,6 +13,8 @@ class Owner::StoresController < ApplicationController
   # GET /stores/1
   # GET /stores/1.json
   def show
+    products()
+    bills()
   end
 
   # GET /stores/new
@@ -73,6 +75,7 @@ class Owner::StoresController < ApplicationController
     end
   end
   def products
+    puts "INICIO PRODUCTS"
     @products_grouped = @store.downloads.group_by {|download| download.product_id}
     @products = []
     @products_grouped.each do |attr_name, attr_value|
@@ -81,6 +84,15 @@ class Owner::StoresController < ApplicationController
                               cantidad: downloads.sum(:cantidad),
                               precio: downloads.last.precio)
       @products.push(@product)
+    end
+  end
+  def bills
+    sellers = @store.sellers
+    @bills=[]
+    sellers.each do|s|
+      s.bills.each do|b|
+        @bills.push(b)
+      end
     end
   end
 

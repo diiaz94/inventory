@@ -63,6 +63,9 @@ class Owner::BillsController < ApplicationController
           end
           new_sale.save
         end 
+        @commerce = @bill.seller.commerce
+        @store = @bill.seller.store
+
         format.html { redirect_to root_path, notice: 'Bill was successfully created.' }
         format.json { render :show, status: :created, location: root_path }
       else
