@@ -66,7 +66,9 @@ class Seller::BillsController < ApplicationController
             puts "todo ok"
           end
           new_sale.save
-        end 
+        end
+        @commerce = @bill.seller.commerce
+        @store = @bill.seller.store 
         format.html { redirect_to root_path, notice: 'Bill was successfully created.' }
         format.json { render :show, status: :created, location: root_path }
       else
@@ -109,7 +111,7 @@ class Seller::BillsController < ApplicationController
         fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
       end
       time = getCurrentTime
-      puts "Respondio el werbservice del tiempo::"+time.to_s
+      puts "Respondio el webservice del tiempo::"+time.to_s
         
       @bill.created_at = time ? time : (fecha ? fecha : Date.today)
       @bill.updated_at = time ? time : (fecha ? fecha : Date.today)

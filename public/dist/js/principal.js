@@ -539,7 +539,7 @@ function procesarBill(){
 	$("#modal-bill").modal("hide");
 	$("#modal-bill-confirm").modal("hide");
 	$("#modal-loader").modal("show");
-	var pago = $("input[name='tipo_pago']:checked").val() == "0" ? totalBill : $("#otro-monto").val().replaceAll(".","").replace(",",".");
+	var pago = $("input[name='tipo_pago']:checked").val() == "0" ? totalBill : unmask($("#otro-monto").val());
 	var d = new Date();
 		var fecha = {
 			"dia":d.getDate(),
