@@ -1,129 +1,51 @@
          <!-- Main content -->
         <section class="content">
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                  <li class="tab1"><a href="#tab_1" data-toggle="tab">Productos</a></li>
-                  <li class="tab2"><a href="#tab_2" data-toggle="tab">Ventas</a></li>
-                </ul>
-                  <div class="tab-content">
-                    <div class="tab-pane active" id="tab_1">
-                      <div class="box">
-                        <div class="box-header">
-                          <h3 class="box-title">Lista de Productos en la tienda <%= @store.nombre%></h3>
-                        </div><!-- /.box-header -->
-                        <div class="box-body">
-                          <table id="products_of_store_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
-                            <thead>
-                              <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            <% @products.each_with_index do |p,index|%>
-                              <tr class="link" data-toggle="modal" data-target=<%="#modal-products_of_store-"+index.to_s%>>
-                                <td><%= p.product.nombre_marca%></td>
-                                <td><%= p.cantidad %></td>
-                                <td class="monto"><%= p.precio %></td>
-                              </tr>
-                                <div class="example-modal">
-                                  <div class="modal fade" id=<%="modal-products_of_store-"+index.to_s%>>
-                                    <div class="modal-dialog">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                          <h4 class="modal-title">Información</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                          <div class="row">
-                                            <div class="col-xs-12">
-                                              <div class="box box-solid">
-                                                <div class="box-header with-border">
-                                                  <i class="fa fa-text-width"></i>
-                                                  <h3 class="box-title">Datos de la carga</h3>
-                                                </div><!-- /.box-header -->
-                                                <div class="box-body">
-                                                  <dl>
-                                                    <dt>Producto:</dt>
-                                                    <dd><%=p.product.nombre_marca%></dd>
-                                                    <dt>Cantidad:</dt>
-                                                    <dd><%= p.cantidad%></dd>
-                                                    <dt>Precio:</dt>
-                                                    <dd class="monto"><%= p.precio%></dd>
-                                     
-                                                  </dl>
-                                               </div><!-- /.box-body -->
-                                              </div><!-- /.box -->
-                                            </div><!-- ./col -->
-                                          </div><!-- /.row -->
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                                          
-                                     </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                  </div><!-- /.modal -->
-                                </div><!-- /.example-modal -->
-                              <% end %>
-
-                            </tbody>
-                            <tfoot>
-                              <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio</th>
-                              </tr>
-                            </tfoot>
-                          </table>
-                        </div><!-- /.box-body -->
-                      </div><!-- /.box -->
-
-                      <div class="row">
-                        <div class="col-xs-1 col-sm-0"> </div>
-                        <div class="col-xs-10 col-sm-12"> 
-                          <%= link_to 'Agregar Productos', owner_commerce_new_store_product_path(@commerce,@store),class:"visible-xs btn btn-block btn-primary btn-lg"%>
-                          <%= link_to 'Agregar Productos', owner_commerce_new_store_product_path(@commerce,@store),class:"hidden-xs btn btn-primary "%>
-                        </div>
-                        <div class="col-xs-1 col-sm-0"> </div>
-                      </div> 
-                    </div>
-                    <!-- /.tab-pane -->
-                    <div class="tab-pane" id="tab_2">
- 						<%= render '/owner/bills/bills_table' %>
-                    <!-- /.tab-pane -->
-                  </div>
-                  <!-- /.tab-content -->
-                </div>
-                <!-- nav-tabs-custom -->
-
-
-
-
-            </div><!-- /.col -->
-          </div><!-- /.row -->
+        	<div class="row">
+	            <div class="col-xs-12">
+	            	<div class="nav-tabs-custom">
+		                <ul class="nav nav-tabs">
+		                  <li class="tab1"><a href="#tab_1" data-toggle="tab">Productos</a></li>
+		                  <li class="tab2"><a href="#tab_2" data-toggle="tab">Todas las Ventas</a></li>
+		                  <li class="tab3"><a href="#tab_3" data-toggle="tab">Ventas del dia</a></li>
+		                </ul>
+		                <div class="tab-content">
+		                    <div class="tab-pane active" id="tab_1">
+		 						<%= render 'products_table' %>
+		                    </div>
+		                    <div class="tab-pane" id="tab_2">
+		 						<% @identifier="bills" %>
+		 						<%= render '/owner/bills/bills_table' %>
+			                </div>
+		                    <div class="tab-pane" id="tab_3">
+		 						<% @identifier="today_bills" %>
+		 						<% @bills=@today_bills %>
+		 						<%= render '/owner/bills/bills_table' %>
+                              	<%= link_to 'Cerrar ventas del dia', owner_commerce_close_cash_path(@commerce,@store), class:"visible-xs btn btn-block btn-warning btn-sm" %>
+                         		 <%= link_to 'Cerrar ventas del dia', owner_commerce_close_cash_path(@commerce,@store), class:"hidden-xs btn btn-warning btn-sm" %>
+			                </div>
+		               	</div>
+	           		</div>
+	            </div><!-- /.col -->
+        	</div><!-- /.row -->
         </section><!-- /.content -->
 
 
  <script>
       $(function () {
-        $("#products_of_store_table").DataTable({
-          "language": {
-            "url": "/plugins/datatables/dataTables.spanish.lang"
-          },
-          "columnDefs": [ {
-          "targets": 'no-sort',
-          "orderable": false,
-          "searchable": false
-          } ],
-          stateSave: true
+        var n = window.localStorage.getItem("tab");
+        n=n==null?"1":n;
+        var link = $(".tab"+n+" a");
+ 		link.trigger("click");
+        
+        $(".tab1 a").on("click",function(){
+        	window.localStorage.setItem("tab","1");
         });
-        var tab = window.localStorage.getItem("tab")
-        $(".tab1").addClass(tab==null || tab=="1"?"active":"");
-        $(".tab2").addClass(tab!=null && tab=="2"?"active":"");
-        window.localStorage.setItem("tab","1")
+        $(".tab2 a").on("click",function(){
+        	window.localStorage.setItem("tab","2");
+        });
+        $(".tab3 a").on("click",function(){
+        	window.localStorage.setItem("tab","3");
+        });
       });
 </script>
 <br>

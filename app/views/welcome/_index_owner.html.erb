@@ -1,4 +1,6 @@
-<div class="row">
+<script type="text/javascript" src="/jspdf.min.js"></script>
+
+<div class="row" id="prueba">
 	
 	<div class="col-xs-12 col-sm-6">
       <div class="box box-danger">
@@ -19,10 +21,25 @@
 
 </div>
 
+<div id="testDiv">
+  <div>TEST1</div>
+  <div>TEST2</div>
+</div>
+
+<a href="javascript:genPDF()">DOWNLOAD PDF</a>
+
 <script >
 
-$(function () {
-	graficoTortaInit(<%=@products_of_deposits%>,<%=@products_of_stores%>);
-});
+  $(function () {
+  	graficoTortaInit(<%=@products_of_deposits%>,<%=@products_of_stores%>);
+  });
 
+function genPDF(){
+
+  var doc= new jsPDF();
+
+  doc.fromHTML($("body").get(0),20,20,{
+    'width':500});
+  doc.save("test.pdf")
+}
 </script>

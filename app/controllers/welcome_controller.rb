@@ -57,6 +57,28 @@ class WelcomeController < ApplicationController
 
   end
 
+  def download
+     if $pdf!=nil
+      puts "download pdf"
+      respond_to do  |format|
+        format.pdf do
+          puts "OKAY"
+           send_data $pdf.render, filename: $pdf.file_name,
+                                  type: "application/pdf",
+                                  disposition: "outline"
+            $pdf=nil
+        end
+      end
+      puts "OK"
+    else
+      puts "FAIL"
+      send_data "FAIL"
+    end
+    
+  end
+  def check_pending_pdf
+    send_data $pdf!=nil ? "OK" : "FAIL"
+  end
 
   	private
     

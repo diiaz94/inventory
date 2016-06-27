@@ -47,3 +47,5 @@ gem 'puma',group: :production
 gem 'activerecord-jdbcpostgresql-adapter',group: :production, platforms: [:jruby]
 gem 'rails_12factor', group: :production
 gem 'pundit'
+gem 'prawn'
+gem 'prawn-table'

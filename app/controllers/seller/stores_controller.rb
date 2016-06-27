@@ -11,6 +11,9 @@ class Seller::StoresController < ApplicationController
   # GET /stores/1
   # GET /stores/1.json
   def show
+    products()
+    bills()
+    today_bills()
   end
 
   # GET /stores/new
@@ -73,6 +76,54 @@ class Seller::StoresController < ApplicationController
                               precio: downloads.last.precio)
       @products.push(@product)
     end
+  end
+  def bills
+    sellers = @store.sellers
+    @bills=[]
+    sellers.each do|s|
+      s.bills.each do|b|
+        @bills.push(b)
+      end
+    end
+  end
+  def today_bills
+    sellers = @store.sellers
+    @time = getCurrentTime
+    @time = @time ? @time : Date.today
+    puts "EPAA"+@time.to_s
+    selected_date = Date.parse(@time)
+    @today_bills = []
+    sellers.each do|s|
+      selected = s.bills.where(:created_at => selected_date.beginning_of_day..selected_date.end_of_day)
+      @today_bills += selected
+    end
+  puts "today_bills::"+@today_bills.to_s
+  end
+  def close_cash
+    today_bills()
+    puts "close_cash::"+@today_bills.to_s
+
+    if @today_bills.size>0
+      selected_date = Date.parse(@time)
+      if current_user.seller.closures.where(:created_at => selected_date.beginning_of_day..selected_date.end_of_day).size==0
+        @closure = Closure.new
+        @closure.seller=current_user.seller
+        @today_bills.each do |b|
+          b.closure = @closure
+          #b.save
+        end
+        #@closure.save
+        fecha = format_date_to_file(Date.parse(@time))
+        $pdf = ClosePDF.new("cierre_#{fecha}.pdf",@today_bills,format_date(DateTime.parse(@time)))
+        puts "PDF.FILENAME::"+$pdf.file_name
+        redirect_to(owner_commerce_store_path(@commerce,@store),notice: "Ventas del dia cerradas exitosamente")
+      else
+        redirect_to(:back,alert: "Disculpa, ya hiciste tu cierre de ventas")
+      end
+    else
+      redirect_to(:back,alert: "Disculpa, no existen ventas para cerrar")
+    end
+
   end
 
  

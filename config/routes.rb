@@ -3,12 +3,16 @@ Rails.application.routes.draw do
 
 
 
+  resources :closures
+
   resources :sessions
   get 'welcome/index'
 
   get 'login' => 'sessions#new', as: :login
   get 'logout' => 'sessions#destroy', as: :logout
 
+  get 'check_pdf' => 'welcome#check_pending_pdf'
+  get 'download' => 'welcome#download'
   
 
 
@@ -66,6 +70,8 @@ Rails.application.routes.draw do
       get 'stores/:store_id/products/:id/edit' => 'stores#edit_product', as: :edit_store_product
       patch 'stores/:store_id/products/:id' => 'stores#update_product' 
       put 'stores/:store_id/products/:id' => 'stores#update_product' 
+      get 'stores/:store_id/close_cash' => 'stores#close_cash', as: :close_cash
+      
     end
     resources :loads
     resources :downloads
@@ -76,6 +82,9 @@ Rails.application.routes.draw do
   namespace "seller" do
     resources :users
     get 'store/products' => 'stores#products', as: :store_products
+    get 'store' => 'stores#show', as: :store
+    get 'stores/close_cash' => 'stores#close_cash', as: :close_cash
+      
     resources :sales
     resources :bills
 

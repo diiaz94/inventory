@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   belongs_to :role
   accepts_nested_attributes_for :profile, allow_destroy: true
   accepts_nested_attributes_for :sellers, allow_destroy: true
-
+  has_one :seller
   extend FriendlyId
   friendly_id :cedula, use: :slugged
 

@@ -1,0 +1,21 @@
+<%= form_for(@closure) do |f| %>
+  <% if @closure.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@closure.errors.count, "error") %> prohibited this closure from being saved:</h2>
+
+      <ul>
+      <% @closure.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :seller_id %><br>
+    <%= f.text_field :seller_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

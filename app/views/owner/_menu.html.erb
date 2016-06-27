@@ -146,20 +146,131 @@
             </li>
             <li class="treeview">
               <a href="#">
-                <i class="glyphicon glyphicon-barcode"></i> <span>Nueva venta</span>
+                <i class="glyphicon glyphicon-barcode"></i> <span>Gestionar mis Tiendas</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
                 <%current_user.commerces.each do |commerce|%>
                   <%commerce.stores.each do |store|%>
-                    <li>
-                        <a  class="new_bill_for_owner" href="#" data-store="<%=store.id%>" data-url="<%=owner_commerce_store_products_path(commerce,store,:json)%>"><i class="fa fa-circle-o"></i> <%=store.nombre%></a>
-                    </li>
+                      <li class="treeview">
+                        <a href="#">
+                          <i class="glyphicon glyphicon-barcode"></i> <span><%=store.nombre%></span>
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li>
+                              <a  class="new_bill_for_owner" href="#" data-store="<%=store.id%>" data-url="<%=owner_commerce_store_products_path(commerce,store,:json)%>"><i class="fa fa-circle-o"></i> Nueva venta</a>
+                          </li>
+                          <li><a href="javascript:window.localStorage.setItem('tab','3');window.location.href='<%=owner_commerce_store_path(commerce,store)%>'"><i class="fa fa-circle-o"></i> Ver ventas del dia</a></li>                          
+                        </ul>
+                      </li>
                   <%end%>
                 <%end%>
               </ul>
             </li>
+           
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-building"></i> 
+                <span>Reportes</span> 
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                
+               
+                <%if current_user.commerces.count>0%>
+                  <%current_user.commerces.each do |commerce|%>
+                    <li class="treeview">
+                      <a href="#">
+                        <i class="fa fa-building-o"></i> 
+                        <span><%=commerce.nombre%></span> 
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </a>
+                      <ul class="treeview-menu">
+                        <li>
+                          <a href="<%=owner_commerce_path(commerce)%>"><i class="fa  fa-search-plus"></i> Reporte General</a>
+                        </li> 
+                        <li class="treeview">
+                          <a href="#">
+                            <i class="fa fa-archive"></i> 
+                            <span>Depósitos</span> 
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </a>
+                          <ul class="treeview-menu">
+                            <%if commerce.deposits.count>0%>
+                              <%commerce.deposits.each do |deposit|%>
+                                <li class="treeview">
+                                  <a href="#">
+                                    <i class="fa fa-archive"></i> 
+                                    <span><%=deposit.nombre%></span> 
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                  </a>
+                                  <ul class="treeview-menu">
+                                  <li>
+                                    <a href="<%=new_owner_commerce_deposit_path(commerce)%>"><i class="fa fa-plus-square"></i> Reporte1</a>
+                                  </li>                                                                   
+                                  </ul>
+                                </li> 
+                              <%end%> 
+                            <%end%>
+                          </ul>
+                        </li>                        
+                        <li class="treeview">
+                          <a href="#">
+                            <i class="fa fa-cart-arrow-down"></i> 
+                            <span>Tiendas</span> 
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </a>
+                          <ul class="treeview-menu">
+                            <%if commerce.stores.count>0%>
+                              <li>
+                                <a href="<%=owner_commerce_stores_path(commerce)%>"><i class="fa fa-search-plus"></i> Ver Todas</a>
+                              </li> 
+                              <%commerce.stores.each do |store|%>
+                                <li>
+                                <a href="<%=owner_commerce_store_path(commerce,store)%>"><i class="glyphicon glyphicon-shopping-cart"></i> <%=store.nombre%></a>
+                              </li> 
+                              <%end%> 
+                            <%end%>
+                            <li>
+                              <a href="<%=new_owner_commerce_store_path(commerce)%>"><i class="fa fa-plus-square"></i> Agregar Tienda</a>
+                            </li>  
+                          </ul>
+                        </li>                        
 
+                        <li class="treeview">
+                          <a href="#">
+                            <i class="fa fa-users"></i> 
+                            <span>Vendedores</span> 
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </a>
+                          <ul class="treeview-menu">
+                            <%if commerce.sellers.count>0%>
+                              <li>
+                                <a href="<%=owner_commerce_sellers_path(commerce)%>"><i class="fa fa-search-plus"></i> Ver Todos</a>
+                              </li> 
+                              <%commerce.sellers.each do |seller|%>
+                                <li>
+                                <a href="<%=owner_commerce_seller_path(commerce,seller.id)%>"><i class="fa fa-user"></i> <%=seller.user.profile.short_name + (seller.user.id==current_user.id ? "(Yo)" : "")%></a>
+                              </li> 
+                              <%end%> 
+                            <%end%>
+                            <li>
+                              <a href="<%=new_owner_commerce_seller_path(commerce)%>"><i class="fa fa-plus-square"></i> Agregar Vendedor</a>
+                            </li>
+                          </ul>
+                        </li>                        
+
+                      </ul>
+                    </li>
+
+                  <%end%>   
+                <%end%>
+                <li>
+                  <a href="<%=new_owner_commerce_path%>"><i class="fa fa-plus-square"></i> Agregar Comercio</a>
+                </li>
+              </ul>
+            </li>
 
 <script type="text/javascript">
   url_create_bill="<%=owner_bills_path(format: :json)%>"

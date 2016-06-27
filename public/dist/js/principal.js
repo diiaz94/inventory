@@ -24,6 +24,7 @@ String.prototype.insert = function (index, string) {
 };
 
 $( document ).ready(function() {
+	check_pending_pdf();
 	var triggerChangeDeposit;
     console.log( "ready!" );
 	$(".delete-record").on("click",function(){
@@ -60,7 +61,8 @@ $( document ).ready(function() {
 	    $(".new_bill_for_owner").on("click",setOwnerUrls);
 	    $("#add_sale").on("click",addBillSale);
 	    $('#close-bill-modal').on("click",close_bill_modal);
-	    $("#ok-bill").on("click",ok_bill);
+	    $("#ok-bill").on("click",ok_bill_confirm);
+	    //$("#ok-bill").on("click",ok_bill);
 	    $("#ok-bill-confirm").on("click",ok_bill_confirm);
 	    $('#cantidad').pressEnter(addBillSale);
 	    $("#cantidad").focus(function(){
@@ -539,7 +541,7 @@ function procesarBill(){
 	$("#modal-bill").modal("hide");
 	$("#modal-bill-confirm").modal("hide");
 	$("#modal-loader").modal("show");
-	var pago = $("input[name='tipo_pago']:checked").val() == "0" ? totalBill : unmask($("#otro-monto").val());
+	var pago = $("input[name='tipo_pago']:checked").val() == "0" ? totalBill : $("#otro-monto").val().replaceAll(".","").replace(",",".");
 	var d = new Date();
 		var fecha = {
 			"dia":d.getDate(),
@@ -563,7 +565,7 @@ function procesarBill(){
 		$("#modal-loader").modal("hide");
 		noticemsj ="Venta realizada exitosamente"
 		validarMensajes();
-		window.localStorage.setItem("tab","2");
+		window.localStorage.setItem("tab","3");
 		setTimeout(function(){ window.location.href = data.url;}, 1500);
 	}).error(
 		function(data){
@@ -614,8 +616,8 @@ function enmask(mask){
 			var index = cad.length-3;
 			for (var i = 0; i < parseInt(cad.length/3); i++) {
 				if (index!=0) {
-				result = result.insert(index,".");
-				index -=3;
+					result = result.insert(index,".");
+					index -=3;
 				};
 			}
 		};
@@ -624,4 +626,17 @@ function enmask(mask){
 	}
 
 	return result;
+}
+
+function check_pending_pdf(){
+	$.ajax({
+		method: "GET",
+  		url: "/check_pdf",
+	}).done(
+		function(data){
+			if (data=="OK") {
+				window.location.href="/download.pdf"
+			};
+
+		});
 }

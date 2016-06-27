@@ -1,0 +1,25 @@
+<h1>Listing closures</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Seller</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @closures.each do |closure| %>
+      <tr>
+        <td><%= closure.seller_id %></td>
+        <td><%= link_to 'Show', closure %></td>
+        <td><%= link_to 'Edit', edit_closure_path(closure) %></td>
+        <td><%= link_to 'Destroy', closure, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Closure', new_closure_path %>

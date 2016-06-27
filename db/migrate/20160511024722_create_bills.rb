@@ -4,6 +4,7 @@ class CreateBills < ActiveRecord::Migration
       t.float :total
       t.float :pago
       t.belongs_to :seller, index: true
+      t.belongs_to :closure
       t.timestamps
     end
   end

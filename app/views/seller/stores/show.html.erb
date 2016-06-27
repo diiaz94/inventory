@@ -1,10 +1,54 @@
-<p>
-  <strong>Nombre:</strong>
-  <%= @store.nombre %>
-</p>
+         <!-- Main content -->
+        <section class="content">
+        	<div class="row">
+	            <div class="col-xs-12">
+	            	<div class="nav-tabs-custom">
+		                <ul class="nav nav-tabs">
+		                  <li class="tab1"><a href="#tab_1" data-toggle="tab">Productos</a></li>
+		                  <li class="tab2"><a href="#tab_2" data-toggle="tab">Todas las Ventas</a></li>
+		                  <li class="tab3"><a href="#tab_3" data-toggle="tab">Ventas del dia</a></li>
+		                </ul>
+		                <div class="tab-content">
+		                    <div class="tab-pane active" id="tab_1">
+		 						<%= render 'products_table' %>
+		                    </div>
+		                    <div class="tab-pane" id="tab_2">
+		 						<% @identifier="bills" %>
+		 						<%= render '/seller/bills/bills_table' %>
+			                </div>
+		                    <div class="tab-pane" id="tab_3">
+		 						<% @identifier="today_bills" %>
+		 						<% @bills=@today_bills %>
+		 						<%= render '/seller/bills/bills_table' %>
+                              	<%= link_to 'Cerrar ventas del dia', owner_commerce_close_cash_path(@commerce,@store), class:"visible-xs btn btn-block btn-warning btn-sm" %>
+                         		 <%= link_to 'Cerrar ventas del dia', owner_commerce_close_cash_path(@commerce,@store), class:"hidden-xs btn btn-warning btn-sm" %>
+			                </div>
+		               	</div>
+	           		</div>
+	            </div><!-- /.col -->
+        	</div><!-- /.row -->
+        </section><!-- /.content -->
 
-<p>
-  <strong>Direccion:</strong>
-  <%= @store.direccion %>
-</p>
+
+ <script>
+      $(function () {
+        var n = window.localStorage.getItem("tab");
+        n=n==null?"1":n;
+        var link = $(".tab"+n+" a");
+ 		link.trigger("click");
+        
+        $(".tab1 a").on("click",function(){
+        	window.localStorage.setItem("tab","1");
+        });
+        $(".tab2 a").on("click",function(){
+        	window.localStorage.setItem("tab","2");
+        });
+        $(".tab3 a").on("click",function(){
+        	window.localStorage.setItem("tab","3");
+        });
+      });
+</script>
+<br>
+
+
 

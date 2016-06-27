@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511025117) do
+ActiveRecord::Schema.define(version: 20160626025714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20160511025117) do
     t.float    "total"
     t.float    "pago"
     t.integer  "seller_id"
+    t.integer  "closure_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -41,6 +42,14 @@ ActiveRecord::Schema.define(version: 20160511025117) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "closures", force: true do |t|
+    t.integer  "seller_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "closures", ["seller_id"], name: "index_closures_on_seller_id", using: :btree
 
   create_table "commerces", force: true do |t|
     t.string   "nombre"
