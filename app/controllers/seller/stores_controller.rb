@@ -1,6 +1,6 @@
 class Seller::StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy,:products]
-
+  include ApplicationHelper
 
   # GET /stores
   # GET /stores.json
@@ -87,7 +87,7 @@ class Seller::StoresController < ApplicationController
     end
   end
   def today_bills
-    sellers = @store.sellers
+    sellers = [current_user.seller]
     @time = getCurrentTime
     @time = @time ? @time : Date.today
     puts "EPAA"+@time.to_s
@@ -112,11 +112,13 @@ class Seller::StoresController < ApplicationController
           b.closure = @closure
           #b.save
         end
+        @closure.created_at=@time
+        @closure.updated_at=@time
         #@closure.save
         fecha = format_date_to_file(Date.parse(@time))
         $pdf = ClosePDF.new("cierre_#{fecha}.pdf",@today_bills,format_date(DateTime.parse(@time)))
         puts "PDF.FILENAME::"+$pdf.file_name
-        redirect_to(owner_commerce_store_path(@commerce,@store),notice: "Ventas del dia cerradas exitosamente")
+        redirect_to(seller_bills_path,notice: "Ventas del dia cerradas exitosamente")
       else
         redirect_to(:back,alert: "Disculpa, ya hiciste tu cierre de ventas")
       end

@@ -1,31 +1,32 @@
 <div class="row">
             <div class="col-xs-12">
-
-
               <div class="box">
                 <div class="box-header">
                   <h3 class="box-title">Lista de Ventas</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  <table id="bills_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
+                  <table id="<%=@identifier%>" class="display table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                       <tr>
                         <th>Código</th>
                         <th>Cantidad de productos</th>
                         <th>Total</th>
+                        <th class="hidden">Abono</th>
                         <th>Fecha</th>
                       </tr>
                     </thead>
                     <tbody>
                     <% @bills.each_with_index do |bill,index| %>
-                      <tr class="link" data-toggle="modal" data-target=<%="#modal-bill-"+index.to_s%>>
+                    <%puts index.to_s%>
+                      <tr class="link" data-toggle="modal" data-target=<%="#modal-"+@identifier+"-"+index.to_s%>>
                         <td><%= bill.id %></td>
                         <td><%= bill.sales.sum(:cantidad).to_s %></td>
                         <td class="monto"><%= bill.total %></td>
+                        <td class="monto hidden"><%= bill.pago %></td>
                         <td ><%= bill.fecha_c %></td>
                       </tr>
                         <div class="example-modal">
-                          <div class="modal fade" id=<%="modal-bill-"+index.to_s%>>
+                          <div class="modal fade" id=<%="modal-"+@identifier+"-"+index.to_s%>>
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
@@ -111,6 +112,7 @@
                         <th>Código</th>
                         <th>Cantidad de productos</th>
                         <th>Total</th>
+                        <th class="hidden">Abono</th>
                         <th>Fecha</th>
                       </tr>
                     </tfoot>
@@ -121,7 +123,7 @@
           </div><!-- /.row -->
 <script>
       $(function () {
-        $("#bills_table").DataTable({
+        $("<%='#'+@identifier%>").DataTable({
           "language": {
             "url": "/plugins/datatables/dataTables.spanish.lang"
           },

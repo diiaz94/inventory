@@ -120,9 +120,11 @@ class Owner::StoresController < ApplicationController
         @closure.seller=current_user.seller
         @today_bills.each do |b|
           b.closure = @closure
-          #b.save
+          b.save
         end
-        #@closure.save
+        @closure.created_at=@time
+        @closure.updated_at=@time
+        @closure.save
         fecha = format_date_to_file(Date.parse(@time))
         $pdf = ClosePDF.new("cierre_#{fecha}.pdf",@today_bills,format_date(DateTime.parse(@time)))
         puts "PDF.FILENAME::"+$pdf.file_name
