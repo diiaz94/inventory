@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
 	    response = JSON.parse(res.body)
 
 	    if(response["status"] and response["status"]=="OK" and response["timestamp"])
-	    	puts "OK webservice de tiempo****"
+	    	puts "OK webservice de tiempo****" + response["timestamp"].to_s
 	     	puts DateTime.strptime(response["timestamp"].to_s,'%s').to_formatted_s(:db).to_s 
 	     
 	     	return DateTime.strptime(response["timestamp"].to_s,'%s').to_formatted_s(:db) 

@@ -1,7 +1,13 @@
 <p id="notice"><%= notice %></p>
 
+
 <p>
-  <strong>Usuario:</strong>
+  <strong>Cédula:</strong>
+  <%= @seller.user.cedula %>
+</p>
+
+<p>
+  <strong>Nombre:</strong>
   <%= @seller.user.profile.complete_name %>
 </p>
 

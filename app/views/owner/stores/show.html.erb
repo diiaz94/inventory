@@ -20,8 +20,10 @@
 		 						<% @identifier="today_bills" %>
 		 						<% @bills=@today_bills %>
 		 						<%= render '/owner/bills/bills_table' %>
-                              	<%= link_to 'Cerrar ventas del dia', owner_commerce_close_cash_path(@commerce,@store), class:"visible-xs btn btn-block btn-warning btn-sm" %>
-                         		 <%= link_to 'Cerrar ventas del dia', owner_commerce_close_cash_path(@commerce,@store), class:"hidden-xs btn btn-warning btn-sm" %>
+                              	<%= link_to 'Cerrar ventas del dia', owner_commerce_close_cash_path(@commerce,@store), 
+                              		id: "close-cash", class:"visible-xs btn btn-block btn-warning btn-sm" %>
+                         		 <%= link_to 'Cerrar ventas del dia', owner_commerce_close_cash_path(@commerce,@store), 
+                         			id: "close-cash", class:"hidden-xs btn btn-warning btn-sm" %>
 			                </div>
 		               	</div>
 	           		</div>

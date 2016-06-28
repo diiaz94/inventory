@@ -83,7 +83,7 @@ Rails.application.routes.draw do
     resources :users
     get 'store/products' => 'stores#products', as: :store_products
     get 'store' => 'stores#show', as: :store
-    get 'stores/close_cash' => 'stores#close_cash', as: :close_cash
+    get 'store/close_cash' => 'stores#close_cash', as: :close_cash
       
     resources :sales
     resources :bills

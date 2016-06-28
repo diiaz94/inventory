@@ -57,6 +57,7 @@ $( document ).ready(function() {
 	    	this.value = this.value.substring(0,$(this).data("maxlength"))
 	    }
 	});
+		$("#close-cash").on("click",function(){$("#modal-loader").modal({backdrop: 'static', keyboard: false}); });
 	    $("#new_bill").on("click",initBillModal);
 	    $(".new_bill_for_owner").on("click",setOwnerUrls);
 	    $("#add_sale").on("click",addBillSale);

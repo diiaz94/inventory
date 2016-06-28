@@ -101,7 +101,7 @@ class Owner::StoresController < ApplicationController
     @time = getCurrentTime
     @time = @time ? @time : Date.today
     puts "EPAA"+@time.to_s
-    selected_date = Date.parse(@time)
+    selected_date = Date.parse(@time.to_s)
     @today_bills = []
     sellers.each do|s|
       selected = s.bills.where(:created_at => selected_date.beginning_of_day..selected_date.end_of_day)
