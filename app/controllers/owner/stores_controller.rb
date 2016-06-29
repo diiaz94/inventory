@@ -130,7 +130,7 @@ class Owner::StoresController < ApplicationController
         puts "PDF.FILENAME::"+$pdf.file_name
         redirect_to(owner_commerce_store_path(@commerce,@store),notice: "Ventas del dia cerradas exitosamente")
       else
-        redirect_to(:back,alert: "Disculpa, ya hiciste tu cierre de ventas")
+        redirect_to(:back,alert: "Disculpa, ya hiciste tu cierre de ventas del dia")
       end
     else
       redirect_to(:back,alert: "Disculpa, no existen ventas para cerrar")

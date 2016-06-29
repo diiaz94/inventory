@@ -1,5 +1,5 @@
 class Seller::StoresController < ApplicationController
-  before_action :set_store, only: [:show, :edit, :update, :destroy,:products]
+  before_action :set_store, only: [:show, :edit, :update, :destroy,:products,:close_cash]
   include ApplicationHelper
 
   # GET /stores
@@ -120,7 +120,7 @@ class Seller::StoresController < ApplicationController
         puts "PDF.FILENAME::"+$pdf.file_name
         redirect_to(seller_bills_path,notice: "Ventas del dia cerradas exitosamente")
       else
-        redirect_to(:back,alert: "Disculpa, ya hiciste tu cierre de ventas")
+        redirect_to(:back,alert: "Disculpa, ya hiciste tu cierre de ventas del dia")
       end
     else
       redirect_to(:back,alert: "Disculpa, no existen ventas para cerrar")
