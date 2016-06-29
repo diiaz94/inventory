@@ -113,23 +113,23 @@
               </a>
               <ul class="treeview-menu">
                 <li>
-                <a href="<%=products_path%>"><i class="fa fa-circle-o"></i> Ver Productos</a>
+                <a href="<%=products_path%>"><i class="fa fa-eye"></i> Ver Productos</a>
                 </li>
                 <li>
-                <a href="<%=new_product_path%>"><i class="fa fa-circle-o"></i> Agregar Productos</a>
+                <a href="<%=new_product_path%>"><i class="fa fa-cart-plus"></i> Agregar Productos</a>
                 </li>
                 <li>
-                  <a href="#"><i class="fa fa-circle-o"></i> Categorias <i class="fa fa-angle-left pull-right"></i></a>
+                  <a href="#"><i class="fa fa-folder-open-o"></i> Categorias <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
-                    <li><a href="<%=categories_path%>"><i class="fa fa-circle-o"></i> Ver Categorias</a></li>
-                    <li><a href="<%=new_category_path%>"><i class="fa fa-circle-o"></i> Agregar Categoria</a></li>
+                    <li><a href="<%=categories_path%>"><i class="fa fa-search-plus"></i> Ver Categorias</a></li>
+                    <li><a href="<%=new_category_path%>"><i class="fa fa-plus"></i> Agregar Categoria</a></li>
                   </ul>
                 </li>
                 <li>
-                  <a href="#"><i class="fa fa-circle-o"></i> Marcas <i class="fa fa-angle-left pull-right"></i></a>
+                  <a href="#"><i class="fa fa-cubes"></i> Marcas <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
-                    <li><a href="<%=brands_path%>"><i class="fa fa-circle-o"></i> Ver Marcas</a></li>
-                    <li><a href="<%=new_brand_path%>"><i class="fa fa-circle-o"></i> Agregar Marca</a></li>
+                    <li><a href="<%=brands_path%>"><i class="fa fa-search-plus"></i> Ver Marcas</a></li>
+                    <li><a href="<%=new_brand_path%>"><i class="fa  fa-plus"></i> Agregar Marca</a></li>
                   </ul>
                 </li>
               </ul>
@@ -146,7 +146,7 @@
             </li>
             <li class="treeview">
               <a href="#">
-                <i class="glyphicon glyphicon-barcode"></i> <span>Gestionar mis Tiendas</span>
+                <i class="glyphicon glyphicon-list-alt"></i> <span>Gestionar mis Tiendas</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
@@ -154,14 +154,14 @@
                   <%commerce.stores.each do |store|%>
                       <li class="treeview">
                         <a href="#">
-                          <i class="glyphicon glyphicon-barcode"></i> <span><%=store.nombre%></span>
+                          <i class="fa fa-shopping-cart"></i> <span><%=store.nombre%></span>
                           <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
                           <li>
-                              <a  class="new_bill_for_owner" href="#" data-store="<%=store.id%>" data-url="<%=owner_commerce_store_products_path(commerce,store,:json)%>"><i class="fa fa-circle-o"></i> Nueva venta</a>
+                              <a  class="new_bill_for_owner" href="#" data-store="<%=store.id%>" data-url="<%=owner_commerce_store_products_path(commerce,store,:json)%>"><i class="fa  fa-plus-circle"></i> Nueva venta</a>
                           </li>
-                          <li><a href="javascript:window.localStorage.setItem('tab','3');window.location.href='<%=owner_commerce_store_path(commerce,store)%>'"><i class="fa fa-circle-o"></i> Ver ventas del dia</a></li>                          
+                          <li><a href="javascript:window.localStorage.setItem('tab','3');window.location.href='<%=owner_commerce_store_path(commerce,store)%>'"><i class="fa fa-eye"></i> Ver ventas del dia</a></li>                          
                         </ul>
                       </li>
                   <%end%>

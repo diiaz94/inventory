@@ -3,6 +3,7 @@ class CreateBills < ActiveRecord::Migration
     create_table :bills do |t|
       t.float :total
       t.float :pago
+      t.integer :cantidad_total
       t.belongs_to :seller, index: true
       t.belongs_to :closure
       t.timestamps

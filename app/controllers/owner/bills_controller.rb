@@ -31,7 +31,7 @@ class Owner::BillsController < ApplicationController
  
     respond_to do |format|
       if @bill.save
-
+        @bill.cantidad_total = sales.sum(:cantidad)
         sales.each do |i, sale|
           new_sale=Sale.new
           new_sale.product_id=sale["id"].to_i
