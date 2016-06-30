@@ -20,7 +20,7 @@
                     <%puts index.to_s%>
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-"+@identifier+"-"+index.to_s%>>
                         <td><%= bill.id %></td>
-                        <td><%= bill.sales.sum(:cantidad).to_s %></td>
+                        <td><%= bill.cantidad_total%></td>
                         <td class="monto"><%= bill.total %></td>
                         <td class="monto hidden"><%= bill.pago %></td>
                         <td ><%= bill.fecha_c %></td>

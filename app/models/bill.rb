@@ -3,7 +3,10 @@ class Bill < ActiveRecord::Base
 	has_many :sales
 	belongs_to :seller
 	belongs_to :closure
- 
+
+	before_save do
+		self.cantidad_total = self.sales ? self.sales.sum(:cantidad) : 0
+  	end
 	def fecha_c
 		format_date(self.created_at)
 	end

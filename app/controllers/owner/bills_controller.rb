@@ -31,7 +31,6 @@ class Owner::BillsController < ApplicationController
  
     respond_to do |format|
       if @bill.save
-        @bill.cantidad_total = sales.sum(:cantidad)
         sales.each do |i, sale|
           new_sale=Sale.new
           new_sale.product_id=sale["id"].to_i
@@ -62,7 +61,8 @@ class Owner::BillsController < ApplicationController
             puts "todo ok"
           end
           new_sale.save
-        end 
+        end
+        @bill.save
         @commerce = @bill.seller.commerce
         @store = @bill.seller.store
 

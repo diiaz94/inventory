@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20160626025714) do
   create_table "bills", force: true do |t|
     t.float    "total"
     t.float    "pago"
+    t.integer  "cantidad_total"
     t.integer  "seller_id"
     t.integer  "closure_id"
     t.datetime "created_at"

@@ -19,7 +19,7 @@
                     <% @bills.each_with_index do |bill,index| %>
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-"+@identifier+"-"+index.to_s%>>
                         <td><%= bill.id %></td>
-                        <td><%= bill.sales.sum(:cantidad).to_s %></td>
+                        <td><%= bill.cantidad_total %></td>
                         <td class="monto"><%= bill.total %></td>
                         <td class="monto hidden"><%= bill.pago %></td>
                         <td ><%= bill.fecha_c %></td>
@@ -43,7 +43,7 @@
                                         <div class="box-body">
                                           <div class="panel panel-default">
                                             <!-- Default panel contents -->
-                                            
+
                                             <div class="panel-heading">Detalle de la venta | Realizada por : <%=bill.seller.user.profile.short_name%></div>
                                             <div class="panel-body">
                                             <!-- List group -->

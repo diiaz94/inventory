@@ -28,12 +28,10 @@ class Seller::BillsController < ApplicationController
     @bill = Bill.new(bill_params)
     @bill.seller = current_user.sellers.first
     sales = params[:sales]
-
-
+    @bill.cantidad_total = sales.sum(:cantidad)
  
     respond_to do |format|
       if @bill.save
-
         sales.each do |i, sale|
           puts "AQUIVALE"
           puts sale.to_json
