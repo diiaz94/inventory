@@ -43,7 +43,7 @@ before_action :validate_users, only: [:new]
 	def validate_users
       if User.all.length == 0
         puts "not User************"
-        redirect_to(admin_user_path,notice:"Debes crear el usuario administrador")
+        redirect_to(administrator_user_path,notice:"Debes crear el usuario administrador")
       end
     end
 end

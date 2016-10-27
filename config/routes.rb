@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
 
   post 'create_admin_user' => 'welcome#create_admin_user', as: :create_admin_user
-  get 'admin_user' => 'welcome#admin_user', as: :admin_user
+  get 'admin_user' => 'welcome#admin_user', as: :administrator_user
   
 
 
