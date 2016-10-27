@@ -1,7 +1,7 @@
 
 
 <script type="text/javascript" src="/jspdf.min.js"></script>
-<%=if false%>
+<%if false%>
 <div class="row" id="prueba">
 	
 	<div class="col-xs-12 col-sm-6">
@@ -30,10 +30,11 @@
 
 <a href="javascript:genPDF()">DOWNLOAD PDF</a>
 
+<%end%>
 <script >
 
   $(function () {
-  	graficoTortaInit(<%=@products_of_deposits%>,<%=@products_of_stores%>);
+    graficoTortaInit(<%=@products_of_deposits%>,<%=@products_of_stores%>);
   });
 
 function genPDF(){
@@ -45,4 +46,3 @@ function genPDF(){
   doc.save("test.pdf")
 }
 </script>
-<%=end%>
