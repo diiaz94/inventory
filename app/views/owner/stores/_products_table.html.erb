@@ -83,3 +83,19 @@
 
   </div>
 </div>   
+
+<script>
+      $(function () {
+        $("#products_of_store_table").DataTable({
+          "language": {
+            "url": "/plugins/datatables/dataTables.spanish.lang"
+          },
+          "columnDefs": [ {
+          "targets": 'no-sort',
+          "orderable": false,
+          "searchable": false
+          } ],
+          stateSave: true
+        });
+      });
+</script>

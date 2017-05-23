@@ -1,4 +1,6 @@
 class Owner::LoadsController < ApplicationController
+
+  before_action :checks, only: [:new]
   before_action :set_load, only: [:show, :edit, :update, :destroy]
   after_action :set_date_created_at, only: [:create]
   after_action :set_date_updated_at, only: [:update]
@@ -22,10 +24,6 @@ class Owner::LoadsController < ApplicationController
 
   # GET /loads/new
   def new
-
-    if  Product.all.count == 0
-        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
-    end
     commerces=current_user.commerces
     deposits_count=0
     commerces.each do |c|
@@ -90,6 +88,11 @@ class Owner::LoadsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def checks
+      if  Product.all.count == 0
+        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
+      end
+    end
     def set_load
       @load = Load.find(params[:id])
     end

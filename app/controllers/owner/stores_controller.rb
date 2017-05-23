@@ -1,5 +1,6 @@
 class Owner::StoresController < ApplicationController
   before_action :set_commerce
+  before_action :checks, only: [:new_product]
   before_action :set_store, only: [:show, :edit, :update, :destroy,:products,:new_product,:add_product,:close_cash]
   after_action :set_date_created_at, only: [:add_product]
   include ApplicationHelper
@@ -139,9 +140,6 @@ class Owner::StoresController < ApplicationController
   end
 
   def new_product
-    if  Product.all.count == 0
-        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
-    end
     commerces=current_user.commerces
     deposits_count=0
     stores_count=0
@@ -196,6 +194,11 @@ class Owner::StoresController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def checks
+      if  Product.all.count == 0
+        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
+      end
+    end
     def set_date_created_at
       if params[:fecha]
         f = JSON.parse(params[:fecha])

@@ -1,4 +1,5 @@
 class Owner::DownloadsController < ApplicationController
+  before_action :checks, only: [:new]
   before_action :set_download, only: [:show, :edit, :update, :destroy]
   after_action :set_date_created_at, only: [:create]
   after_action :set_date_updated_at, only: [:update]
@@ -22,10 +23,6 @@ class Owner::DownloadsController < ApplicationController
 
   # GET /downloads/new
   def new
-    if  Product.all.count == 0
-        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
-        return
-    end
     commerces=current_user.commerces
     deposits_count=0
     stores_count=0
@@ -123,6 +120,11 @@ class Owner::DownloadsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def checks
+      if  Product.all.count == 0
+        redirect_to(:back,alert: "Disculpa, debes crear productos primero.")
+      end
+    end
     def set_download
       @download = Download.find(params[:id])
     end
