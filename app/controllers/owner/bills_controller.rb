@@ -26,12 +26,15 @@ class Owner::BillsController < ApplicationController
   # POST /bills.json
   def create
     @bill = Bill.new(bill_params)
-    @bill.seller = current_user.sellers.where(store_id: params[:store_id]).first
+    @bill.seller = current_user.sellers.first
     sales = params[:sales]
+    @bill.cantidad_total = sales.sum(:cantidad)
  
     respond_to do |format|
       if @bill.save
         sales.each do |i, sale|
+          puts "AQUIVALE"
+          puts sale.to_json
           new_sale=Sale.new
           new_sale.product_id=sale["id"].to_i
           new_sale.cantidad=sale["cantidad"].to_i
@@ -62,10 +65,8 @@ class Owner::BillsController < ApplicationController
           end
           new_sale.save
         end
-        @bill.save
         @commerce = @bill.seller.commerce
-        @store = @bill.seller.store
-
+        @store = @bill.seller.store 
         format.html { redirect_to root_path, notice: 'Bill was successfully created.' }
         format.json { render :show, status: :created, location: root_path }
       else
@@ -108,7 +109,7 @@ class Owner::BillsController < ApplicationController
         fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
       end
       time = getCurrentTime
-      puts "Respondio el werbservice del tiempo::"+time.to_s
+      puts "Respondio el webservice del tiempo::"+time.to_s
         
       @bill.created_at = time ? time : (fecha ? fecha : Date.today)
       @bill.updated_at = time ? time : (fecha ? fecha : Date.today)
@@ -130,6 +131,6 @@ class Owner::BillsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bill_params
-      params.require(:bill).permit(:total,:pago)
+      params.require(:bill).permit(:total)
     end
 end
